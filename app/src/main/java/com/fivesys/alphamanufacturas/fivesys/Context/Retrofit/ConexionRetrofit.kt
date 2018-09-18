@@ -9,7 +9,7 @@ object ConexionRetrofit {
     //private val BASE_URL_ = "http://www.cobraperu.com/webApiCalidda_Lectura/api/"
     private val BASE_URL_IRVIN = "http://192.168.0.3:8090/api/"
     private val BASE_URL_HOME = "http://192.168.0.102:8081/api/"
-    private val BASE_URL = "http://www.cobraperu.com/webApiCalidda/api/"
+    private val BASE_URL = "http://alphaman-001-site18.ftempurl.com/"
 
     private lateinit var retrofit: Retrofit
 

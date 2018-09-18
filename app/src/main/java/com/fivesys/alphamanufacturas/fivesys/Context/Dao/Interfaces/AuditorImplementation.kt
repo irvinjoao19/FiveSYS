@@ -7,7 +7,7 @@ interface AuditorImplementation {
 
     fun saveAuditor(auditor: Auditor)
 
-    fun getAuditor(): Auditor
+    fun getAuditor(): Auditor?
 
 
 }

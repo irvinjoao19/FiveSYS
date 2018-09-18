@@ -15,6 +15,9 @@ open class Auditor : RealmObject {
 
     constructor() : super()
 
+
+
+
     constructor(AuditorId: Int, TipoDocumentoId: Int, NroDocumento: String, NombreCompleto: String, Correo: String, Clave: String) : super() {
         this.AuditorId = AuditorId
         this.TipoDocumentoId = TipoDocumentoId
@@ -23,4 +26,12 @@ open class Auditor : RealmObject {
         this.Correo = Correo
         this.Clave = Clave
     }
+
+    constructor(TipoDocumentoId: Int, NroDocumento: String, Clave: String) : super() {
+        this.TipoDocumentoId = TipoDocumentoId
+        this.NroDocumento = NroDocumento
+        this.Clave = Clave
+    }
+
+
 }

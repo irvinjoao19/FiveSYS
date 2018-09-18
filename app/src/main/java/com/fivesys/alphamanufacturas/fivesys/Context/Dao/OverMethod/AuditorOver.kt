@@ -11,7 +11,7 @@ class AuditorOver(private val realm: Realm) : AuditorImplementation {
         }
     }
 
-    override fun getAuditor(): Auditor {
-        return realm.where(Auditor::class.java).findFirst()!!
+    override fun getAuditor(): Auditor? {
+        return realm.where(Auditor::class.java).findFirst()
     }
 }

@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.speech.SpeechRecognizer;
+import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -67,22 +69,23 @@ public class Util {
         FechaActual = format.format(date);
         return id + "_" + FechaActual;
     }
+
     public static String getFechaActualRepartoPhoto(int id, String codigo) {
         Date date = new Date();
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy_HHmmssSSSS");
         FechaActual = format.format(date);
-        return id +"_"+codigo+ "_" + FechaActual;
+        return id + "_" + codigo + "_" + FechaActual;
     }
 
-//    public static void toggleTextInputLayoutError(@NonNull TextInputLayout textInputLayout,
-//                                                  String msg) {
-//        textInputLayout.setError(msg);
-//        if (msg == null) {
-//            textInputLayout.setErrorEnabled(false);
-//        } else {
-//            textInputLayout.setErrorEnabled(true);
-//        }
-//    }
+    public static void toggleTextInputLayoutError(@NonNull TextInputLayout textInputLayout,
+                                                  String msg) {
+        textInputLayout.setError(msg);
+        if (msg == null) {
+            textInputLayout.setErrorEnabled(false);
+        } else {
+            textInputLayout.setErrorEnabled(true);
+        }
+    }
 
 
     // TODO SOBRE ADJUNTAR PHOTO
