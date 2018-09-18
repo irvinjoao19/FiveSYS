@@ -25,8 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var builder: android.app.AlertDialog.Builder
     private lateinit var dialog: android.app.AlertDialog
 
-    var title: Array<String>? = null
-    var image: IntArray? = null
+    private lateinit var title: Array<String>
+    private lateinit var image: IntArray
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +48,13 @@ class MainActivity : AppCompatActivity() {
         image = intArrayOf(R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@MainActivity)
-        menuAdapter = MenuAdapter(title, image, MenuAdapter.OnItemClickListener { strings, _ ->
-            when (strings) {
-                "Auditoria" -> startActivity(Intent(this@MainActivity, AuditoriaActivity::class.java))
-                "Perfil" -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
-                "Configuración" -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
+        menuAdapter = MenuAdapter(title, image, object : MenuAdapter.OnItemClickListener {
+            override fun onItemClick(strings: String, position: Int) {
+                when (strings) {
+                    "Auditoria" -> startActivity(Intent(this@MainActivity, AuditoriaActivity::class.java))
+                    "Perfil" -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
+                    "Configuración" -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
+                }
             }
         })
         recyclerView.itemAnimator = DefaultItemAnimator()
