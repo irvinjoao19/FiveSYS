@@ -1,4 +1,4 @@
-package com.fivesys.alphamanufacturas.fivesys.Views.Activities
+package com.fivesys.alphamanufacturas.fivesys.views.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,22 +12,21 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.view.ContextThemeWrapper
 import android.support.v7.widget.AppCompatSpinner
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.AdapterView
 import android.widget.TextView
 import com.calida.dsige.lectura.Helper.MessageError
-import com.fivesys.alphamanufacturas.fivesys.Context.Dao.Interfaces.AuditorImplementation
-import com.fivesys.alphamanufacturas.fivesys.Context.Dao.OverMethod.AuditorOver
-import com.fivesys.alphamanufacturas.fivesys.Context.Retrofit.ConexionRetrofit
-import com.fivesys.alphamanufacturas.fivesys.Context.Retrofit.Interfaces.LoginInterfaces
-import com.fivesys.alphamanufacturas.fivesys.Entities.Auditor
-import com.fivesys.alphamanufacturas.fivesys.Entities.TipoDocumento
-import com.fivesys.alphamanufacturas.fivesys.Helper.Dialog
-import com.fivesys.alphamanufacturas.fivesys.Helper.Util
-import com.fivesys.alphamanufacturas.fivesys.Views.Adapters.SpinnerTipoDocumento
+import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditorImplementation
+import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditorOver
+import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
+import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
+import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
+import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
+import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.SpinnerTipoDocumento
 import com.google.gson.Gson
 import io.realm.Realm
 import okhttp3.MediaType
