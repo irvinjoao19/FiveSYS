@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".Views.Activities.LoginActivity">
+    tools:context=".views.activities.LoginActivity">
 
     <ScrollView
         android:layout_width="match_parent"
