@@ -11,8 +11,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
+import com.fivesys.alphamanufacturas.fivesys.Context.Dao.Interfaces.AuditorImplementation
+import com.fivesys.alphamanufacturas.fivesys.Context.Dao.OverMethod.AuditorOver
+import com.fivesys.alphamanufacturas.fivesys.Entities.Auditor
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.Views.Adapters.MenuAdapter
+import io.realm.Realm
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -28,12 +32,29 @@ class MainActivity : AppCompatActivity() {
     private lateinit var title: Array<String>
     private lateinit var image: IntArray
 
+    private lateinit var realm: Realm
+    private lateinit var auditorImp: AuditorImplementation
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bindToolbar()
-        bindUI()
+        realm = Realm.getDefaultInstance()
+        auditorImp = AuditorOver(realm)
+        existsUser(auditorImp.getAuditor())
+    }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    private fun existsUser(auditor: Auditor?) {
+        if (auditor == null) {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+            finish()
+        } else {
+            bindToolbar()
+            bindUI()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

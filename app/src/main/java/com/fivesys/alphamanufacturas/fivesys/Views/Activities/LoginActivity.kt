@@ -11,8 +11,11 @@ import android.view.View
 import android.widget.Button
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.fivesys.alphamanufacturas.fivesys.Context.Dao.Interfaces.AuditorImplementation
+import com.fivesys.alphamanufacturas.fivesys.Context.Dao.OverMethod.AuditorOver
 import com.fivesys.alphamanufacturas.fivesys.Entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.Views.Adapters.SpinnerTipoDocumento
+import io.realm.Realm
 import kotlin.collections.ArrayList
 
 
