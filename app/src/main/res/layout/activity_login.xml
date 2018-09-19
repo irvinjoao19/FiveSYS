@@ -22,11 +22,11 @@
             <ImageView
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="20dp"
                 android:contentDescription="@string/img"
-                android:src="@drawable/logo" />
+                android:src="@drawable/logo_27"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -34,19 +34,23 @@
                 android:layout_gravity="center_horizontal"
                 android:text="@string/version"
                 android:textAlignment="center"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="15dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="@string/tipo_de_documento"
+                android:paddingLeft="5dp"
                 android:textStyle="bold" />
 
             <android.support.v7.widget.AppCompatSpinner
                 android:id="@+id/spinnerTipo"
-                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.Holo.Light.Spinner"
+                />
 
 
             <android.support.design.widget.TextInputLayout

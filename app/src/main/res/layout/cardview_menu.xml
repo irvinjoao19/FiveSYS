@@ -27,8 +27,6 @@
             android:contentDescription="@string/img"
             android:paddingStart="15sp"
             tools:ignore="RtlSymmetry" />
-
-
         <TextView
             android:id="@+id/textViewTitulo"
             android:layout_width="match_parent"
