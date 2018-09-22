@@ -1,5 +1,6 @@
 package com.fivesys.alphamanufacturas.fivesys.views.activities
 
+import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -78,7 +79,7 @@ class ListAuditoriaActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
         auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
             override fun onItemClick(auditoria: Auditoria, position: Int) {
-                Toast.makeText(this@ListAuditoriaActivity, auditoria.AuditoriaId.toString(), Toast.LENGTH_LONG).show()
+                startActivity(Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java))
             }
 
         })
