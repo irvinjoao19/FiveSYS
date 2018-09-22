@@ -1,4 +1,4 @@
-package com.calida.dsige.lectura.Helper
+package com.fivesys.alphamanufacturas.fivesys.helper
 
 open class MessageError {
 

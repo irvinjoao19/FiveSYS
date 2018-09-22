@@ -17,7 +17,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.AdapterView
 import android.widget.TextView
-import com.calida.dsige.lectura.Helper.MessageError
+import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditorImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditorOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
@@ -33,7 +33,6 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.IOException
 import kotlin.collections.ArrayList
-
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
