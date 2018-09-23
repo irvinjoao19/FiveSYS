@@ -10,11 +10,11 @@ import retrofit2.http.Query
 interface AuditoriaInterfaces {
 
     @Headers("Cache-Control: no-cache")
-    @POST("Control/Auditoria/APIGetAll")
+    @POST("/Control/Auditoria/APIGetAll")
     fun getAuditorias(): Call<List<Auditoria>>
 
     @Headers("Cache-Control: no-cache")
-    @POST("Control/Auditoria/APIGetOne")
+    @POST("/Control/Auditoria/APIGetOne")
     fun getAuditoriasByOne(@Query("id") id: Int): Call<AuditoriaByOne>
 
 }

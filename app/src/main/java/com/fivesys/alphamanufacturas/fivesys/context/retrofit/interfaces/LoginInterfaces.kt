@@ -8,6 +8,6 @@ import retrofit2.http.POST
 
 interface LoginInterfaces {
 
-    @POST("Account/APILogin")
+    @POST("/Account/APILogin")
     fun getLogin(@Body model: RequestBody): Call<Auditor>
 }

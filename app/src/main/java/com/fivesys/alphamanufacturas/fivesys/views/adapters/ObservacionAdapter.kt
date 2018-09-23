@@ -14,7 +14,6 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = layout?.let { LayoutInflater.from(parent.context).inflate(it, parent, false) }
-
         return ViewHolder(v!!)
     }
 
@@ -28,27 +27,29 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val textViewCodigo: TextView = itemView.findViewById(R.id.textViewCodigo)
+        private val textViewCategoria: TextView = itemView.findViewById(R.id.textViewCategoria)
+        private val textViewComponente: TextView = itemView.findViewById(R.id.textViewComponente)
+        private val textViewAspectoObservado: TextView = itemView.findViewById(R.id.textViewAspectoObservado)
         private val textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
-        private val textViewEstado: TextView = itemView.findViewById(R.id.textViewEstado)
-        private val textViewResponsable: TextView = itemView.findViewById(R.id.textViewResponsable)
-        private val textViewGrupo: TextView = itemView.findViewById(R.id.textViewGrupo)
-        private val textViewFechaRegistro: TextView = itemView.findViewById(R.id.textViewFechaRegistro)
-        private val textViewFechaProgramado: TextView = itemView.findViewById(R.id.textViewFechaProgramado)
-        private val textViewArea: TextView = itemView.findViewById(R.id.textViewArea)
-        private val textviewSector: TextView = itemView.findViewById(R.id.textviewSector)
+        private val textViewDetalle: TextView = itemView.findViewById(R.id.textViewDetalle)
+        private val textViewS1: TextView = itemView.findViewById(R.id.textViewS1)
+        private val textViewS2: TextView = itemView.findViewById(R.id.textViewS2)
+        private val textViewS3: TextView = itemView.findViewById(R.id.textViewS3)
+        private val textViewS4: TextView = itemView.findViewById(R.id.textViewS4)
+        private val textViewS5: TextView = itemView.findViewById(R.id.textViewS5)
         @SuppressLint("SetTextI18n")
         internal fun bind(d: Detalle, listener: OnItemClickListener) {
 
-//            textViewCodigo.text = a.Codigo
-//            textViewNombre.text = a.Nombre
-//            textViewEstado.text = a.Estado
-//            textViewResponsable.text = a.Responsable?.Nombre
-//            textViewGrupo.text = a.Grupo?.Nombre
-//            textViewFechaRegistro.text = a.FechaRegistro
-//            textViewFechaProgramado.text = a.FechaProgramado
-//            textViewArea.text = a.Area?.Nombre
-//            textviewSector.text = a.Sector?.Nombre
+            textViewCategoria.text = d.Categoria?.Nombre
+            textViewComponente.text = d.Componente?.Nombre
+            textViewAspectoObservado.text = d.AspectoObservado
+            textViewNombre.text = d.Nombre
+            textViewDetalle.text = d.Detalle
+            textViewS1.text = d.S1.toString()
+            textViewS2.text = d.S2.toString()
+            textViewS3.text = d.S3.toString()
+            textViewS4.text = d.S4.toString()
+            textViewS5.text = d.S5.toString()
 
             itemView.setOnClickListener { listener.onItemClick(d, adapterPosition) }
         }

@@ -65,7 +65,6 @@ class ListAuditoriaActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.progressBar)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
-
     }
 
     private fun getListAuditoria() {
@@ -74,8 +73,6 @@ class ListAuditoriaActivity : AppCompatActivity() {
         auditorias.addChangeListener { _ ->
             auditoriaAdapter.notifyDataSetChanged()
         }
-        recyclerView = findViewById(R.id.recyclerView)
-        layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
         auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
             override fun onItemClick(auditoria: Auditoria, position: Int) {
                 val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
