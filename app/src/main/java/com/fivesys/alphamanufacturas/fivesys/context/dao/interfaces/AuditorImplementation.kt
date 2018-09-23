@@ -8,5 +8,6 @@ interface AuditorImplementation {
 
     fun getAuditor(): Auditor?
 
+    fun deleteAuditor()
 
 }

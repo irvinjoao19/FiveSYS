@@ -10,6 +10,8 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditorImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditorOver
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
@@ -20,20 +22,33 @@ import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.logout -> {
+                auditorImp.deleteAuditor()
+                logOut()
+                System.exit(0)
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var toolbar: Toolbar
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var menuAdapter: MenuAdapter
-
-    private lateinit var builder: android.app.AlertDialog.Builder
-    private lateinit var dialog: android.app.AlertDialog
 
     private lateinit var title: Array<String>
     private lateinit var image: IntArray
 
     private lateinit var realm: Realm
     private lateinit var auditorImp: AuditorImplementation
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,4 +96,11 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = menuAdapter
     }
+
+    private fun logOut() {
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
 }
