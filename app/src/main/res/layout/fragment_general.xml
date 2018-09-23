@@ -20,6 +20,7 @@
             android:textSize="15sp" />
 
         <EditText
+            android:id="@+id/editTextCodigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
@@ -28,8 +29,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,10 +44,16 @@
                     android:text="Area"
                     android:textColor="@color/primary_text" />
 
-                <android.support.v7.widget.AppCompatSpinner
-                    style="@android:style/Widget.Holo.Light.Spinner"
+                <EditText
+                    android:id="@+id/editTextArea"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <!--<Spinner-->
+                <!--style="@android:style/Widget.Holo.Light.Spinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
 
             </LinearLayout>
 
@@ -62,10 +69,16 @@
                     android:text="Sector"
                     android:textColor="@color/primary_text" />
 
-                <android.support.v7.widget.AppCompatSpinner
-                    style="@android:style/Widget.Holo.Light.Spinner"
+                <EditText
+                    android:id="@+id/editTextSector"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <!--<android.support.v7.widget.AppCompatSpinner-->
+                <!--style="@android:style/Widget.Holo.Light.Spinner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content" />-->
             </LinearLayout>
         </LinearLayout>
 
@@ -76,10 +89,17 @@
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
-        <android.support.v7.widget.AppCompatSpinner
-            style="@android:style/Widget.Holo.Light.Spinner"
+        <EditText
+            android:id="@+id/editTextResponsable"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            tools:ignore="LabelFor" />
+
+        <!--<android.support.v7.widget.AppCompatSpinner-->
+        <!--style="@android:style/Widget.Holo.Light.Spinner"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 
         <TextView
             android:layout_width="match_parent"
@@ -89,6 +109,7 @@
             android:textSize="15sp" />
 
         <EditText
+            android:id="@+id/editTextNombre"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
@@ -101,10 +122,16 @@
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
-        <android.support.v7.widget.AppCompatSpinner
-            style="@android:style/Widget.Holo.Light.Spinner"
+        <EditText
+            android:id="@+id/editTextEstado"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+        <!--<android.support.v7.widget.AppCompatSpinner-->
+        <!--style="@android:style/Widget.Holo.Light.Spinner"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
 
 
     </LinearLayout>

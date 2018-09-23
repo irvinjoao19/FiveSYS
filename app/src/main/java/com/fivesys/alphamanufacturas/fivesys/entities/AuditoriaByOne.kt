@@ -13,19 +13,21 @@ open class AuditoriaByOne : RealmObject {
     var EstadoAuditoria: Int? = 0
     var Grupo: Grupo? = null
     var Area: Area? = null
-    var Secto: Sector? = null
+    var Sector: Sector? = null
     var Detalles: RealmList<Detalle>? = null
 
     constructor() : super()
 
-    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, EstadoAuditoria: Int?, Grupo: Grupo?, Area: Area?, Secto: Sector?, Detalles: RealmList<Detalle>?) : super() {
+    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, EstadoAuditoria: Int?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?) : super() {
         this.AuditoriaId = AuditoriaId
         this.Codigo = Codigo
         this.Nombre = Nombre
         this.EstadoAuditoria = EstadoAuditoria
         this.Grupo = Grupo
         this.Area = Area
-        this.Secto = Secto
+        this.Sector = Sector
         this.Detalles = Detalles
     }
+
+
 }

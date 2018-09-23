@@ -12,7 +12,6 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.Toast
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
@@ -48,7 +47,7 @@ class ListAuditoriaActivity : AppCompatActivity() {
         auditoriaImp = AuditoriaOver(realm)
         bindToolbar()
         bindUI()
-        enviar()
+        getListAuditoriaCall()
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -79,9 +78,10 @@ class ListAuditoriaActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
         auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
             override fun onItemClick(auditoria: Auditoria, position: Int) {
-                startActivity(Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java))
+                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                intent.putExtra("auditoriaId", auditoria.AuditoriaId)
+                startActivity(intent)
             }
-
         })
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManager
@@ -89,7 +89,7 @@ class ListAuditoriaActivity : AppCompatActivity() {
     }
 
 
-    private fun enviar() {
+    private fun getListAuditoriaCall() {
         val listCall: Call<List<Auditoria>> = auditoriaInterfaces.getAuditorias()
         listCall.enqueue(object : Callback<List<Auditoria>> {
             override fun onFailure(call: Call<List<Auditoria>>, t: Throwable) {
