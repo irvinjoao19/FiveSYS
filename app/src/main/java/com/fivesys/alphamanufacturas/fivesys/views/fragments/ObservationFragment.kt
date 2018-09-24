@@ -3,7 +3,9 @@ package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AlertDialog
 import android.support.v7.view.ContextThemeWrapper
 import android.support.v7.widget.DefaultItemAnimator
@@ -13,7 +15,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 
@@ -27,9 +28,17 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.ObservacionAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.HeaderDialogFragment
 
 
-class ObservationFragment : Fragment() {
+class ObservationFragment : Fragment(), View.OnClickListener {
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.fab -> {
+                showCreateHeaderDialog()
+            }
+        }
+    }
 
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
@@ -37,6 +46,7 @@ class ObservationFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var layoutManager: RecyclerView.LayoutManager
     lateinit var observacionAdapter: ObservacionAdapter
+    lateinit var fab: FloatingActionButton
 
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
@@ -74,7 +84,10 @@ class ObservationFragment : Fragment() {
 
     private fun bindUI(view: View, a: AuditoriaByOne?) {
 
+        fab = view.findViewById(R.id.fab)
+        fab.setOnClickListener(this)
         recyclerView = view.findViewById(R.id.recyclerView)
+
         layoutManager = LinearLayoutManager(context)
 
         if (a != null) {
@@ -116,5 +129,18 @@ class ObservationFragment : Fragment() {
         dialog = builder.create()
         dialog.show()
     }
+
+    private fun showCreateHeaderDialog() {
+        val fragmentManager = fragmentManager
+
+        // Empty hoja_id => Register new header
+        val newFragment = HeaderDialogFragment.newInstance("")
+
+        val transaction = fragmentManager!!.beginTransaction()
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        transaction.add(android.R.id.content, newFragment)
+                .addToBackStack(null).commit()
+    }
+
 
 }
