@@ -2,7 +2,6 @@ package com.fivesys.alphamanufacturas.fivesys.context.realm
 
 import android.app.Application
 import android.os.Build
-import android.os.SystemClock
 import android.support.annotation.RequiresApi
 import io.realm.Realm
 import io.realm.RealmConfiguration
@@ -19,7 +18,5 @@ class ApplicationRealm : Application() {
                 .deleteRealmIfMigrationNeeded()
                 .build()
         Realm.setDefaultConfiguration(config)
-
-        SystemClock.sleep(1500)
     }
 }
