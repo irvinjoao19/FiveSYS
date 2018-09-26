@@ -1,16 +1,22 @@
 package com.fivesys.alphamanufacturas.fivesys.views.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.ActionBar
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.ContextThemeWrapper
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
 import android.widget.ProgressBar
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -26,9 +32,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class ListAuditoriaActivity : AppCompatActivity() {
+class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.fab -> {
+                showFiltro()
+            }
+        }
+    }
 
     private lateinit var progressBar: ProgressBar
+    private lateinit var fab: FloatingActionButton
     private lateinit var recyclerView: RecyclerView
     private lateinit var toolbar: Toolbar
     private lateinit var layoutManager: RecyclerView.LayoutManager
@@ -36,6 +50,9 @@ class ListAuditoriaActivity : AppCompatActivity() {
     private lateinit var auditoriaImp: AuditoriaImplementation
     private lateinit var auditoriaAdapter: AuditoriaAdapter
     private lateinit var realm: Realm
+
+    lateinit var builder: AlertDialog.Builder
+    lateinit var dialog: AlertDialog
 
     private lateinit var auditoriaInterfaces: AuditoriaInterfaces
 
@@ -63,6 +80,8 @@ class ListAuditoriaActivity : AppCompatActivity() {
 
     private fun bindUI() {
         progressBar = findViewById(R.id.progressBar)
+        fab = findViewById(R.id.fab)
+        fab.setOnClickListener(this)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
     }
@@ -104,4 +123,23 @@ class ListAuditoriaActivity : AppCompatActivity() {
     }
 
 
+    private fun showFiltro() {
+        builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_filtro, null)
+
+        val buttonAceptar: Button = v.findViewById(R.id.buttonAceptar)
+        val buttonCancelar: Button = v.findViewById(R.id.buttonCancelar)
+
+        buttonAceptar.setOnClickListener {
+            dialog.dismiss()
+        }
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+
+
+        builder.setView(v)
+        dialog = builder.create()
+        dialog.show()
+    }
 }

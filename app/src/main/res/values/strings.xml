@@ -28,4 +28,14 @@
     <string name="s4">S4:</string>
     <string name="s5">S5:</string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
+    <string name="codigo">Codigo</string>
+    <string name="estado">Estado</string>
+    <string name="nombre">Nombre</string>
+    <string name="fecha_registro">Fecha Registro</string>
+    <string name="fecha_inicio_programado">Fecha Inicio Programado</string>
+    <string name="pendiente">Pendiente</string>
+    <string name="area">Area</string>
+    <string name="sector">Sector</string>
+    <string name="responsable">Responsable</string>
+    <string name="descripcion">Descripcion</string>
 </resources>

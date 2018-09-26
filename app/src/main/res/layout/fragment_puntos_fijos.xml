@@ -5,20 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".views.fragments.PuntosFijosFragment">
 
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewPuntosFijos"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-
-    <android.support.design.widget.FloatingActionButton
-        style="@style/Widget.MaterialComponents.FloatingActionButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="16dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/ic_add"
-        tools:ignore="UnusedAttribute" />
 </FrameLayout>

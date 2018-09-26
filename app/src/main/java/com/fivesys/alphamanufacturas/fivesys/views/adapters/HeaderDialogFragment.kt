@@ -42,9 +42,10 @@ class HeaderDialogFragment : DialogFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         val view = inflater.inflate(R.layout.dialog_new_header, container, false)
 
-        etId = view.findViewById(R.id.etId)
+//        etId = view.findViewById(R.id.etId)
 
         val title: String
         if (hoja_id!!.isEmpty())
@@ -72,30 +73,30 @@ class HeaderDialogFragment : DialogFragment() {
         }
         setHasOptionsMenu(true)
 
-        etLocal = view.findViewById(R.id.etLocal)
-        etUbicacion = view.findViewById(R.id.etUbicacion)
-        etCargo = view.findViewById(R.id.etCargo)
-        etOficina = view.findViewById(R.id.etOficina)
-        etAmbiente = view.findViewById(R.id.etAmbiente)
-        etArea = view.findViewById(R.id.etArea)
-        etObservation = view.findViewById(R.id.etObservation)
-
-        tilId = view.findViewById(R.id.tilId)
-        tilLocal = view.findViewById(R.id.tilLocal)
-        tilUbicacion = view.findViewById(R.id.tilUbicacion)
-        tilCargo = view.findViewById(R.id.tilCargo)
-        tilOficina = view.findViewById(R.id.tilOficina)
-        tilAmbiente = view.findViewById(R.id.tilAmbiente)
-        tilArea = view.findViewById(R.id.tilArea)
-        tilObservation = view.findViewById(R.id.tilObservation)
-
-
-
-        spinnerResponsible = view.findViewById(R.id.spinnerResponsible)
-        checkPendiente = view.findViewById(R.id.checkPendiente)
-        if (hoja_id!!.isEmpty()) { // set for new headers (for edit mode will be set later)
-            setCheckPendienteOnChangeListener()
-        }
+//        etLocal = view.findViewById(R.id.etLocal)
+//        etUbicacion = view.findViewById(R.id.etUbicacion)
+//        etCargo = view.findViewById(R.id.etCargo)
+//        etOficina = view.findViewById(R.id.etOficina)
+//        etAmbiente = view.findViewById(R.id.etAmbiente)
+//        etArea = view.findViewById(R.id.etArea)
+//        etObservation = view.findViewById(R.id.etObservation)
+//
+//        tilId = view.findViewById(R.id.tilId)
+//        tilLocal = view.findViewById(R.id.tilLocal)
+//        tilUbicacion = view.findViewById(R.id.tilUbicacion)
+//        tilCargo = view.findViewById(R.id.tilCargo)
+//        tilOficina = view.findViewById(R.id.tilOficina)
+//        tilAmbiente = view.findViewById(R.id.tilAmbiente)
+//        tilArea = view.findViewById(R.id.tilArea)
+//        tilObservation = view.findViewById(R.id.tilObservation)
+//
+//
+//
+//        spinnerResponsible = view.findViewById(R.id.spinnerResponsible)
+//        checkPendiente = view.findViewById(R.id.checkPendiente)
+//        if (hoja_id!!.isEmpty()) { // set for new headers (for edit mode will be set later)
+//            setCheckPendienteOnChangeListener()
+//        }
 
         return view
     }
