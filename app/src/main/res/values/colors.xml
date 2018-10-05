@@ -25,4 +25,14 @@
 
     <color name="green_logo">#bbda34</color>
     <color name="blue_logo">#2f4780</color>
+
+    <!--rojo -> #FF2247-->
+    <!--verde -> #2ECE17-->
+    <!--celeste -> #6cc7E0-->
+    <!--amarillo verdoso -> #DBF15B-->
+    <!--azul -> #3468A4-->
+    <!--azul oscuro -> #124580-->
+    <!--icono plomo -> #686866-->
+
+
 </resources>
