@@ -7,7 +7,7 @@ import com.fivesys.alphamanufacturas.fivesys.views.fragments.GeneralFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.ObservationFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.PuntosFijosFragment
 
-class TabLayoutAdapter(fm: FragmentManager?, val numberOfTabs: Int, val id: Int) : FragmentStatePagerAdapter(fm) {
+class TabLayoutAdapter(fm: FragmentManager?, private val numberOfTabs: Int, val id: Int) : FragmentStatePagerAdapter(fm) {
 
 //    var tabTitles = arrayOf(R.string.tab1.toString(), R.string.tab2.toString(), R.string.tab3.toString())
 

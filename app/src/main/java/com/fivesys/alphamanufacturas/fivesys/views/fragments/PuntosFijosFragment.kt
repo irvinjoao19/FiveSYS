@@ -13,8 +13,8 @@ import com.fivesys.alphamanufacturas.fivesys.R
 class PuntosFijosFragment : Fragment() {
 
     companion object {
-        fun newInstance(id: Int): ObservationFragment {
-            val fragment = ObservationFragment()
+        fun newInstance(id: Int): PuntosFijosFragment {
+            val fragment = PuntosFijosFragment()
             val args = Bundle()
             args.putInt("id", id)
             fragment.arguments = args

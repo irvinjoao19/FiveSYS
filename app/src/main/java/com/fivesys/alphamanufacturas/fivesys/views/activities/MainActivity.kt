@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindUI() {
         title = arrayOf("Auditoria", "Perfil", "Configuración")
-        image = intArrayOf(R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher)
+        image = intArrayOf(R.mipmap.ic_auditoria, R.mipmap.ic_perfil, R.mipmap.ic_configuration)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@MainActivity)
         menuAdapter = MenuAdapter(title, image, object : MenuAdapter.OnItemClickListener {

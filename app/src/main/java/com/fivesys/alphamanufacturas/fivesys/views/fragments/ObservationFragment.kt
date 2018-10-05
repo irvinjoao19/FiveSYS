@@ -111,7 +111,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         val imageViewPhoto: ImageView = v.findViewById(R.id.imageViewPhoto)
         val textViewMensaje: TextView = v.findViewById(R.id.textViewMensaje)
         val url = ConexionRetrofit.BaseUrl + nombre
-
+        progressBar.visibility = View.VISIBLE
         Picasso.get()
                 .load(url)
                 .into(imageViewPhoto, object : Callback {

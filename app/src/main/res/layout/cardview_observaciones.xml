@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardViewPrincipal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="2dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    card_view:cardCornerRadius="20dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,81 +17,118 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
+            android:baselineAligned="false">
 
-            <ImageView
-                android:layout_width="30dp"
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/img"
-                android:src="@drawable/ic_person" />
+                android:layout_weight="0.5"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textViewCategoria"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:textColor="@color/primary_text" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
-        </LinearLayout>
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_person" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
+                    <TextView
+                        android:id="@+id/textViewCategoria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/primary_text" />
 
-            <ImageView
-                android:layout_width="30dp"
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_peoples" />
+
+                    <TextView
+                        android:id="@+id/textViewComponente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/primary_text" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="2dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_peoples" />
+
+                    <TextView
+                        android:id="@+id/textViewAspectoObservado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:textColor="@color/primary_text" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:contentDescription="@string/img"
-                android:src="@drawable/ic_peoples" />
+                android:layout_gravity="center"
+                android:layout_weight="0.5"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textViewComponente"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:textColor="@color/primary_text" />
-        </LinearLayout>
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="visible" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
-
-            <ImageView
-                android:layout_width="30dp"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/img"
-                android:src="@drawable/ic_peoples" />
-
-            <TextView
-                android:id="@+id/textViewAspectoObservado"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:textColor="@color/primary_text" />
+                <ImageView
+                    android:id="@+id/imageViewPhoto"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
+                    android:contentDescription="@string/img"
+                    tools:ignore="NestedWeights" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView
             android:id="@+id/textViewNombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
 
         <TextView
             android:id="@+id/textViewDetalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:ellipsize="end"
             android:lines="2"
             android:singleLine="true" />

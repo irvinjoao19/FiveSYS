@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorGrey"
     android:layout_height="match_parent"
     tools:context=".views.fragments.GeneralFragment">
 
@@ -15,7 +16,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Codigo"
+            android:text="@string/codigo"
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
@@ -24,7 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            tools:ignore="LabelFor" />
+            tools:ignore="Autofill,LabelFor"
+             />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -41,14 +43,15 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Area"
+                    android:text="@string/area"
                     android:textColor="@color/primary_text" />
 
                 <EditText
                     android:id="@+id/editTextArea"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill,LabelFor" />
 
                 <!--<Spinner-->
                 <!--style="@android:style/Widget.Holo.Light.Spinner"-->
@@ -66,14 +69,15 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Sector"
+                    android:text="@string/sector"
                     android:textColor="@color/primary_text" />
 
                 <EditText
                     android:id="@+id/editTextSector"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    tools:ignore="Autofill,LabelFor" />
 
                 <!--<android.support.v7.widget.AppCompatSpinner-->
                 <!--style="@android:style/Widget.Holo.Light.Spinner"-->
@@ -85,7 +89,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Responsable"
+            android:text="@string/responsable"
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
@@ -94,7 +98,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            tools:ignore="LabelFor" />
+            tools:ignore="Autofill,LabelFor" />
 
         <!--<android.support.v7.widget.AppCompatSpinner-->
         <!--style="@android:style/Widget.Holo.Light.Spinner"-->
@@ -104,7 +108,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="@string/nombre"
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
@@ -113,12 +117,12 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="text"
-            tools:ignore="LabelFor" />
+            tools:ignore="Autofill,LabelFor" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Estado"
+            android:text="@string/estado"
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
@@ -126,7 +130,8 @@
             android:id="@+id/editTextEstado"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="text" />
+            android:inputType="text"
+            tools:ignore="Autofill,LabelFor" />
 
         <!--<android.support.v7.widget.AppCompatSpinner-->
         <!--style="@android:style/Widget.Holo.Light.Spinner"-->

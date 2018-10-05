@@ -26,6 +26,15 @@
     <color name="green_logo">#bbda34</color>
     <color name="blue_logo">#2f4780</color>
 
+
+    <!--TODO ABOUT NEW COLOR PALETTE -->
+    <color name="colorAmarrillo">#DBF15B</color>
+    <color name="colorPlomo">#686866</color>
+    <color name="colorAzul">#3468A4</color>
+    <color name="colorAzulOscuro">#124580</color>
+    <color name="textColorCeleste">#6cc7E0</color>
+
+
     <!--rojo -> #FF2247-->
     <!--verde -> #2ECE17-->
     <!--celeste -> #6cc7E0-->
