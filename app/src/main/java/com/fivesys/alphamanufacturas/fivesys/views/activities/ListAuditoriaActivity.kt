@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
 import android.support.design.widget.FloatingActionButton
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DefaultItemAnimator
@@ -18,13 +19,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
+import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.FiltroDialogFragment
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.HeaderDialogFragment
 import io.realm.Realm
 import io.realm.RealmResults
 import retrofit2.Call
@@ -123,23 +128,46 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private fun showFiltro() {
         builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_filtro, null)
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_login, null)
 
-        val buttonAceptar: Button = v.findViewById(R.id.buttonAceptar)
-        val buttonCancelar: Button = v.findViewById(R.id.buttonCancelar)
+        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
+        textViewTitle.text = "Cargando ...."
 
-        buttonAceptar.setOnClickListener {
-            dialog.dismiss()
-        }
-        buttonCancelar.setOnClickListener {
-            dialog.dismiss()
-        }
 
+        val listAreaCall = auditoriaInterfaces.getFiltroGetAll()
+        listAreaCall.enqueue(object : Callback<List<Area>> {
+            override fun onFailure(call: Call<List<Area>>, t: Throwable) {
+
+            }
+
+            override fun onResponse(call: Call<List<Area>>, response: Response<List<Area>>) {
+                val area: List<Area>? = response.body()
+                if (area != null) {
+                    auditoriaImp.saveFiltroAuditoria(area)
+                }
+                showCreateHeaderDialog()
+                dialog.dismiss()
+            }
+        })
 
         builder.setView(v)
         dialog = builder.create()
         dialog.show()
+    }
+
+
+    private fun showCreateHeaderDialog() {
+        val fragmentManager = supportFragmentManager
+
+        // Empty hoja_id => Register new header
+        val newFragment = FiltroDialogFragment.newInstance("")
+
+        val transaction = fragmentManager!!.beginTransaction()
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+        transaction.add(android.R.id.content, newFragment)
+                .addToBackStack(null).commit()
     }
 }

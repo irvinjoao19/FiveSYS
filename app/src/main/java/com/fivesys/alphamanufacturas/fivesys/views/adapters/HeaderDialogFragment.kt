@@ -8,6 +8,7 @@ import android.widget.CheckBox
 import android.widget.AutoCompleteTextView
 import android.support.v7.app.AppCompatActivity
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.widget.Toolbar
 import android.view.*
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -15,7 +16,18 @@ import com.fivesys.alphamanufacturas.fivesys.R
 
 class HeaderDialogFragment : DialogFragment() {
 
-    private var spinnerResponsible: AutoCompleteTextView? = null
+    companion object {
+        fun newInstance(hoja_id: String): HeaderDialogFragment {
+            val f = HeaderDialogFragment()
+
+            val args = Bundle()
+            args.putString("hoja_id", hoja_id)
+            f.arguments = args
+
+            return f
+        }
+    }
+
     private var etId: EditText? = null
     private var etLocal: EditText? = null
     private var etUbicacion: EditText? = null
@@ -36,9 +48,18 @@ class HeaderDialogFragment : DialogFragment() {
 
     private var hoja_id: String? = null
 
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         hoja_id = arguments!!.getString("hoja_id")
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        return dialog
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -112,24 +133,5 @@ class HeaderDialogFragment : DialogFragment() {
         }
     }
 
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        return dialog
-    }
-
-
-    companion object {
-        fun newInstance(hoja_id: String): HeaderDialogFragment {
-            val f = HeaderDialogFragment()
-
-            val args = Bundle()
-            args.putString("hoja_id", hoja_id)
-            f.arguments = args
-
-            return f
-        }
-    }
 
 }

@@ -1,5 +1,6 @@
 package com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces
 
+import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
 import retrofit2.Call
@@ -16,5 +17,9 @@ interface AuditoriaInterfaces {
     @Headers("Cache-Control: no-cache")
     @POST("/Control/Auditoria/APIGetOne")
     fun getAuditoriasByOne(@Query("id") id: Int): Call<AuditoriaByOne>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("/General/Organizacion/APIGetAll")
+    fun getFiltroGetAll(): Call<List<Area>>
 
 }

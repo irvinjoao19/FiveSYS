@@ -173,17 +173,21 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     @SuppressLint("StaticFieldLeak")
     private inner class EnterMain : AsyncTask<String, Void, String>() {
 
-        private var builder: AlertDialog.Builder? = null
-        private var dialog: AlertDialog? = null
+        private lateinit var builder: AlertDialog.Builder
+        private lateinit var dialog: AlertDialog
 
+        @SuppressLint("SetTextI18n")
         override fun onPreExecute() {
             super.onPreExecute()
             builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
             @SuppressLint("InflateParams") val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_login, null)
-            builder?.setView(view)
-            dialog = builder?.create()
-            dialog?.setCanceledOnTouchOutside(false)
-            dialog?.show()
+
+            val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
+            textViewTitle.text = "Iniciando Sesión"
+            builder.setView(view)
+            dialog = builder.create()
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.show()
         }
 
         override fun doInBackground(vararg string: String): String? {
@@ -205,8 +209,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         @SuppressLint("RestrictedApi")
         override fun onPostExecute(s: String?) {
             super.onPostExecute(s)
-            if (dialog!!.isShowing) {
-                dialog!!.dismiss()
+            if (dialog.isShowing) {
+                dialog.dismiss()
             }
             if (s != null) {
                 when (s) {

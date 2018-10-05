@@ -12,11 +12,9 @@ open class Auditor : RealmObject {
     var NombreCompleto: String = ""
     var Correo: String = ""
     var Clave: String = ""
+//    70025043
 
     constructor() : super()
-
-
-
 
     constructor(AuditorId: Int, TipoDocumentoId: Int, NroDocumento: String, NombreCompleto: String, Correo: String, Clave: String) : super() {
         this.AuditorId = AuditorId
