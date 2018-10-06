@@ -20,9 +20,10 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.FiltroImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.FiltroOver
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
+import com.fivesys.alphamanufacturas.fivesys.entities.Responsable
 import com.fivesys.alphamanufacturas.fivesys.entities.Sector
 import io.realm.Realm
-import io.realm.RealmResults
+import io.realm.RealmList
 
 class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
@@ -31,29 +32,41 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.buttonCancelar -> dismiss()
             R.id.linearLayoutArea -> areaDialog()
             R.id.linearLayoutSector -> sectorDialog()
+            R.id.linearLayoutResponsable -> responsableDialog()
         }
     }
 
     lateinit var textViewArea: TextView
     lateinit var textViewSector: TextView
+    lateinit var textViewResponsable: TextView
 
 
     lateinit var buttonAceptar: Button
     lateinit var buttonCancelar: Button
     lateinit var linearLayoutArea: LinearLayout
     lateinit var linearLayoutSector: LinearLayout
+    lateinit var linearLayoutResponsable: LinearLayout
 
-    lateinit var builder: AlertDialog.Builder
-    lateinit var dialog: AlertDialog
+    lateinit var builderArea: AlertDialog.Builder
+    lateinit var builderSector: AlertDialog.Builder
+    lateinit var builderResponsable: AlertDialog.Builder
+
+    lateinit var dialogArea: AlertDialog
+    lateinit var dialogSector: AlertDialog
+    lateinit var dialogResponasble: AlertDialog
 
     lateinit var realm: Realm
     lateinit var filtroImp: FiltroImplementation
 
 
-    lateinit var areas: RealmResults<Area>
-    lateinit var sectores: RealmResults<Sector>
+    lateinit var sectores: RealmList<Sector>
+    lateinit var responsable: RealmList<Responsable>
 
     var areaId: Int = 0
+    var sectorId: Int = 0
+    var responsableId: Int = 0
+
+    private var hoja_id: String? = null
 
 
     companion object {
@@ -68,7 +81,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    private var hoja_id: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,28 +110,26 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     private fun bindUI(view: View) {
         textViewArea = view.findViewById(R.id.textViewArea)
         textViewSector = view.findViewById(R.id.textViewSector)
+        textViewResponsable = view.findViewById(R.id.textViewResponsable)
 
         buttonAceptar = view.findViewById(R.id.buttonAceptar)
         buttonCancelar = view.findViewById(R.id.buttonCancelar)
         linearLayoutArea = view.findViewById(R.id.linearLayoutArea)
         linearLayoutSector = view.findViewById(R.id.linearLayoutSector)
-
-
-
-
-
+        linearLayoutResponsable = view.findViewById(R.id.linearLayoutResponsable)
 
         buttonAceptar.setOnClickListener(this)
         buttonCancelar.setOnClickListener(this)
         linearLayoutArea.setOnClickListener(this)
         linearLayoutSector.setOnClickListener(this)
+        linearLayoutResponsable.setOnClickListener(this)
     }
 
 
     @SuppressLint("SetTextI18n")
     private fun areaDialog() {
 
-        builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        builderArea = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
@@ -132,9 +142,10 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         val areaAdapter = AreaAdapter(areas, R.layout.cardview_combo, object : AreaAdapter.OnItemClickListener {
             override fun onItemClick(area: Area, position: Int) {
                 areaId = area.AreaId
-                textViewArea.text = area.Nombre
+                sectores = area.Sectores!!
                 textViewSector.text = area.Sectores!![0]!!.Nombre
-                dialog.dismiss()
+                textViewArea.text = area.Nombre
+                dialogArea.dismiss()
 
             }
         })
@@ -142,14 +153,14 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = areaAdapter
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
+        builderArea.setView(v)
+        dialogArea = builderArea.create()
+        dialogArea.show()
     }
 
     @SuppressLint("SetTextI18n")
     private fun sectorDialog() {
-        builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        builderSector = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
@@ -157,22 +168,46 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         textViewTitulo.text = "Sector"
 
-        val areas = filtroImp.getAreas()
-
-        val areaAdapter = AreaAdapter(areas, R.layout.cardview_combo, object : AreaAdapter.OnItemClickListener {
-            override fun onItemClick(area: Area, position: Int) {
-                areaId = area.AreaId
-                textViewArea.text = area.Nombre
-                dialog.dismiss()
-
+        val areaAdapter = SectorAdapter(sectores, R.layout.cardview_combo, object : SectorAdapter.OnItemClickListener {
+            override fun onItemClick(sector: Sector, position: Int) {
+                sectorId = sector.SectorId
+                responsable = sector.Responsables!!
+                textViewSector.text = sector.Nombre
+                dialogSector.dismiss()
             }
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = areaAdapter
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
+        builderSector.setView(v)
+        dialogSector = builderSector.create()
+        dialogSector.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun responsableDialog() {
+        builderResponsable = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
+
+        val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
+        val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+        textViewTitulo.text = "Responsable"
+
+        val areaAdapter = ResponsableAdapter(responsable, R.layout.cardview_combo, object : ResponsableAdapter.OnItemClickListener {
+            override fun onItemClick(responsable: Responsable, position: Int) {
+                responsableId = responsable.ResponsableId
+                textViewResponsable.text = responsable.Nombre
+                dialogResponasble.dismiss()
+            }
+        })
+
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = areaAdapter
+        builderResponsable.setView(v)
+        dialogResponasble = builderResponsable.create()
+        dialogResponasble.show()
     }
 }

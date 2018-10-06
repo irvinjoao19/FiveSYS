@@ -161,12 +161,26 @@
                     android:text="@string/responsable"
                     android:textColor="@color/primary_text" />
 
-                <EditText
-                    android:id="@+id/editTextResponsable"
+                <LinearLayout
+                    android:id="@+id/linearLayoutResponsable"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    tools:ignore="Autofill,LabelFor" />
+                    android:layout_height="24dp"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <TextView
+                        android:id="@+id/textViewResponsable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_down" />
+                </LinearLayout>
 
 
                 <TextView
