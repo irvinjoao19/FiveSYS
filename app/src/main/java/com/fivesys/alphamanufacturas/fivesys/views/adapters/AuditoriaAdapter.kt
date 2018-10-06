@@ -48,7 +48,7 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
             textViewCodigo.text = a.Codigo
             textViewNombre.text = a.Nombre
             textViewEstado.text = a.Estado
-            textViewResponsable.text = a.Responsable?.Nombre
+            textViewResponsable.text = a.Responsable?.NombreCompleto
             textViewGrupo.text = a.Grupo?.Nombre
             textViewFechaRegistro.text = a.FechaRegistro
             textViewFechaProgramado.text = a.FechaProgramado

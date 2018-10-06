@@ -7,13 +7,13 @@ open class Responsable : RealmObject {
 
     @PrimaryKey
     var ResponsableId: Int = 0
-    var Nombre: String? = ""
+    var NombreCompleto:String? = ""
 
     constructor() : super()
 
-    constructor(ResponsableId: Int, Nombre: String?) : super() {
+    constructor(ResponsableId: Int, NombreCompleto: String?) : super() {
         this.ResponsableId = ResponsableId
-        this.Nombre = Nombre
+        this.NombreCompleto = NombreCompleto
     }
 
 

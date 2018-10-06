@@ -33,7 +33,7 @@ class ResponsableAdapter(private var responsables: RealmList<Responsable>, priva
         @SuppressLint("SetTextI18n")
         internal fun bind(r: Responsable, listener: OnItemClickListener) {
 
-            textViewNombre.text = r.Nombre
+            textViewNombre.text = r.NombreCompleto
             textViewId.text = r.ResponsableId.toString()
 
             itemView.setOnClickListener { listener.onItemClick(r, adapterPosition) }

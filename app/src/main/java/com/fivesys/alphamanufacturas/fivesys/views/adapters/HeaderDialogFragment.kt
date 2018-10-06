@@ -122,16 +122,7 @@ class HeaderDialogFragment : DialogFragment() {
         return view
     }
 
-    private fun setCheckPendienteOnChangeListener() {
-        checkPendiente!!.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-                tilObservation!!.visibility = View.VISIBLE
-            } else {
-                tilObservation!!.visibility = View.GONE
-                etObservation!!.setText("")
-            }
-        }
-    }
+
 
 
 }
