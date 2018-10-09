@@ -81,7 +81,8 @@
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:contentDescription="@string/img"
-                        android:src="@drawable/ic_peoples" />
+                        android:src="@drawable/ic_calendar1"
+                        />
 
                     <TextView
                         android:id="@+id/textViewAspectoObservado"
