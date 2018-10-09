@@ -30,6 +30,4 @@ open class Auditor : RealmObject {
         this.NroDocumento = NroDocumento
         this.Clave = Clave
     }
-
-
 }

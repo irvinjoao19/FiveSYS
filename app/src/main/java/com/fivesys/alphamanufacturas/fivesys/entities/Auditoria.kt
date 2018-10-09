@@ -14,12 +14,12 @@ open class Auditoria : RealmObject {
     var Responsable: Responsable? = null
     var FechaRegistro: String? = ""
     var FechaProgramado: String? = ""
-    var Estado: String? = ""
+    var Estado: Int? = 0
     var Nombre: String? = ""
 
     constructor() : super()
 
-    constructor(AuditoriaId: Int?, Codigo: String?, Area: Area?, Sector: Sector?, Grupo: Grupo?, Responsable: Responsable?, FechaRegistro: String?, FechaProgramado: String?, Estado: String?, Nombre: String?) : super() {
+    constructor(AuditoriaId: Int?, Codigo: String?, Area: Area?, Sector: Sector?, Grupo: Grupo?, Responsable: Responsable?, FechaRegistro: String?, FechaProgramado: String?, Estado: Int?, Nombre: String?) : super() {
         this.AuditoriaId = AuditoriaId
         this.Codigo = Codigo
         this.Area = Area

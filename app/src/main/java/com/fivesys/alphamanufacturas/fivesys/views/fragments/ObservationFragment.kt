@@ -32,6 +32,7 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.HeaderDialogFragment
 
 
 class ObservationFragment : Fragment(), View.OnClickListener {
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
