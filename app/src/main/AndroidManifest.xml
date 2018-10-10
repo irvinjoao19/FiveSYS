@@ -27,6 +27,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.activities.LoginActivity"
+            android:theme="@style/LoginTheme"
             android:screenOrientation="portrait" />
         <activity
             android:name=".views.activities.AuditoriaActivity"
