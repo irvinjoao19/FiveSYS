@@ -14,10 +14,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
-import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.Button
+import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -29,7 +26,6 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.FiltroDialogFragment
-import com.fivesys.alphamanufacturas.fivesys.views.adapters.HeaderDialogFragment
 import io.realm.Realm
 import io.realm.RealmResults
 import retrofit2.Call
@@ -38,6 +34,22 @@ import retrofit2.Response
 import java.util.*
 
 class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.filter, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.filter -> {
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
