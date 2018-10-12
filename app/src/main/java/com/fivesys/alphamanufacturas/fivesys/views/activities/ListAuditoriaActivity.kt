@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
@@ -26,14 +27,25 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.FiltroDialogFragment
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmResults
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.*
 
 class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
+
+    companion object {
+        fun newInstance(titulo: String): ListAuditoriaActivity {
+            val f = ListAuditoriaActivity()
+            val args = Bundle()
+            args.putString("titulo", titulo)
+            return f
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.filter, menu)
@@ -43,6 +55,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.filter -> {
+                showFiltro("Filtro")
                 return true
             }
         }
@@ -53,7 +66,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                showFiltro()
+                showFiltro("Nueva Auditoria")
             }
         }
     }
@@ -65,7 +78,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
     private lateinit var auditoriaImp: AuditoriaImplementation
-    private lateinit var auditoriaAdapter: AuditoriaAdapter
+    private var auditoriaAdapter: AuditoriaAdapter? = null
     private lateinit var realm: Realm
 
     lateinit var builder: AlertDialog.Builder
@@ -73,9 +86,14 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var auditoriaInterfaces: AuditoriaInterfaces
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_auditoria)
+        if (savedInstanceState != null) {
+            Toast.makeText(this, savedInstanceState.getString("titulo"), Toast.LENGTH_LONG).show()
+        }
+
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
@@ -107,7 +125,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
         progressBar.visibility = View.GONE
         val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria()
         auditorias.addChangeListener { _ ->
-            auditoriaAdapter.notifyDataSetChanged()
+            auditoriaAdapter?.notifyDataSetChanged()
         }
         auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
             override fun onItemClick(auditoria: Auditoria, position: Int) {
@@ -122,64 +140,76 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    @SuppressLint("CheckResult")
     private fun getListAuditoriaCall() {
-        val listCall: Call<List<Auditoria>> = auditoriaInterfaces.getAuditorias()
-        listCall.enqueue(object : Callback<List<Auditoria>> {
-            override fun onFailure(call: Call<List<Auditoria>>, t: Throwable) {
+        val listCall: Observable<List<Auditoria>> = auditoriaInterfaces.getAuditorias()
+        listCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<List<Auditoria>> {
+                    override fun onComplete() {
+                        getListAuditoria()
+                    }
 
-            }
+                    override fun onSubscribe(d: Disposable) {
 
-            override fun onResponse(call: Call<List<Auditoria>>, response: Response<List<Auditoria>>) {
-                val auditoria: List<Auditoria>? = response.body()
-                if (auditoria != null) {
-                    auditoriaImp.saveAuditoria(auditoria)
-                }
-                getListAuditoria()
-            }
-        })
+                    }
+
+                    override fun onNext(t: List<Auditoria>) {
+                        auditoriaImp.saveAuditoria(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
+                    }
+                })
     }
 
 
     @SuppressLint("SetTextI18n")
-    private fun showFiltro() {
+    private fun showFiltro(titulo: String) {
         builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_login, null)
 
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
         textViewTitle.text = "Cargando ...."
 
+        val listAreaCall: Observable<List<Area>> = auditoriaInterfaces.getFiltroGetAll()
+        listAreaCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<List<Area>> {
 
-        val listAreaCall = auditoriaInterfaces.getFiltroGetAll()
-        listAreaCall.enqueue(object : Callback<List<Area>> {
-            override fun onFailure(call: Call<List<Area>>, t: Throwable) {
+                    override fun onComplete() {
+                        showCreateHeaderDialog(titulo)
+                        dialog.dismiss()
+                    }
 
-            }
+                    override fun onSubscribe(d: Disposable) {
 
-            override fun onResponse(call: Call<List<Area>>, response: Response<List<Area>>) {
-                val area: List<Area>? = response.body()
-                if (area != null) {
-                    auditoriaImp.saveFiltroAuditoria(area)
-                }
-                showCreateHeaderDialog()
-                dialog.dismiss()
-            }
-        })
+                    }
+
+                    override fun onNext(t: List<Area>) {
+                        auditoriaImp.saveFiltroAuditoria(t)
+                    }
+
+
+                    override fun onError(e: Throwable) {
+                        Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
+                    }
+                })
 
         builder.setView(v)
         dialog = builder.create()
         dialog.show()
     }
 
-
-    private fun showCreateHeaderDialog() {
+    private fun showCreateHeaderDialog(titulo: String) {
         val fragmentManager = supportFragmentManager
 
-        // Empty hoja_id => Register new header
-        val newFragment = FiltroDialogFragment.newInstance("")
-
+        val newFragment = FiltroDialogFragment.newInstance(titulo)
         val transaction = fragmentManager!!.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(android.R.id.content, newFragment)
                 .addToBackStack(null).commit()
     }
+
 }

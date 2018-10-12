@@ -5,30 +5,33 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
+import com.google.gson.Gson
 import io.realm.RealmResults
 import java.util.*
 
 class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
 
+    private var auditoriasList: ArrayList<Auditoria> = ArrayList(auditorias)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = layout?.let { LayoutInflater.from(parent.context).inflate(it, parent, false) }
-
         return ViewHolder(v!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        if (Objects.requireNonNull<Auditoria>(auditorias[position]).isValid) {
-            listener?.let { holder.bind(Objects.requireNonNull<Auditoria>(auditorias[position]), it) }
+        if (Objects.requireNonNull<Auditoria>(auditoriasList[position]).isValid) {
+            listener?.let { holder.bind(Objects.requireNonNull<Auditoria>(auditoriasList[position]), it) }
         }
     }
 
     override fun getItemCount(): Int {
-        return auditorias.size
+        return auditoriasList.size
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -64,8 +67,35 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
         }
     }
 
+    fun getFilter(): Filter {
+        return object : Filter() {
+            override fun performFiltering(charSequence: CharSequence): Filter.FilterResults {
+                return Filter.FilterResults()
+            }
+
+            override fun publishResults(charSequence: CharSequence, filterResults: Filter.FilterResults) {
+
+                auditoriasList.clear()
+                val keyword: Auditoria? = Gson().fromJson(charSequence.toString(), Auditoria::class.java)
+                if (keyword != null) {
+                    val filteredList = ArrayList<Auditoria>()
+                    for (auditoria: Auditoria in auditorias) {
+                        if (auditoria.Estado == keyword.Estado ||
+                                auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)
+                        ) {
+                            filteredList.add(auditoria)
+                        }
+                    }
+                    auditoriasList = filteredList
+                } else {
+                    auditoriasList.addAll(auditorias)
+                }
+                notifyDataSetChanged()
+            }
+        }
+    }
+
     interface OnItemClickListener {
         fun onItemClick(auditoria: Auditoria, position: Int)
     }
-
 }

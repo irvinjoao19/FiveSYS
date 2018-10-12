@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AlertDialog
 import android.support.v7.view.ContextThemeWrapper
 import android.support.v7.widget.DefaultItemAnimator
@@ -20,10 +21,9 @@ import android.widget.Toast
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.FiltroImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.FiltroOver
-import com.fivesys.alphamanufacturas.fivesys.entities.Area
-import com.fivesys.alphamanufacturas.fivesys.entities.Responsable
-import com.fivesys.alphamanufacturas.fivesys.entities.Sector
-import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
+import com.fivesys.alphamanufacturas.fivesys.entities.*
+import com.fivesys.alphamanufacturas.fivesys.views.activities.ListAuditoriaActivity
+import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
 
@@ -31,7 +31,20 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.buttonAceptar -> dismiss()
+            R.id.buttonAceptar -> {
+                val auditoria = Auditoria()
+                auditoria.Nombre = "irvin"
+                val json = Gson().toJson(auditoria)
+                ListAuditoriaActivity.newInstance(json)
+//                val fragmentManager = fragmentManager
+//
+//                val newFragment = ListAuditoriaActivity.newInstance("HOLA")
+//                val transaction = fragmentManager!!.beginTransaction()
+//                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//                transaction.add(android.R.id.content, newFragment)
+//                        .addToBackStack(null).commit()
+                dismiss()
+            }
             R.id.buttonCancelar -> dismiss()
             R.id.linearLayoutArea -> areaDialog()
             R.id.linearLayoutSector -> sectorDialog()
@@ -40,6 +53,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
+    lateinit var textViewTitulo: TextView
     lateinit var textViewArea: TextView
     lateinit var textViewSector: TextView
     lateinit var textViewResponsable: TextView
@@ -73,14 +87,14 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     var responsableId: Int = 0
     var estadoId: Int = 1
 
-    private var hoja_id: String? = null
+    private var titulo: String? = null
 
     companion object {
-        fun newInstance(hoja_id: String): FiltroDialogFragment {
+        fun newInstance(titulo: String): FiltroDialogFragment {
             val f = FiltroDialogFragment()
 
             val args = Bundle()
-            args.putString("hoja_id", hoja_id)
+            args.putString("titulo", titulo)
             f.arguments = args
 
             return f
@@ -89,7 +103,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        hoja_id = arguments!!.getString("hoja_id")
+        titulo = arguments!!.getString("titulo")
         realm = Realm.getDefaultInstance()
         filtroImp = FiltroOver(realm)
     }
@@ -108,6 +122,8 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun bindUI(view: View) {
+        textViewTitulo = view.findViewById(R.id.textViewTitulo)
+        textViewTitulo.text = titulo
         textViewArea = view.findViewById(R.id.textViewArea)
         textViewSector = view.findViewById(R.id.textViewSector)
         textViewResponsable = view.findViewById(R.id.textViewResponsable)

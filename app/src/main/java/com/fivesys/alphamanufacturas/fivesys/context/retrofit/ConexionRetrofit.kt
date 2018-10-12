@@ -1,5 +1,6 @@
 package com.fivesys.alphamanufacturas.fivesys.context.retrofit
 
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,6 +21,7 @@ object ConexionRetrofit {
 
             retrofit = Retrofit.Builder().baseUrl(BaseUrl)
                     .client(client)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create()).build()
 
             return retrofit

@@ -4,6 +4,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
 import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
+import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
@@ -15,7 +16,7 @@ interface AuditoriaInterfaces {
 
     @Headers("Cache-Control: no-cache")
     @POST("/Control/Auditoria/APIGetAll")
-    fun getAuditorias(): Call<List<Auditoria>>
+    fun getAuditorias(): Observable<List<Auditoria>>
 
     @Headers("Cache-Control: no-cache")
     @POST("/Control/Auditoria/APIGetOne")
@@ -27,6 +28,6 @@ interface AuditoriaInterfaces {
 
     @Headers("Cache-Control: no-cache")
     @POST("/General/Organizacion/APIGetAll")
-    fun getFiltroGetAll(): Call<List<Area>>
+    fun getFiltroGetAll(): Observable<List<Area>>
 
 }

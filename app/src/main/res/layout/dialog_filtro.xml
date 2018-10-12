@@ -16,14 +16,23 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical"
             android:padding="20dp"
             tools:ignore="UselessParent">
 
+
+            <TextView
+                android:id="@+id/textViewTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/estado"
                 android:textColor="@color/primary_text" />
@@ -34,7 +43,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
@@ -43,7 +51,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-
                     android:text="@string/pendiente" />
 
                 <ImageView
@@ -58,7 +65,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:text="@string/area"
                 android:textColor="@color/primary_text"
                 tools:ignore="Suspicious0dp" />
@@ -68,7 +74,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
@@ -93,7 +98,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:text="@string/sector"
                 android:textColor="@color/primary_text"
                 tools:ignore="Suspicious0dp" />
@@ -103,8 +107,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
@@ -128,7 +130,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:text="@string/responsable"
                 android:textColor="@color/primary_text" />
 
@@ -137,7 +138,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="24dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
@@ -161,7 +161,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:text="@string/nombre"
                 android:textColor="@color/primary_text" />
 
@@ -170,7 +169,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:inputType="text"
                 tools:ignore="Autofill,LabelFor" />
 
@@ -178,7 +176,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal">
 
                 <Button
