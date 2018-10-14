@@ -2,19 +2,23 @@ package com.fivesys.alphamanufacturas.fivesys.entities
 
 open class Filtro {
 
-    var estado: Int? = 0
-    var areaId: Int? = 0
-    var sectorId: Int? = 0
-    var responsableId: Int? = 0
-    var nombre: String? = ""
+    var EstadoAuditoria: Int? = 0
+    var AreaId: Int? = 0
+    var SectorId: Int? = 0
+    var ResponsableId: Int? = 0
+    var Nombre: String? = ""
+    var NResponsable: String? = ""
 
     constructor()
 
-    constructor(estado: Int?, areaId: Int?, sectorId: Int?, responsableId: Int?, nombre: String?) {
-        this.estado = estado
-        this.areaId = areaId
-        this.sectorId = sectorId
-        this.responsableId = responsableId
-        this.nombre = nombre
+    constructor(EstadoAuditoria: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
+        this.EstadoAuditoria = EstadoAuditoria
+        this.AreaId = AreaId
+        this.SectorId = SectorId
+        this.ResponsableId = ResponsableId
+        this.Nombre = Nombre
+        this.NResponsable = NResponsable
     }
+
+
 }

@@ -42,10 +42,11 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                     if (sectorId != 0) {
                         if (responsableId != 0) {
                             if (editTextNombre.text.isNotEmpty()) {
-                                val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString())
+                                val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                                 val json = Gson().toJson(f)
-                                listener?.sendRequest(json)
+                                listener?.sendRequest(json, if (titulo != "Nueva Auditoria") 1 else 0)
                                 dismiss()
+
                             } else {
                                 Toast.makeText(context, "Ingrese nombre", Toast.LENGTH_LONG).show()
                             }
@@ -99,6 +100,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     var areaId: Int = 0
     var sectorId: Int = 0
     var responsableId: Int = 0
+    var nresponsable: String? = ""
     var estadoId: Int = 1
 
 
@@ -244,6 +246,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             val areaAdapter = ResponsableAdapter(responsable!!, R.layout.cardview_combo, object : ResponsableAdapter.OnItemClickListener {
                 override fun onItemClick(responsable: Responsable, position: Int) {
                     responsableId = responsable.ResponsableId
+                    nresponsable = responsable.NombreCompleto
                     textViewResponsable.text = responsable.NombreCompleto
                     dialogResponasble.dismiss()
                 }
@@ -297,6 +300,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     interface InterfaceCommunicator {
-        fun sendRequest(value: String)
+        fun sendRequest(value: String, tipo: Int)
     }
 }

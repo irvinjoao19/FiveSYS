@@ -25,6 +25,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
+import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.FiltroDialogFragment
 import io.reactivex.Observable
@@ -34,13 +35,20 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmResults
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import java.util.*
 
 class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroDialogFragment.InterfaceCommunicator {
 
-    override fun sendRequest(value: String) {
-        auditoriaAdapter?.getFilter()?.filter(value)
+    override fun sendRequest(value: String, tipo: Int) {
+        if (tipo == 1) {
+            auditoriaAdapter?.getFilter()?.filter(value)
+        } else {
+            sendAuditoria(value)
+        }
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.filter, menu)
@@ -202,6 +210,50 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(android.R.id.content, newFragment)
                 .addToBackStack(null).commit()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun sendAuditoria(value: String) {
+
+        builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_login, null)
+
+        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
+        textViewTitle.text = "Enviando ...."
+        var auditoriaId: Int? = 0
+
+        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)
+        val headerCall: Observable<ResponseHeader> = auditoriaInterfaces.saveHeader(requestBody)
+
+        headerCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<ResponseHeader> {
+                    override fun onComplete() {
+                        val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                        intent.putExtra("auditoriaId", auditoriaId)
+                        startActivity(intent)
+                        dialog.dismiss()
+
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onNext(t: ResponseHeader) {
+                        auditoriaId = t.id
+                        auditoriaImp.saveHeader(t)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
+                        dialog.dismiss()
+                    }
+                })
+
+        builder.setView(v)
+        dialog = builder.create()
+        dialog.show()
     }
 
 }

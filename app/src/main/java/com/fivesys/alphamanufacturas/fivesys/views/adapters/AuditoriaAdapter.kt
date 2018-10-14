@@ -81,15 +81,15 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                 if (keyword != null) {
                     val filteredList = ArrayList<Auditoria>()
                     for (auditoria: Auditoria in auditorias) {
-                        if (auditoria.Estado == keyword.estado) {
+                        if (auditoria.Estado == keyword.EstadoAuditoria) {
                             if (auditoria.Area != null) {
-                                if (auditoria.Area!!.AreaId == keyword.areaId) {
+                                if (auditoria.Area!!.AreaId == keyword.AreaId) {
                                     if (auditoria.Sector != null) {
-                                        if (auditoria.Sector!!.SectorId == keyword.sectorId) {
+                                        if (auditoria.Sector!!.SectorId == keyword.SectorId) {
                                             if (auditoria.Responsable != null) {
-                                                if (auditoria.Responsable!!.ResponsableId == keyword.responsableId) {
+                                                if (auditoria.Responsable!!.ResponsableId == keyword.ResponsableId) {
                                                     if (auditoria.Nombre != null) {
-                                                        if (auditoria.Nombre!!.toLowerCase().contains(keyword.nombre!!)) {
+                                                        if (auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)) {
                                                             filteredList.add(auditoria)
                                                         }
                                                     }

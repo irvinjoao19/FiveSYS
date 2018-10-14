@@ -24,10 +24,12 @@ interface AuditoriaInterfaces {
 
     @Headers("Cache-Control: no-cache")
     @POST("/Control/Auditoria/APISaveHeader")
-    fun saveHeader(@Body model: RequestBody): Call<ResponseHeader>
+    fun saveHeader(@Body model: RequestBody): Observable<ResponseHeader>
 
     @Headers("Cache-Control: no-cache")
     @POST("/General/Organizacion/APIGetAll")
     fun getFiltroGetAll(): Observable<List<Area>>
+
+
 
 }

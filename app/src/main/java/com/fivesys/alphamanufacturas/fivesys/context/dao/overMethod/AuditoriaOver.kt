@@ -4,10 +4,12 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImp
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
+import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
 import io.realm.Realm
 import io.realm.RealmResults
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
+
 
     override fun saveAuditoria(auditoria: List<Auditoria>) {
         realm.executeTransaction { realm ->
@@ -32,6 +34,12 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
     override fun saveFiltroAuditoria(area: List<Area>) {
         realm.executeTransaction { realm ->
             realm.copyToRealmOrUpdate(area)
+        }
+    }
+
+    override fun saveHeader(response: ResponseHeader) {
+        realm.executeTransaction { realm ->
+            realm.copyToRealmOrUpdate(response)
         }
     }
 }
