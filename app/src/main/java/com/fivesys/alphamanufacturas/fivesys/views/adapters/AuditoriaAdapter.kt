@@ -9,6 +9,7 @@ import android.widget.Filter
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
+import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
 import com.google.gson.Gson
 import io.realm.RealmResults
 import java.util.*
@@ -76,14 +77,28 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
             override fun publishResults(charSequence: CharSequence, filterResults: Filter.FilterResults) {
 
                 auditoriasList.clear()
-                val keyword: Auditoria? = Gson().fromJson(charSequence.toString(), Auditoria::class.java)
+                val keyword: Filtro? = Gson().fromJson(charSequence.toString(), Filtro::class.java)
                 if (keyword != null) {
                     val filteredList = ArrayList<Auditoria>()
                     for (auditoria: Auditoria in auditorias) {
-                        if (auditoria.Estado == keyword.Estado ||
-                                auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)
-                        ) {
-                            filteredList.add(auditoria)
+                        if (auditoria.Estado == keyword.estado) {
+                            if (auditoria.Area != null) {
+                                if (auditoria.Area!!.AreaId == keyword.areaId) {
+                                    if (auditoria.Sector != null) {
+                                        if (auditoria.Sector!!.SectorId == keyword.sectorId) {
+                                            if (auditoria.Responsable != null) {
+                                                if (auditoria.Responsable!!.ResponsableId == keyword.responsableId) {
+                                                    if (auditoria.Nombre != null) {
+                                                        if (auditoria.Nombre!!.toLowerCase().contains(keyword.nombre!!)) {
+                                                            filteredList.add(auditoria)
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                     auditoriasList = filteredList

@@ -2,9 +2,9 @@ package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
-import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AlertDialog
 import android.support.v7.view.ContextThemeWrapper
 import android.support.v7.widget.DefaultItemAnimator
@@ -22,28 +22,42 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.FiltroImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.FiltroOver
 import com.fivesys.alphamanufacturas.fivesys.entities.*
-import com.fivesys.alphamanufacturas.fivesys.views.activities.ListAuditoriaActivity
 import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
+import kotlinx.android.synthetic.main.dialog_filtro.*
+
 
 class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        listener = context as InterfaceCommunicator
+    }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.buttonAceptar -> {
-                val auditoria = Auditoria()
-                auditoria.Nombre = "irvin"
-                val json = Gson().toJson(auditoria)
-                ListAuditoriaActivity.newInstance(json)
-//                val fragmentManager = fragmentManager
-//
-//                val newFragment = ListAuditoriaActivity.newInstance("HOLA")
-//                val transaction = fragmentManager!!.beginTransaction()
-//                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//                transaction.add(android.R.id.content, newFragment)
-//                        .addToBackStack(null).commit()
-                dismiss()
+                if (areaId != 0) {
+                    if (sectorId != 0) {
+                        if (responsableId != 0) {
+                            if (editTextNombre.text.isNotEmpty()) {
+                                val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString())
+                                val json = Gson().toJson(f)
+                                listener?.sendRequest(json)
+                                dismiss()
+                            } else {
+                                Toast.makeText(context, "Ingrese nombre", Toast.LENGTH_LONG).show()
+                            }
+                        } else {
+                            Toast.makeText(context, "Ingrese responsable", Toast.LENGTH_LONG).show()
+                        }
+                    } else {
+                        Toast.makeText(context, "Ingrese sector", Toast.LENGTH_LONG).show()
+                    }
+                } else {
+                    Toast.makeText(context, "Ingrese area", Toast.LENGTH_LONG).show()
+                }
             }
             R.id.buttonCancelar -> dismiss()
             R.id.linearLayoutArea -> areaDialog()
@@ -87,7 +101,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     var responsableId: Int = 0
     var estadoId: Int = 1
 
+
     private var titulo: String? = null
+    var listener: InterfaceCommunicator? = null
 
     companion object {
         fun newInstance(titulo: String): FiltroDialogFragment {
@@ -278,5 +294,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         dialogEstado.show()
 
 
+    }
+
+    interface InterfaceCommunicator {
+        fun sendRequest(value: String)
     }
 }

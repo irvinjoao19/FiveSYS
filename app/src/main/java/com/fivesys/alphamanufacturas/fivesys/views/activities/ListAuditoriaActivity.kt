@@ -36,15 +36,10 @@ import io.realm.Realm
 import io.realm.RealmResults
 import java.util.*
 
-class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
+class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroDialogFragment.InterfaceCommunicator {
 
-    companion object {
-        fun newInstance(titulo: String): ListAuditoriaActivity {
-            val f = ListAuditoriaActivity()
-            val args = Bundle()
-            args.putString("titulo", titulo)
-            return f
-        }
+    override fun sendRequest(value: String) {
+        auditoriaAdapter?.getFilter()?.filter(value)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -90,9 +85,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_auditoria)
-        if (savedInstanceState != null) {
-            Toast.makeText(this, savedInstanceState.getString("titulo"), Toast.LENGTH_LONG).show()
-        }
 
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         realm = Realm.getDefaultInstance()
