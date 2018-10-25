@@ -56,7 +56,12 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
         private val textViewS3: TextView = itemView.findViewById(R.id.textViewS3)
         private val textViewS4: TextView = itemView.findViewById(R.id.textViewS4)
         private val textViewS5: TextView = itemView.findViewById(R.id.textViewS5)
+
         private val imageViewPhoto: ImageView = itemView.findViewById(R.id.imageViewPhoto)
+        private val imageViewCategoria: ImageView = itemView.findViewById(R.id.imageViewCategoria)
+        private val imageViewComponente: ImageView = itemView.findViewById(R.id.imageViewComponente)
+        private val imageViewAspectoObservado: ImageView = itemView.findViewById(R.id.imageViewAspectoObservado)
+
         private val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
 
         @SuppressLint("SetTextI18n")
@@ -70,18 +75,43 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
                 textViewNombre.setTextColor(Color.WHITE)
                 textViewDetalle.setTextColor(Color.WHITE)
 
-                textViewTitleS1.setTextColor(Color.WHITE)
-                textViewTitleS2.setTextColor(Color.WHITE)
-                textViewTitleS3.setTextColor(Color.WHITE)
-                textViewTitleS4.setTextColor(Color.WHITE)
-                textViewTitleS5.setTextColor(Color.WHITE)
+                textViewTitleS1.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewTitleS2.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewTitleS3.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewTitleS4.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewTitleS5.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
 
-                textViewS1.setTextColor(Color.WHITE)
-                textViewS2.setTextColor(Color.WHITE)
-                textViewS3.setTextColor(Color.WHITE)
-                textViewS4.setTextColor(Color.WHITE)
-                textViewS5.setTextColor(Color.WHITE)
+                textViewS1.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewS2.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewS3.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewS4.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+                textViewS5.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
+
+                imageViewCategoria.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewComponente.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewAspectoObservado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
             } else {
+                textViewCategoria.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewComponente.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewAspectoObservado.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewNombre.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewDetalle.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+
+                textViewTitleS1.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewTitleS2.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewTitleS3.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewTitleS4.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewTitleS5.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+
+                textViewS1.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewS2.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewS3.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewS4.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewS5.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+
+                imageViewCategoria.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewComponente.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewAspectoObservado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
                 cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorWhite))
             }
 

@@ -35,6 +35,8 @@
     <color name="textColorCeleste">#6cc7E0</color>
 
     <color name="colorLogin">#165679</color>
+    <color name="colorPendiente">#ff2247</color>
+    <color name="colorRealizada">#2ECE17</color>
     <!--rojo -> #FF2247-->
     <!--verde -> #2ECE17-->
     <!--celeste -> #6cc7E0-->

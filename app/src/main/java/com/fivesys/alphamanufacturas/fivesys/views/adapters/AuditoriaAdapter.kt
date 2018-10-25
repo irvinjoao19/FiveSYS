@@ -1,11 +1,15 @@
 package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
+import android.widget.ImageView
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
@@ -27,7 +31,7 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         if (Objects.requireNonNull<Auditoria>(auditoriasList[position]).isValid) {
-            listener?.let { holder.bind(Objects.requireNonNull<Auditoria>(auditoriasList[position]), it) }
+            listener?.let { holder.bind(Objects.requireNonNull<Auditoria>(auditoriasList[position]), position, it) }
         }
     }
 
@@ -37,6 +41,7 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        private val cardViewPrincipal: CardView = itemView.findViewById(R.id.cardViewPrincipal)
         private val textViewCodigo: TextView = itemView.findViewById(R.id.textViewCodigo)
         private val textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
         private val textViewEstado: TextView = itemView.findViewById(R.id.textViewEstado)
@@ -46,8 +51,50 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
         private val textViewFechaProgramado: TextView = itemView.findViewById(R.id.textViewFechaProgramado)
         private val textViewArea: TextView = itemView.findViewById(R.id.textViewArea)
         private val textviewSector: TextView = itemView.findViewById(R.id.textviewSector)
+
+        private val imageViewResponsable: ImageView = itemView.findViewById(R.id.imageViewResponsable)
+        private val imageViewGrupo: ImageView = itemView.findViewById(R.id.imageViewGrupo)
+        private val imageViewFechaRegistro: ImageView = itemView.findViewById(R.id.imageViewFechaRegistro)
+        private val imageViewFechaProgramado: ImageView = itemView.findViewById(R.id.imageViewFechaProgramado)
+        private val imageViewLugar: ImageView = itemView.findViewById(R.id.imageViewLugar)
+
         @SuppressLint("SetTextI18n")
-        internal fun bind(a: Auditoria, listener: OnItemClickListener) {
+        internal fun bind(a: Auditoria, position: Int, listener: OnItemClickListener) {
+
+            if (position % 2 == 1) {
+                cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                imageViewResponsable.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewGrupo.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewFechaRegistro.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewFechaProgramado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewLugar.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+
+                textViewCodigo.setTextColor(Color.WHITE)
+                textViewNombre.setTextColor(ContextCompat.getColor(itemView.context, R.color.textColorCeleste))
+                textViewResponsable.setTextColor(Color.WHITE)
+                textViewGrupo.setTextColor(Color.WHITE)
+                textViewFechaRegistro.setTextColor(Color.WHITE)
+                textViewFechaProgramado.setTextColor(Color.WHITE)
+                textViewArea.setTextColor(ContextCompat.getColor(itemView.context, R.color.textColorCeleste))
+                textviewSector.setTextColor(Color.WHITE)
+
+            } else {
+                cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorWhite))
+                imageViewResponsable.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewGrupo.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewFechaRegistro.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewFechaProgramado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewLugar.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+
+                textViewCodigo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewNombre.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewResponsable.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewGrupo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewFechaRegistro.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewFechaProgramado.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewArea.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textviewSector.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+            }
 
             textViewCodigo.text = a.Codigo
             textViewNombre.text = a.Nombre
@@ -57,6 +104,13 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                 3 -> "Anulado"
                 else -> "Vacio"
             }
+            textViewEstado.setTextColor(when (a.Estado) {
+                1 -> ContextCompat.getColor(itemView.context, R.color.colorPendiente)
+                2 -> ContextCompat.getColor(itemView.context, R.color.colorRealizada)
+                3 -> ContextCompat.getColor(itemView.context, R.color.colorAzul)
+                else -> ContextCompat.getColor(itemView.context, R.color.colorWhite)
+            })
+
             textViewResponsable.text = a.Responsable?.NombreCompleto
             textViewGrupo.text = a.Grupo?.Nombre
             textViewFechaRegistro.text = a.FechaRegistro
