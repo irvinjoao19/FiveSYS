@@ -38,27 +38,10 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.buttonAceptar -> {
-                if (areaId != 0) {
-                    if (sectorId != 0) {
-                        if (responsableId != 0) {
-                            if (editTextNombre.text.isNotEmpty()) {
-                                val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
-                                val json = Gson().toJson(f)
-                                listener?.sendRequest(json, if (titulo != "Nueva Auditoria") 1 else 0)
-                                dismiss()
-
-                            } else {
-                                Toast.makeText(context, "Ingrese nombre", Toast.LENGTH_LONG).show()
-                            }
-                        } else {
-                            Toast.makeText(context, "Ingrese responsable", Toast.LENGTH_LONG).show()
-                        }
-                    } else {
-                        Toast.makeText(context, "Ingrese sector", Toast.LENGTH_LONG).show()
-                    }
-                } else {
-                    Toast.makeText(context, "Ingrese area", Toast.LENGTH_LONG).show()
-                }
+                val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
+                val json = Gson().toJson(f)
+                listener?.sendRequest(json, if (titulo != "Nueva Auditoria") 1 else 0)
+                dismiss()
             }
             R.id.buttonCancelar -> dismiss()
             R.id.linearLayoutArea -> areaDialog()
@@ -110,11 +93,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     companion object {
         fun newInstance(titulo: String): FiltroDialogFragment {
             val f = FiltroDialogFragment()
-
             val args = Bundle()
             args.putString("titulo", titulo)
             f.arguments = args
-
             return f
         }
     }
@@ -212,11 +193,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                 override fun onItemClick(sector: Sector, position: Int) {
                     sectorId = sector.SectorId
                     textViewSector.text = sector.Nombre
-
                     responsable = sector.Responsables!!
                     textViewResponsable.text = sector.Responsables!![0]!!.NombreCompleto
                     responsableId = sector.Responsables!![0]!!.ResponsableId
-
                     dialogSector.dismiss()
                 }
             })
@@ -279,7 +258,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         estado.add(TipoDocumento(1, "Pendiente"))
         estado.add(TipoDocumento(2, "Terminado"))
         estado.add(TipoDocumento(3, "Anulado"))
-
 
         val tipoDocumentoAdapter = TipoDocumentoAdapter(estado, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(tipoDocumento: TipoDocumento, position: Int) {

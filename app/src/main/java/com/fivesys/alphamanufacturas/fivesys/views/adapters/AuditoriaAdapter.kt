@@ -84,19 +84,25 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                         if (auditoria.Estado == keyword.EstadoAuditoria) {
                             if (auditoria.Area != null) {
                                 if (auditoria.Area!!.AreaId == keyword.AreaId) {
-                                    if (auditoria.Sector != null) {
-                                        if (auditoria.Sector!!.SectorId == keyword.SectorId) {
-                                            if (auditoria.Responsable != null) {
-                                                if (auditoria.Responsable!!.ResponsableId == keyword.ResponsableId) {
-                                                    if (auditoria.Nombre != null) {
-                                                        if (auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)) {
-                                                            filteredList.add(auditoria)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                    filteredList.add(auditoria)
+                                }
+                            }
+
+                            if (auditoria.Sector != null) {
+                                if (auditoria.Sector!!.SectorId == keyword.SectorId) {
+                                    filteredList.add(auditoria)
+                                }
+                            }
+
+                            if (auditoria.Responsable != null) {
+                                if (auditoria.Responsable!!.ResponsableId == keyword.ResponsableId) {
+                                    filteredList.add(auditoria)
+                                }
+                            }
+
+                            if (auditoria.Nombre != null) {
+                                if (auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)) {
+                                    filteredList.add(auditoria)
                                 }
                             }
                         }
