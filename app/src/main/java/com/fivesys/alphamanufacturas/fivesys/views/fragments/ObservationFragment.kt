@@ -88,7 +88,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         fab = view.findViewById(R.id.fab)
         fab.setOnClickListener(this)
         recyclerView = view.findViewById(R.id.recyclerView)
-
         layoutManager = LinearLayoutManager(context)
 
         if (a != null) {

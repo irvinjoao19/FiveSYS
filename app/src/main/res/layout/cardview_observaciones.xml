@@ -148,6 +148,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textViewTitleS1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -169,6 +170,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textViewTitleS2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -190,6 +192,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textViewTitleS3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -211,6 +214,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textViewTitleS4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -232,6 +236,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/textViewTitleS5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"

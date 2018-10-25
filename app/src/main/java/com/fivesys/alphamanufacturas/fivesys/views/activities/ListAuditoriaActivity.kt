@@ -50,7 +50,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.filter, menu)
         return true
@@ -89,7 +88,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     lateinit var dialog: AlertDialog
 
     private lateinit var auditoriaInterfaces: AuditoriaInterfaces
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -204,7 +202,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
     private fun showCreateHeaderDialog(titulo: String) {
         val fragmentManager = supportFragmentManager
-
         val newFragment = FiltroDialogFragment.newInstance(titulo)
         val transaction = fragmentManager!!.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

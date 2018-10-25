@@ -46,6 +46,11 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
         private val textViewAspectoObservado: TextView = itemView.findViewById(R.id.textViewAspectoObservado)
         private val textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
         private val textViewDetalle: TextView = itemView.findViewById(R.id.textViewDetalle)
+        private val textViewTitleS1: TextView = itemView.findViewById(R.id.textViewTitleS1)
+        private val textViewTitleS2: TextView = itemView.findViewById(R.id.textViewTitleS2)
+        private val textViewTitleS3: TextView = itemView.findViewById(R.id.textViewTitleS3)
+        private val textViewTitleS4: TextView = itemView.findViewById(R.id.textViewTitleS4)
+        private val textViewTitleS5: TextView = itemView.findViewById(R.id.textViewTitleS5)
         private val textViewS1: TextView = itemView.findViewById(R.id.textViewS1)
         private val textViewS2: TextView = itemView.findViewById(R.id.textViewS2)
         private val textViewS3: TextView = itemView.findViewById(R.id.textViewS3)
@@ -59,6 +64,23 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
 
             if (position % 2 == 1) {
                 cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewCategoria.setTextColor(Color.WHITE)
+                textViewComponente.setTextColor(Color.WHITE)
+                textViewAspectoObservado.setTextColor(Color.WHITE)
+                textViewNombre.setTextColor(Color.WHITE)
+                textViewDetalle.setTextColor(Color.WHITE)
+
+                textViewTitleS1.setTextColor(Color.WHITE)
+                textViewTitleS2.setTextColor(Color.WHITE)
+                textViewTitleS3.setTextColor(Color.WHITE)
+                textViewTitleS4.setTextColor(Color.WHITE)
+                textViewTitleS5.setTextColor(Color.WHITE)
+
+                textViewS1.setTextColor(Color.WHITE)
+                textViewS2.setTextColor(Color.WHITE)
+                textViewS3.setTextColor(Color.WHITE)
+                textViewS4.setTextColor(Color.WHITE)
+                textViewS5.setTextColor(Color.WHITE)
             } else {
                 cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorWhite))
             }
