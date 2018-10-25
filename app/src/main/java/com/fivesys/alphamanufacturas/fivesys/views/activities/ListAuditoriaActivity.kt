@@ -26,6 +26,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.Auditor
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.FiltroDialogFragment
 import io.reactivex.Observable
@@ -93,7 +94,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_auditoria)
-
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
@@ -123,7 +123,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
     private fun getListAuditoria() {
         progressBar.visibility = View.GONE
-        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria()
+        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
         auditorias.addChangeListener { _ ->
             auditoriaAdapter?.notifyDataSetChanged()
         }

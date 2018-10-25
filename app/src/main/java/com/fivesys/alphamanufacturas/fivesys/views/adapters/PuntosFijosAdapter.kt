@@ -50,7 +50,8 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
                         }
 
                         override fun onError(e: Exception) {
-                            imageViewPhoto.visibility = View.GONE
+                            progressBar.visibility = View.GONE
+                            imageViewPhoto.setImageResource(R.drawable.photo_error)
                         }
                     })
             imageViewPhoto.setOnClickListener { listener.onItemClick(p, adapterPosition) }

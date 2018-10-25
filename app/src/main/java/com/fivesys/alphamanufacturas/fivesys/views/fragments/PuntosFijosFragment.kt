@@ -58,7 +58,6 @@ class PuntosFijosFragment : Fragment() {
             auditoriaImp = AuditoriaOver(realm)
             val id = args.getInt("id")
             bindUI(view, auditoriaImp.getAuditoriaByOne(id))
-            Toast.makeText(context, id.toString(), Toast.LENGTH_LONG).show()
         }
         return view
     }

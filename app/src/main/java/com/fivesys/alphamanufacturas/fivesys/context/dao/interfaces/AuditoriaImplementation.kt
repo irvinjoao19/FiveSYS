@@ -10,7 +10,7 @@ interface AuditoriaImplementation {
 
     fun saveAuditoria(auditoria: List<Auditoria>)
 
-    fun getAllAuditoria(): RealmResults<Auditoria>
+    val getAllAuditoria : RealmResults<Auditoria>
 
     fun saveAuditoriaByOne(auditoriaByOne: AuditoriaByOne)
 

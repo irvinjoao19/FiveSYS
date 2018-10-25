@@ -7,6 +7,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
 import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
 import io.realm.Realm
 import io.realm.RealmResults
+import io.realm.Sort
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
@@ -17,9 +18,8 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }
     }
 
-    override fun getAllAuditoria(): RealmResults<Auditoria> {
-        return realm.where(Auditoria::class.java).findAll()
-    }
+    override val getAllAuditoria: RealmResults<Auditoria>
+        get() = realm.where(Auditoria::class.java).findAll().sort("AuditoriaId", Sort.DESCENDING)
 
     override fun saveAuditoriaByOne(auditoriaByOne: AuditoriaByOne) {
         realm.executeTransaction { realm ->

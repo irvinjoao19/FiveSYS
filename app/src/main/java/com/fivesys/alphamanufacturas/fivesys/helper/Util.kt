@@ -12,6 +12,7 @@ import android.provider.Settings
 import android.support.design.widget.TextInputLayout
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.widget.Toast
 import java.io.*
 import java.nio.channels.FileChannel
 import java.text.SimpleDateFormat
@@ -344,5 +345,10 @@ object Util {
         }
         return deviceUniqueIdentifier
     }
+
+    fun toastMensaje(context: Context, mensaje: String) {
+        Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show()
+    }
+
 
 }

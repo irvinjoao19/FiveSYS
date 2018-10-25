@@ -83,7 +83,8 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
                         }
 
                         override fun onError(e: Exception) {
-                            imageViewPhoto.visibility = View.GONE
+                            progressBar.visibility = View.GONE
+                            imageViewPhoto.setImageResource(R.drawable.photo_error)
                         }
                     })
 
