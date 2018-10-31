@@ -18,8 +18,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
-import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditorImplementation
-import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditorOver
+import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AccesoImplementation
+import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
@@ -137,7 +137,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         var result: String?
         val auditor: Auditor?
 
-        val auditorImp: AuditorImplementation = AuditorOver(realm)
+        val accesoImp: AccesoImplementation = AccesoOver(realm)
         val envio = Auditor(tipoDocumentoId, user, password)
         val sendLogin = Gson().toJson(envio)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendLogin)
@@ -150,7 +150,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 response.code() == 200 -> {
                     auditor = response.body() as Auditor
                     result = if (auditor.NombreCompleto.isNotEmpty()) {
-                        auditorImp.saveAuditor(auditor)
+                        accesoImp.saveAuditor(auditor)
                         "enter"
                     } else {
                         "pass"

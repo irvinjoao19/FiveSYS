@@ -2,6 +2,7 @@ package com.fivesys.alphamanufacturas.fivesys.helper
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.*
 import android.media.ExifInterface
 import android.net.Uri
@@ -48,6 +49,14 @@ object Util {
         FechaActual = format.format(date)
         return FechaActual
     }
+
+    fun getFechaActualForPhoto(): String? {
+        date = Date()
+        @SuppressLint("SimpleDateFormat") val format = SimpleDateFormat("ddMMyyyy_HHmmssSSS")
+        FechaActual = format.format(date)
+        return FechaActual
+    }
+
 
     fun toggleTextInputLayoutError(textInputLayout: TextInputLayout,
                                    msg: String?) {
@@ -108,6 +117,23 @@ object Util {
         }
     }
 
+    fun getFolderAdjunto(file: String, context: Context, data: Intent): String {
+        val imagepath = Environment.getExternalStorageDirectory().toString() + "/" + FolderImg + "/" + file
+        val f = File(imagepath)
+        if (!f.exists()) {
+            try {
+                val success = f.createNewFile()
+                if (success) {
+                    Log.i("TAG", "FILE CREATED")
+                }
+                copyFile(File(getRealPathFromURI(context, data.data!!)!!), f)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+        }
+        return imagepath
+    }
 
     private fun getDateTimeFormatString(date: Date): String {
         @SuppressLint("SimpleDateFormat") val df = SimpleDateFormat("dd/MM/yyyy - hh:mm:ss a")

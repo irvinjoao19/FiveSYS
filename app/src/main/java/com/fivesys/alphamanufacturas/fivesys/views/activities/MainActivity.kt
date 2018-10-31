@@ -12,8 +12,8 @@ import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditorImplementation
-import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditorOver
+import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AccesoImplementation
+import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.MenuAdapter
@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout -> {
-                auditorImp.deleteAuditor()
+                accesoImp.deleteAuditor()
                 logOut()
                 System.exit(0)
                 return true
@@ -48,15 +48,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var image: IntArray
 
     private lateinit var realm: Realm
-    private lateinit var auditorImp: AuditorImplementation
+    private lateinit var accesoImp: AccesoImplementation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         realm = Realm.getDefaultInstance()
-        auditorImp = AuditorOver(realm)
-        existsUser(auditorImp.getAuditor())
+        accesoImp = AccesoOver(realm)
+        existsUser(accesoImp.getAuditor())
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

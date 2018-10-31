@@ -10,6 +10,8 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.TabLayoutAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
 import android.support.v7.widget.Toolbar
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -22,8 +24,21 @@ import retrofit2.Call
 import java.io.IOException
 import java.util.*
 
-
 class AuditoriaActivity : AppCompatActivity() {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.save, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.save -> {
+//                showFiltro("Filtro")
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     lateinit var toolbar: Toolbar
     lateinit var tabLayout: TabLayout

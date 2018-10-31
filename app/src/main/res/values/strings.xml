@@ -40,4 +40,6 @@
     <string name="descripcion">Descripcion</string>
     <string name="filtro">Filtro</string>
 
+    <string name="tomarFoto">Tomar Foto</string>
+    <string name="elegirFoto">Elegir Foto</string>
 </resources>

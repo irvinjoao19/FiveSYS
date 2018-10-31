@@ -1,14 +1,23 @@
 package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.StrictMode
+import android.provider.MediaStore
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -17,11 +26,12 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
-import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
 import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
-import com.fivesys.alphamanufacturas.fivesys.views.adapters.ObservacionAdapter
+import com.fivesys.alphamanufacturas.fivesys.helper.Permission
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.PuntosFijosAdapter
 import io.realm.Realm
+import java.io.File
 
 class PuntosFijosFragment : Fragment() {
 
@@ -31,6 +41,13 @@ class PuntosFijosFragment : Fragment() {
     lateinit var recyclerView: RecyclerView
     lateinit var layoutManager: RecyclerView.LayoutManager
     lateinit var puntosFijosAdapter: PuntosFijosAdapter
+
+    lateinit var folder: File
+    lateinit var image: File
+
+    var receive: Int? = 0
+    lateinit var nameImg: String
+    lateinit var Direccion: String
 
     companion object {
         fun newInstance(id: Int): PuntosFijosFragment {
@@ -65,20 +82,100 @@ class PuntosFijosFragment : Fragment() {
     private fun bindUI(view: View, a: AuditoriaByOne?) {
 
         recyclerView = view.findViewById(R.id.recyclerView)
-
         layoutManager = LinearLayoutManager(context)
 
         if (a != null) {
+            a.PuntosFijos!!.addChangeListener { _ ->
+                puntosFijosAdapter.notifyDataSetChanged()
+            }
             puntosFijosAdapter = PuntosFijosAdapter(a.PuntosFijos!!, R.layout.cardview_puntos_fijos, object : PuntosFijosAdapter.OnItemClickListener {
-                override fun onItemClick(p: PuntosFijosHeader, position: Int) {
-
+                override fun onLongClick(p: PuntosFijosHeader, v: View, position: Int): Boolean {
+                    showPopupMenu(p, v, context!!)
+                    return false
                 }
-
             })
             recyclerView.itemAnimator = DefaultItemAnimator()
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = puntosFijosAdapter
         }
     }
+
+    private fun showPopupMenu(p: PuntosFijosHeader, v: View, context: Context) {
+        receive = p.AuditoriaPuntoFijoId!!
+
+        val popupMenu = PopupMenu(context, v)
+        popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.tomarFoto))
+        popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.elegirFoto))
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> {
+                    createImage()
+                }
+                2 -> {
+                    openImage()
+                }
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
+    private fun openImage() {
+        val i = Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        startActivityForResult(i, Permission.GALERY_REQUEST)
+    }
+
+    private fun createImage() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
+            folder = Util.getFolder()
+            nameImg = Util.getFechaActualForPhoto() + ".jpg"
+            image = File(folder, nameImg)
+            Direccion = "$folder/$nameImg"
+            val uriSavedImage = Uri.fromFile(image)
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage)
+
+            if (Build.VERSION.SDK_INT >= 24) {
+                try {
+                    val m = StrictMode::class.java.getMethod("disableDeathOnFileUriExposure")
+                    m.invoke(null)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+            startActivityForResult(takePictureIntent, Permission.CAMERA_REQUEST)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Permission.CAMERA_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
+            if (!Util.comprimirImagen(Direccion)) {
+                Util.toastMensaje(context!!, "Volver a intentarlo")
+            } else {
+                savePhoto(receive!!, nameImg)
+            }
+        } else if (requestCode == Permission.GALERY_REQUEST) {
+            if (data != null) {
+                folder = Util.getFolder()
+                nameImg = Util.getFechaActualForPhoto() + ".jpg"
+                val imagepath = Util.getFolderAdjunto(nameImg, context!!, data)
+
+                // TODO NO COPIES Y PEGUESSSSS FIJATE EL DetalleInspeccionId2
+                if (!Util.comprimirImagen(imagepath)) {
+                    Toast.makeText(context, "No se pudo reducir imagen. Favor de volver a intentarlo !", Toast.LENGTH_LONG).show()
+                } else {
+                    savePhoto(receive!!, nameImg)
+                }
+            }
+        }
+
+    }
+
+    private fun savePhoto(id: Int, nameImg: String) {
+        auditoriaImp.savePhoto(id, nameImg)
+    }
+
 
 }

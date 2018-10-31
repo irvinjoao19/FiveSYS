@@ -2,8 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorGrey"
     android:layout_height="match_parent"
+    android:background="@color/colorGrey"
     tools:context=".views.fragments.GeneralFragment">
 
     <LinearLayout
@@ -25,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="text"
-            tools:ignore="Autofill,LabelFor"
-             />
+            tools:ignore="Autofill,LabelFor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,11 +52,6 @@
                     android:inputType="text"
                     tools:ignore="Autofill,LabelFor" />
 
-                <!--<Spinner-->
-                <!--style="@android:style/Widget.Holo.Light.Spinner"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
-
             </LinearLayout>
 
             <LinearLayout
@@ -79,10 +73,6 @@
                     android:inputType="text"
                     tools:ignore="Autofill,LabelFor" />
 
-                <!--<android.support.v7.widget.AppCompatSpinner-->
-                <!--style="@android:style/Widget.Holo.Light.Spinner"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
             </LinearLayout>
         </LinearLayout>
 
@@ -99,11 +89,6 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             tools:ignore="Autofill,LabelFor" />
-
-        <!--<android.support.v7.widget.AppCompatSpinner-->
-        <!--style="@android:style/Widget.Holo.Light.Spinner"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
 
         <TextView
             android:layout_width="match_parent"
@@ -126,19 +111,31 @@
             android:textColor="@color/primary_text"
             android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/editTextEstado"
+        <LinearLayout
+            android:id="@+id/linearLayoutEstado"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="text"
-            tools:ignore="Autofill,LabelFor" />
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
-        <!--<android.support.v7.widget.AppCompatSpinner-->
-        <!--style="@android:style/Widget.Holo.Light.Spinner"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
+            <TextView
+                android:id="@+id/textViewEstado"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="@string/pendiente"
+                android:textSize="15sp" />
 
-
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/img"
+                android:src="@drawable/ic_down" />
+        </LinearLayout>
     </LinearLayout>
-
 </FrameLayout>

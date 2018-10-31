@@ -1,16 +1,12 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod
 
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
-import com.fivesys.alphamanufacturas.fivesys.entities.Area
-import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
-import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
-import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
+import com.fivesys.alphamanufacturas.fivesys.entities.*
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
-
 
     override fun saveAuditoria(auditoria: List<Auditoria>) {
         realm.executeTransaction { realm ->
@@ -42,4 +38,18 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             realm.copyToRealmOrUpdate(response)
         }
     }
+
+    override fun getAreas(): RealmResults<Area> {
+        return realm.where(Area::class.java).findAll()
+    }
+
+    override fun savePhoto(AuditoriaPuntoFijoId: Int, url: String) {
+        realm.executeTransaction {
+            val p: PuntosFijosHeader? = realm.where(PuntosFijosHeader::class.java).equalTo("AuditoriaPuntoFijoId", AuditoriaPuntoFijoId).findFirst()
+            if (p != null) {
+                p.Url = url
+            }
+        }
+    }
+
 }

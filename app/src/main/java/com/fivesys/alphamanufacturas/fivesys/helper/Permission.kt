@@ -12,9 +12,7 @@ object Permission {
     val PERMISSIONS = arrayOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.RECORD_AUDIO)
+            Manifest.permission.READ_PHONE_STATE)
 
     val CAMERA_REQUEST = 1
     val GALERY_REQUEST = 2

@@ -10,7 +10,7 @@ interface AuditoriaImplementation {
 
     fun saveAuditoria(auditoria: List<Auditoria>)
 
-    val getAllAuditoria : RealmResults<Auditoria>
+    val getAllAuditoria: RealmResults<Auditoria>
 
     fun saveAuditoriaByOne(auditoriaByOne: AuditoriaByOne)
 
@@ -19,6 +19,15 @@ interface AuditoriaImplementation {
     fun saveFiltroAuditoria(area: List<Area>)
 
     fun saveHeader(response: ResponseHeader)
+
+
+    // TODO FILTOR
+
+    fun getAreas(): RealmResults<Area>
+
+    // TODO FOTO
+
+    fun savePhoto(AuditoriaPuntoFijoId: Int, url: String)
 
 
 }

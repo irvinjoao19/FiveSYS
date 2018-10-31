@@ -65,7 +65,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         return super.onOptionsItemSelected(item)
     }
 
-
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {

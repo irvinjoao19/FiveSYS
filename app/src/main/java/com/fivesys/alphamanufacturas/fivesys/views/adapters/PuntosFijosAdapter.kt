@@ -1,6 +1,7 @@
 package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
 import android.annotation.SuppressLint
+import android.os.Environment
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,11 @@ import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.RealmList
+import java.io.File
 
 class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<PuntosFijosAdapter.ViewHolder>() {
 
@@ -50,15 +53,27 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
                         }
 
                         override fun onError(e: Exception) {
-                            progressBar.visibility = View.GONE
-                            imageViewPhoto.setImageResource(R.drawable.photo_error)
+                            val urlPath = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + p.Url)
+                            Picasso.get()
+                                    .load(urlPath)
+                                    .into(imageViewPhoto, object : Callback {
+                                        override fun onSuccess() {
+                                            progressBar.visibility = View.GONE
+                                        }
+
+                                        override fun onError(e: Exception) {
+                                            progressBar.visibility = View.GONE
+                                            imageViewPhoto.setImageResource(R.drawable.photo_error)
+                                        }
+                                    })
                         }
                     })
-            imageViewPhoto.setOnClickListener { listener.onItemClick(p, adapterPosition) }
+            imageViewPhoto.setOnLongClickListener { v -> listener.onLongClick(p, v, adapterPosition) }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(p: PuntosFijosHeader, position: Int)
+
+        fun onLongClick(p: PuntosFijosHeader, v: View, position: Int): Boolean
     }
 }

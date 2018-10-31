@@ -19,8 +19,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.fivesys.alphamanufacturas.fivesys.R
-import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.FiltroImplementation
-import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.FiltroOver
+import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
+import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.google.gson.Gson
 import io.realm.Realm
@@ -75,7 +75,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     lateinit var dialogEstado: AlertDialog
 
     lateinit var realm: Realm
-    lateinit var filtroImp: FiltroImplementation
+    lateinit var auditoriaImp: AuditoriaImplementation
 
     var sectores: RealmList<Sector>? = null
     var responsable: RealmList<Responsable>? = null
@@ -104,7 +104,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         titulo = arguments!!.getString("titulo")
         realm = Realm.getDefaultInstance()
-        filtroImp = FiltroOver(realm)
+        auditoriaImp = AuditoriaOver(realm)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -154,7 +154,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         textViewTitulo.text = "Area"
 
-        val areas = filtroImp.getAreas()
+        val areas = auditoriaImp.getAreas()
 
         val areaAdapter = AreaAdapter(areas, R.layout.cardview_combo, object : AreaAdapter.OnItemClickListener {
             override fun onItemClick(area: Area, position: Int) {
