@@ -10,7 +10,9 @@
     android:layout_marginRight="2dp"
     android:layout_marginBottom="10dp"
     android:orientation="vertical"
-    card_view:cardCornerRadius="20dp">
+    card_view:cardCornerRadius="20dp"
+    card_view:cardElevation="5dp"
+    card_view:cardMaxElevation="5dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -70,7 +72,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textColor="@color/primary_text" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -93,7 +94,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:textColor="@color/primary_text" />
-
         </LinearLayout>
 
         <LinearLayout

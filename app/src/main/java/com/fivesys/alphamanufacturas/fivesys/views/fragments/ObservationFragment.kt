@@ -109,7 +109,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
         val progressBar: ProgressBar = v.findViewById(R.id.progressBar)
         val imageViewPhoto: ImageView = v.findViewById(R.id.imageViewPhoto)
-        val textViewMensaje: TextView = v.findViewById(R.id.textViewMensaje)
         val url = ConexionRetrofit.BaseUrl + nombre
         progressBar.visibility = View.VISIBLE
         Picasso.get()
@@ -120,8 +119,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                     }
 
                     override fun onError(e: Exception) {
-                        imageViewPhoto.visibility = View.GONE
-                        textViewMensaje.visibility = View.VISIBLE
+                        imageViewPhoto.setImageResource(R.drawable.photo_error)
                     }
                 })
 
@@ -132,15 +130,10 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
     private fun showCreateHeaderDialog() {
         val fragmentManager = fragmentManager
-
-        // Empty hoja_id => Register new header
         val newFragment = HeaderDialogFragment.newInstance("")
-
         val transaction = fragmentManager!!.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(android.R.id.content, newFragment)
                 .addToBackStack(null).commit()
     }
-
-
 }

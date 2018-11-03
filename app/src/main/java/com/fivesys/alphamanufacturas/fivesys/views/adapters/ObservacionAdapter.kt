@@ -2,7 +2,6 @@ package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
@@ -13,13 +12,11 @@ import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
 import io.realm.RealmList
-import android.content.res.ColorStateList
 import android.widget.ImageView
 import android.widget.ProgressBar
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-
 
 class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<ObservacionAdapter.ViewHolder>() {
 
@@ -30,7 +27,6 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         listener?.let { holder.bind(detalles[position]!!, position, it) }
-
     }
 
     override fun getItemCount(): Int {
@@ -38,7 +34,6 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
 
         private val cardViewPrincipal: CardView = itemView.findViewById(R.id.cardViewPrincipal)
         private val textViewCategoria: TextView = itemView.findViewById(R.id.textViewCategoria)
@@ -139,8 +134,6 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
                             imageViewPhoto.setImageResource(R.drawable.photo_error)
                         }
                     })
-
-
             imageViewPhoto.setOnClickListener { listener.onItemClick(d, adapterPosition) }
         }
     }
