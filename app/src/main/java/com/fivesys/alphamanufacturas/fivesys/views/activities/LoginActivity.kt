@@ -180,7 +180,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         override fun onPreExecute() {
             super.onPreExecute()
             builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
-            @SuppressLint("InflateParams") val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_login, null)
+            @SuppressLint("InflateParams") val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_alert, null)
 
             val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
             textViewTitle.text = "Iniciando Sesión"

@@ -9,8 +9,6 @@ import com.fivesys.alphamanufacturas.fivesys.views.fragments.PuntosFijosFragment
 
 class TabLayoutAdapter(fm: FragmentManager?, private val numberOfTabs: Int, val id: Int) : FragmentStatePagerAdapter(fm) {
 
-//    var tabTitles = arrayOf(R.string.tab1.toString(), R.string.tab2.toString(), R.string.tab3.toString())
-
     override fun getItem(position: Int): Fragment? {
         return when (position) {
             0 -> GeneralFragment.newInstance(id)
@@ -23,10 +21,4 @@ class TabLayoutAdapter(fm: FragmentManager?, private val numberOfTabs: Int, val 
     override fun getCount(): Int {
         return numberOfTabs
     }
-
-//    override fun getPageTitle(position: Int): CharSequence? {
-//        // Generate title based on item position
-//        return tabTitles[position]
-//    }
-
 }

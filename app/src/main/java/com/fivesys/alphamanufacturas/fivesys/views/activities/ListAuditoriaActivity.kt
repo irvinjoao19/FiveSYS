@@ -26,7 +26,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.Auditor
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
-import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.FiltroDialogFragment
 import io.reactivex.Observable
@@ -165,7 +164,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     @SuppressLint("SetTextI18n")
     private fun showFiltro(titulo: String) {
         builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_login, null)
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
 
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
         textViewTitle.text = "Cargando ...."
@@ -212,7 +211,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     private fun sendAuditoria(value: String) {
 
         builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_login, null)
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
 
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
         textViewTitle.text = "Enviando ...."

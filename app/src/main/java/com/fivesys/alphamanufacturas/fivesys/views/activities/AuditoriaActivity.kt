@@ -4,27 +4,51 @@ import android.annotation.SuppressLint
 import android.os.AsyncTask
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Environment
 import com.fivesys.alphamanufacturas.fivesys.R
 import android.support.design.widget.TabLayout
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TabLayoutAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.ActionBar
+import android.support.v7.app.AlertDialog
+import android.support.v7.view.ContextThemeWrapper
 import android.support.v7.widget.Toolbar
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
+import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
+import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
+import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import com.google.gson.Gson
+import io.reactivex.Observable
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
-import retrofit2.Call
-import java.io.IOException
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 import java.util.*
 
 class AuditoriaActivity : AppCompatActivity() {
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.save, menu)
         return true
@@ -33,7 +57,7 @@ class AuditoriaActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save -> {
-//                showFiltro("Filtro")
+                confirmLogOut(envioId!!)
                 return true
             }
         }
@@ -46,14 +70,25 @@ class AuditoriaActivity : AppCompatActivity() {
     lateinit var auditoriaInterfaces: AuditoriaInterfaces
     lateinit var progressBar: ProgressBar
 
+    lateinit var realm: Realm
+    lateinit var auditoriaImp: AuditoriaImplementation
+
+    lateinit var builder: AlertDialog.Builder
+    lateinit var dialog: AlertDialog
+
+
+    var envioId: Int? = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auditoria)
+        realm = Realm.getDefaultInstance()
+        auditoriaImp = AuditoriaOver(realm)
         progressBar = findViewById(R.id.progressBar)
         val bundle = intent.extras
         if (bundle != null) {
             auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
-            AuditoriaSync().execute(bundle.getInt("auditoriaId"))
+            getAuditoriaByOne(bundle.getInt("auditoriaId"))
         }
     }
 
@@ -68,6 +103,7 @@ class AuditoriaActivity : AppCompatActivity() {
     }
 
     private fun bindTabLayout(id: Int) {
+        envioId = id
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab1))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab2))
@@ -91,55 +127,109 @@ class AuditoriaActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("StaticFieldLeak")
-    private inner class AuditoriaSync : AsyncTask<Int, Void, Int>() {
+    private fun getAuditoriaByOne(id: Int) {
 
-        override fun doInBackground(vararg int: Int?): Int {
+        val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
+        val auditoriaCall: Observable<AuditoriaByOne> = auditoriaInterfaces.getAuditoriasByOne(id)
 
-            var result: Int? = null
-            val id = int[0]
+        auditoriaCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<AuditoriaByOne> {
+                    override fun onComplete() {
+                        progressBar.visibility = View.GONE
+                        bindToolbar()
+                        bindTabLayout(id)
+                    }
 
-            Realm.getDefaultInstance().use { realm ->
-                result = getAuditoriaByOne(id, realm)
-                Thread.sleep(1000)
-            }
+                    override fun onSubscribe(d: Disposable) {
 
-            publishProgress()
-            return result!!
-        }
+                    }
 
-        @SuppressLint("RestrictedApi")
-        override fun onPostExecute(result: Int?) {
-            super.onPostExecute(result)
-            progressBar.visibility = View.GONE
-            bindToolbar()
-            bindTabLayout(result!!)
+                    override fun onNext(t: AuditoriaByOne) {
+                        auditoriaImp.saveAuditoriaByOne(t)
+                    }
 
-        }
+                    override fun onError(e: Throwable) {
+                        Util.toastMensaje(this@AuditoriaActivity, "Algo paso")
+                    }
+                })
     }
 
-    private fun getAuditoriaByOne(id: Int?, realm: Realm): Int {
 
-        var result = 0
-        val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
-        val auditoriaCall: Call<AuditoriaByOne> = auditoriaInterfaces.getAuditoriasByOne(id!!)
-        try {
-            val response = auditoriaCall.execute()!!
-            when {
-                response.code() == 200 -> {
-                    val auditoria: AuditoriaByOne? = response.body() as AuditoriaByOne
-                    if (auditoria != null) {
-                        auditoriaImp.saveAuditoriaByOne(auditoria)
-                        result = auditoria.AuditoriaId!!
-                    }
-                }
-            }
-        } catch (e: IOException) {
-            e.message + "\nVerificar si cuentas con Internet."
+    private fun confirmLogOut(id: Int) {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
+        val dialog: AlertDialog
+
+        builder.setTitle("Mensaje")
+        builder.setMessage("Estas seguro de enviar ?")
+        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
+            sendRegister(id)
+            dialogInterface.dismiss()
+        }
+        builder.setNegativeButton("Cancelar") { dialogInterface, _ -> dialogInterface.dismiss() }
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun sendRegister(id: Int) {
+
+        builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this@AuditoriaActivity).inflate(R.layout.dialog_alert, null)
+
+        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
+        textViewTitle.text = "Enviando ...."
+
+        builder.setView(v)
+
+        val filePaths: ArrayList<String> = ArrayList()
+        val auditoria: AuditoriaByOne = auditoriaImp.getAuditoriaByOne(id)!!
+
+        val json = Gson().toJson(realm.copyFromRealm(auditoria))
+        Log.i("TAG", json)
+
+        val b = MultipartBody.Builder()
+        b.setType(MultipartBody.FORM)
+        b.addFormDataPart("data", json)
+
+        for (f: PuntosFijosHeader in auditoria.PuntosFijos!!) {
+            filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url).toString())
         }
 
-        return result
+        for (i in 0 until filePaths.size) {
+            val file = File(filePaths[i])
+            b.addFormDataPart("file", file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
+        }
 
+        val requestBody = b.build()
+        val observableEnvio: Observable<Mensaje> = auditoriaInterfaces.sendRegister(requestBody)
+
+        observableEnvio.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Mensaje> {
+                    override fun onComplete() {
+                        dialog.dismiss()
+                        Dialog.MensajeOk(this@AuditoriaActivity, "Mensaje", "Enviado")
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onNext(t: Mensaje) {
+//                        migrationImp.updateIdentity(p, t.id!!)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        dialog.dismiss()
+                        Util.toastMensaje(this@AuditoriaActivity, "Algo paso intente nuevamente")
+                    }
+                })
+
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
 }
