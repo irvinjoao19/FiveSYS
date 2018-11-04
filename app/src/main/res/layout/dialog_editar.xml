@@ -48,10 +48,16 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Componente"
+                            android:textColor="@color/primary_text" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="20dp"
                             android:orientation="horizontal"
                             tools:ignore="UseCompoundDrawables">
@@ -70,16 +76,21 @@
                                 android:src="@drawable/ic_down" />
                         </LinearLayout>
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Referencia"
+                            android:textColor="@color/primary_text" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="20dp"
                             android:orientation="horizontal"
                             tools:ignore="UseCompoundDrawables">
 
                             <TextView
-
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -92,16 +103,21 @@
                                 android:src="@drawable/ic_down" />
                         </LinearLayout>
 
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Aspecto Observado"
+                            android:textColor="@color/primary_text" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="10dp"
                             android:layout_marginBottom="20dp"
                             android:orientation="horizontal"
                             tools:ignore="UseCompoundDrawables">
 
                             <TextView
-
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
@@ -115,7 +131,6 @@
                         </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
-
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
@@ -132,7 +147,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:baselineAligned="false"
-
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -252,30 +266,22 @@
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
-                <android.support.v7.widget.CardView
+                <EditText
+                    android:id="@+id/editTextObservacion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-                    card_view:cardElevation="5dp"
-                    card_view:cardMaxElevation="5dp"
-                    card_view:contentPadding="3dp">
-
-                    <EditText
-                        android:id="@+id/editTextObservacion"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="top|left"
-                        android:hint="@string/observacion"
-                        android:inputType="textMultiLine"
-                        android:lines="5"
-                        android:maxLines="2"
-                        android:minLines="4"
-                        android:scrollbars="vertical"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded" />
-                </android.support.v7.widget.CardView>
+                    android:gravity="top|left"
+                    android:hint="@string/observacion"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:maxLines="2"
+                    android:minLines="4"
+                    android:scrollbars="vertical"
+                    tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -313,6 +319,4 @@
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
-
-
 </android.support.design.widget.CoordinatorLayout>
