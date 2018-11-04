@@ -4,200 +4,201 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:orientation="horizontal">
+    android:background="@color/colorWhite">
 
-    <android.support.v4.widget.NestedScrollView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGrey"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical"
-            android:padding="20dp"
+            android:background="@color/colorGrey"
             tools:ignore="UselessParent">
 
-
-            <TextView
-                android:id="@+id/textViewTitulo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-                android:textColor="@color/colorPrimary"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:text="@string/estado"
-                android:textColor="@color/primary_text" />
-
-
             <LinearLayout
-                android:id="@+id/linearLayoutEstado"
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:padding="20dp"
+                tools:ignore="UselessParent">
 
                 <TextView
-                    android:id="@+id/textViewEstado"
-                    android:layout_width="0dp"
+                    android:id="@+id/textViewTitulo"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/pendiente" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/img"
-                    android:src="@drawable/ic_down" />
-            </LinearLayout>
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/area"
-                android:textColor="@color/primary_text"
-                tools:ignore="Suspicious0dp" />
-
-            <LinearLayout
-                android:id="@+id/linearLayoutArea"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                    android:layout_margin="20dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textViewArea"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@string/area" />
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/estado"
+                    android:textColor="@color/primary_text" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/img"
-                    android:src="@drawable/ic_down" />
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearLayoutEstado"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
+                    <TextView
+                        android:id="@+id/textViewEstado"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/pendiente" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/sector"
-                android:textColor="@color/primary_text"
-                tools:ignore="Suspicious0dp" />
-
-            <LinearLayout
-                android:id="@+id/linearLayoutSector"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_down" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/textViewSector"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@string/sector" />
+                    android:layout_marginTop="10dp"
+                    android:text="@string/area"
+                    android:textColor="@color/primary_text"
+                    tools:ignore="Suspicious0dp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/img"
-                    android:src="@drawable/ic_down" />
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/linearLayoutArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/responsable"
-                android:textColor="@color/primary_text" />
+                    <TextView
+                        android:id="@+id/textViewArea"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/area" />
 
-            <LinearLayout
-                android:id="@+id/linearLayoutResponsable"
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_down" />
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/textViewResponsable"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:text="@string/responsable" />
+                    android:layout_marginTop="10dp"
+                    android:text="@string/sector"
+                    android:textColor="@color/primary_text"
+                    tools:ignore="Suspicious0dp" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/linearLayoutSector"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <TextView
+                        android:id="@+id/textViewSector"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/sector" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_down" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/img"
-                    android:src="@drawable/ic_down" />
+                    android:layout_marginTop="10dp"
+                    android:text="@string/responsable"
+                    android:textColor="@color/primary_text" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutResponsable"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <TextView
+                        android:id="@+id/textViewResponsable"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/responsable" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_down" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/nombre"
+                    android:textColor="@color/primary_text" />
+
+                <EditText
+                    android:id="@+id/editTextNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:inputType="text"
+                    tools:ignore="Autofill,LabelFor" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/buttonCancelar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+
+                        android:background="@color/colorTrans"
+                        android:text="@string/cancel"
+                        tools:ignore="ButtonStyle" />
+
+                    <Button
+                        android:id="@+id/buttonAceptar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:background="@color/colorAzulOscuro"
+                        android:text="@string/ok"
+                        android:textColor="@color/colorAmarrillo"
+                        tools:ignore="ButtonStyle" />
+                </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/nombre"
-                android:textColor="@color/primary_text" />
-
-            <EditText
-                android:id="@+id/editTextNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:inputType="text"
-                tools:ignore="Autofill,LabelFor" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/buttonCancelar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-
-                    android:background="@color/colorTrans"
-                    android:text="@string/cancel"
-                    tools:ignore="ButtonStyle" />
-
-                <Button
-                    android:id="@+id/buttonAceptar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5"
-                    android:background="@color/colorAzulOscuro"
-                    android:text="@string/ok"
-                    android:textColor="@color/colorAmarrillo"
-                    tools:ignore="ButtonStyle" />
-            </LinearLayout>
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </ScrollView>
+    </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>
