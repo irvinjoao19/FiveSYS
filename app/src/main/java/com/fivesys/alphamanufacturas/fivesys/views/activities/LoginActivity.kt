@@ -2,12 +2,15 @@ package com.fivesys.alphamanufacturas.fivesys.views.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.AsyncTask
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.fivesys.alphamanufacturas.fivesys.R
 import android.support.design.widget.TextInputLayout
 import android.support.design.widget.TextInputEditText
+import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.view.ContextThemeWrapper
 import android.support.v7.widget.DefaultItemAnimator
@@ -25,6 +28,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginIn
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
+import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
 import com.google.gson.Gson
@@ -35,6 +39,27 @@ import java.io.IOException
 import kotlin.collections.ArrayList
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+        var cantidad = 0
+
+        when (requestCode) {
+            1 -> {
+                for (valor: Int in grantResults) {
+                    if (valor == PackageManager.PERMISSION_DENIED) {
+                        cantidad += 1
+                    }
+                }
+                if (cantidad >= 1) {
+                    buttonEnviar.visibility = View.GONE
+                    messagePermission()
+                } else {
+                    buttonEnviar.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
 
     override fun onClick(v: View) {
         when (v.id) {
@@ -79,6 +104,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         bindUI()
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            permision()
+        }
+    }
+    private fun permision() {
+        if (!Permission.hasPermissions(this@LoginActivity, *Permission.PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this@LoginActivity, Permission.PERMISSIONS, Permission.PERMISSION_ALL)
+        }
     }
 
     private fun bindUI() {
@@ -229,4 +263,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+
+    private fun messagePermission() {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
+        val dialog: AlertDialog
+
+        builder.setTitle("Permisos Denegados")
+        builder.setMessage("Debes de aceptar los permisos para poder acceder al aplicativo.")
+        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
+            permision()
+            dialogInterface.dismiss()
+        }
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
 }
