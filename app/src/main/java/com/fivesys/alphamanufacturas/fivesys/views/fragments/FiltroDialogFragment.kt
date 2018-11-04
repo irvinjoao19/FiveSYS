@@ -1,4 +1,4 @@
-package com.fivesys.alphamanufacturas.fivesys.views.adapters
+package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -22,6 +22,10 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.*
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.AreaAdapter
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
 import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList

@@ -16,7 +16,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.TextView
 
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -28,7 +27,6 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.ObservacionAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
-import com.fivesys.alphamanufacturas.fivesys.views.adapters.HeaderDialogFragment
 
 
 class ObservationFragment : Fragment(), View.OnClickListener {
@@ -130,7 +128,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
     private fun showCreateHeaderDialog() {
         val fragmentManager = fragmentManager
-        val newFragment = HeaderDialogFragment.newInstance("")
+        val newFragment = EditDialogFragment.newInstance("")
         val transaction = fragmentManager!!.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(android.R.id.content, newFragment)

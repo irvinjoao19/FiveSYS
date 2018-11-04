@@ -31,6 +31,4 @@ open class Auditoria : RealmObject {
         this.Estado = Estado
         this.Nombre = Nombre
     }
-
-
 }

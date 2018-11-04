@@ -27,7 +27,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
-import com.fivesys.alphamanufacturas.fivesys.views.adapters.FiltroDialogFragment
+import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers

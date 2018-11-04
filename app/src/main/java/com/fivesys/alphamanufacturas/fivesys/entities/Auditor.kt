@@ -12,7 +12,8 @@ open class Auditor : RealmObject {
     var NombreCompleto: String = ""
     var Correo: String = ""
     var Clave: String = ""
-//    70025043
+    //46936232
+    //Qwerty12345-
 
     constructor() : super()
 
