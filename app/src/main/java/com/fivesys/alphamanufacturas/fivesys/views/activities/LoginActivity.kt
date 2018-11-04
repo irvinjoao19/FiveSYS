@@ -51,7 +51,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         cantidad += 1
                     }
                 }
-                if (cantidad >= 1) {
+                if (cantidad > 0) {
                     buttonEnviar.visibility = View.GONE
                     messagePermission()
                 } else {
