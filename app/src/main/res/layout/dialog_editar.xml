@@ -155,21 +155,35 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textViewS1"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="S1" />
+                                android:gravity="center"
+                                android:text="S1"
+                                android:textColor="@color/primary_text" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <TextView
+                                    android:id="@+id/textViewS1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="S1" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/img"
+                                    android:src="@drawable/ic_down" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -178,21 +192,35 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textViewS2"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="S2" />
+                                android:gravity="center"
+                                android:text="S2"
+                                android:textColor="@color/primary_text" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <TextView
+                                    android:id="@+id/textViewS2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="S2" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/img"
+                                    android:src="@drawable/ic_down" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -201,21 +229,35 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textViewS3"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="S3" />
+                                android:gravity="center"
+                                android:text="S3"
+                                android:textColor="@color/primary_text" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <TextView
+                                    android:id="@+id/textViewS3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="S3" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/img"
+                                    android:src="@drawable/ic_down" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -224,21 +266,35 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textViewS4"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="S4" />
+                                android:gravity="center"
+                                android:text="S4"
+                                android:textColor="@color/primary_text" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <TextView
+                                    android:id="@+id/textViewS4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="S4" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/img"
+                                    android:src="@drawable/ic_down" />
+                            </LinearLayout>
+
                         </LinearLayout>
 
                         <LinearLayout
@@ -247,22 +303,38 @@
                             android:layout_marginTop="20dp"
                             android:layout_marginBottom="20dp"
                             android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
+                            android:orientation="vertical">
 
                             <TextView
-                                android:id="@+id/textViewS5"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="S5" />
+                                android:gravity="center"
+                                android:text="S5"
+                                android:textColor="@color/primary_text" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
+                                android:gravity="center"
+                                android:orientation="horizontal"
+                                tools:ignore="UseCompoundDrawables">
+
+                                <TextView
+                                    android:id="@+id/textViewS5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="S5" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:contentDescription="@string/img"
+                                    android:src="@drawable/ic_down" />
+                            </LinearLayout>
+
                         </LinearLayout>
+
+
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
