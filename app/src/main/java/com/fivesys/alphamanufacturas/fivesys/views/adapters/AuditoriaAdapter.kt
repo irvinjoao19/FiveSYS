@@ -171,6 +171,6 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
     }
 
     interface OnItemClickListener {
-        fun onItemClick(auditoria: Auditoria, position: Int)
+        fun onItemClick(a: Auditoria, position: Int)
     }
 }

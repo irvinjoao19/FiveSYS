@@ -52,4 +52,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }
     }
 
+    override val componentes: RealmResults<Componente>
+        get() = realm.where(Componente::class.java).findAll()
+
 }

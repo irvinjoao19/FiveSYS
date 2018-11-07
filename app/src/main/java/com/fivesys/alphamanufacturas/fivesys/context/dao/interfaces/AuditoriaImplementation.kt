@@ -1,9 +1,6 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces
 
-import com.fivesys.alphamanufacturas.fivesys.entities.Area
-import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
-import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
-import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
+import com.fivesys.alphamanufacturas.fivesys.entities.*
 import io.realm.RealmResults
 
 interface AuditoriaImplementation {
@@ -20,7 +17,6 @@ interface AuditoriaImplementation {
 
     fun saveHeader(response: ResponseHeader)
 
-
     // TODO FILTOR
 
     fun getAreas(): RealmResults<Area>
@@ -29,5 +25,8 @@ interface AuditoriaImplementation {
 
     fun savePhoto(AuditoriaPuntoFijoId: Int, url: String)
 
+    // TODO COMPONENTE
+
+    val componentes : RealmResults<Componente>
 
 }

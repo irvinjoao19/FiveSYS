@@ -40,6 +40,6 @@ class TipoDocumentoAdapter(private var tipoDocumento: ArrayList<TipoDocumento>, 
     }
 
     interface OnItemClickListener {
-        fun onItemClick(tipoDocumento: TipoDocumento, position: Int)
+        fun onItemClick(t: TipoDocumento, position: Int)
     }
 }
