@@ -73,7 +73,6 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
     }
 
     interface OnItemClickListener {
-
         fun onLongClick(p: PuntosFijosHeader, v: View, position: Int): Boolean
     }
 }

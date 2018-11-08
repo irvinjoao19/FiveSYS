@@ -2,6 +2,7 @@ package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
@@ -12,9 +13,11 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.ProgressBar
 
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -34,7 +37,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                showCreateHeaderDialog()
+                showCreateHeaderDialog("Nueva Observación", id!!, 0)
             }
         }
     }
@@ -49,6 +52,8 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
+
+    var id: Int? = 0
 
     companion object {
         fun newInstance(id: Int): ObservationFragment {
@@ -74,8 +79,8 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         val args = arguments
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
-            val id = args.getInt("id")
-            bindUI(view, auditoriaImp.getAuditoriaByOne(id))
+            id = args.getInt("id")
+            bindUI(view, auditoriaImp.getAuditoriaByOne(id!!))
         }
         return view
     }
@@ -90,6 +95,11 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
         if (a != null) {
             observacionAdapter = ObservacionAdapter(a.Detalles!!, R.layout.cardview_observaciones, object : ObservacionAdapter.OnItemClickListener {
+                override fun onLongClick(d: Detalle, v: View, position: Int): Boolean {
+                    showPopupMenu(d, v, context!!)
+                    return false
+                }
+
                 override fun onItemClick(detalle: Detalle, position: Int) {
                     showPhoto(detalle.Url)
                 }
@@ -126,12 +136,26 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         dialog.show()
     }
 
-    private fun showCreateHeaderDialog() {
+    private fun showCreateHeaderDialog(title: String, id: Int, detalleId: Int) {
         val fragmentManager = fragmentManager
-        val newFragment = EditDialogFragment.newInstance("")
+        val newFragment = EditDialogFragment.newInstance(title, id, detalleId)
         val transaction = fragmentManager!!.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(android.R.id.content, newFragment)
                 .addToBackStack(null).commit()
+    }
+
+    private fun showPopupMenu(d: Detalle, v: View, context: Context) {
+        val popupMenu = PopupMenu(context, v)
+        popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.edit))
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> {
+                    showCreateHeaderDialog("Editar Observación", id!!, d.AuditoriaDetalleId!!)
+                }
+            }
+            false
+        }
+        popupMenu.show()
     }
 }

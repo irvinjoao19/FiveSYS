@@ -51,19 +51,20 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     companion object {
-        fun newInstance(title: String): EditDialogFragment {
+        fun newInstance(title: String, id: Int, detalleId: Int): EditDialogFragment {
             val f = EditDialogFragment()
-
             val args = Bundle()
             args.putString("title", title)
+            args.putInt("id", id)
+            args.putInt("detalleId", detalleId)
             f.arguments = args
-
             return f
         }
     }
 
     private var title: String? = null
 
+    lateinit var textViewTitulo: TextView
     lateinit var linearLayoutCategoria: LinearLayout
     lateinit var textViewCategoria: TextView
     lateinit var linearLayoutComponente: LinearLayout
@@ -128,6 +129,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
     private fun bindUI(v: View) {
 
+        textViewTitulo = v.findViewById(R.id.textViewTitulo)
+        textViewTitulo.text = title
         linearLayoutCategoria = v.findViewById(R.id.linearLayoutCategoria)
         textViewCategoria = v.findViewById(R.id.textViewCategoria)
         linearLayoutComponente = v.findViewById(R.id.linearLayoutComponente)
@@ -270,8 +273,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
 
     private fun showPopupMenu(v: View, context: Context) {
-//        receive = p.AuditoriaPuntoFijoId!!
-
         val popupMenu = PopupMenu(context, v)
         popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.tomarFoto))
         popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.elegirFoto))
@@ -344,5 +345,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     private fun savePhoto(id: Int, nameImg: String) {
         auditoriaImp.savePhoto(id, nameImg)
     }
+
+
+
 
 }

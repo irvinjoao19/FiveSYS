@@ -27,6 +27,10 @@ interface AuditoriaImplementation {
 
     // TODO CATEGORIA
 
-    val categorias : RealmResults<Categoria>
+    val categorias: RealmResults<Categoria>
+
+    // TODO DETALLE
+
+    fun saveDetalle(d: Detalle, AuditoriaId: Int)
 
 }

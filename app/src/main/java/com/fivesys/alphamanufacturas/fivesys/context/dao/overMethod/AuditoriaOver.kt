@@ -55,4 +55,21 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
     override val categorias: RealmResults<Categoria>
         get() = realm.where(Categoria::class.java).findAll()
 
+    override fun saveDetalle(d: Detalle, AuditoriaId: Int) {
+        realm.executeTransaction {
+            val dd: Detalle? = realm.where(Detalle::class.java).equalTo("AuditoriaDetalleId", d.AuditoriaDetalleId).findFirst()
+            if (dd != null) {
+                dd.AspectoObservado = d.AspectoObservado
+                dd.Categoria = realm.copyFromRealm(d.Categoria!!)
+                dd.Componente = realm.copyFromRealm(d.Componente!!)
+            } else {
+                val a: AuditoriaByOne? = realm.where(AuditoriaByOne::class.java).equalTo("AuditoriaId", AuditoriaId).findFirst()
+                if (a != null) {
+                    realm.copyToRealmOrUpdate(d)
+                    a.Detalles?.add(d)
+                }
+            }
+        }
+    }
+
 }

@@ -15,6 +15,7 @@ import io.realm.RealmList
 import android.widget.ImageView
 import android.widget.ProgressBar
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
+import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -135,10 +136,14 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
                         }
                     })
             imageViewPhoto.setOnClickListener { listener.onItemClick(d, adapterPosition) }
+
+            itemView.setOnLongClickListener { v -> listener.onLongClick(d, v, adapterPosition) }
         }
     }
 
     interface OnItemClickListener {
         fun onItemClick(detalle: Detalle, position: Int)
+
+        fun onLongClick(d: Detalle, v: View, position: Int): Boolean
     }
 }
