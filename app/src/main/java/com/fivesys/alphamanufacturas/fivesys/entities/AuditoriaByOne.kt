@@ -16,10 +16,11 @@ open class AuditoriaByOne : RealmObject {
     var Sector: Sector? = null
     var Detalles: RealmList<Detalle>? = null
     var PuntosFijos: RealmList<PuntosFijosHeader>? = null
+    var Categorias: RealmList<Categoria>? = null
 
     constructor() : super()
 
-    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, EstadoAuditoria: Int?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?) : super() {
+    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, EstadoAuditoria: Int?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?, Categorias: RealmList<Categoria>?) : super() {
         this.AuditoriaId = AuditoriaId
         this.Codigo = Codigo
         this.Nombre = Nombre
@@ -29,5 +30,6 @@ open class AuditoriaByOne : RealmObject {
         this.Sector = Sector
         this.Detalles = Detalles
         this.PuntosFijos = PuntosFijos
+        this.Categorias = Categorias
     }
 }

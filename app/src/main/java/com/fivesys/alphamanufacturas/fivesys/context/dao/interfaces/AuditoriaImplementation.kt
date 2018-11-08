@@ -25,8 +25,8 @@ interface AuditoriaImplementation {
 
     fun savePhoto(AuditoriaPuntoFijoId: Int, url: String)
 
-    // TODO COMPONENTE
+    // TODO CATEGORIA
 
-    val componentes : RealmResults<Componente>
+    val categorias : RealmResults<Categoria>
 
 }

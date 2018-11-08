@@ -41,6 +41,36 @@
                     android:layout_marginBottom="5dp"
                     android:orientation="vertical">
 
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Categoria"
+                        android:textColor="@color/primary_text" />
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutCategoria"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="20dp"
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
+
+                        <TextView
+                            android:id="@+id/textViewCategoria"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Categoria" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/img"
+                            android:src="@drawable/ic_down" />
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -76,28 +106,12 @@
                         android:text="Referencia"
                         android:textColor="@color/primary_text" />
 
-                    <LinearLayout
-                        android:id="@+id/linearLayoutReferencia"
+                    <EditText
+                        android:id="@+id/editTextReferencia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <TextView
-                            android:id="@+id/textViewReferencia"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Referencia" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/img"
-                            android:src="@drawable/ic_down" />
-                    </LinearLayout>
+                        android:inputType="text"
+                        tools:ignore="Autofill,LabelFor" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -105,28 +119,12 @@
                         android:text="Aspecto Observado"
                         android:textColor="@color/primary_text" />
 
-                    <LinearLayout
-                        android:id="@+id/linearLayoutObservado"
+                    <EditText
+                        android:id="@+id/editTextAspecto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <TextView
-                            android:id="@+id/textViewObservado"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Aspecto Observado" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/img"
-                            android:src="@drawable/ic_down" />
-                    </LinearLayout>
+                        android:inputType="text"
+                        tools:ignore="Autofill,LabelFor" />
                 </LinearLayout>
 
 
@@ -352,6 +350,7 @@
                 </android.support.v4.widget.NestedScrollView>
 
                 <ImageView
+                    android:id="@+id/imageViewObservacion"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_marginLeft="10dp"

@@ -7,10 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
-import com.fivesys.alphamanufacturas.fivesys.entities.Componente
-import io.realm.RealmList
+import com.fivesys.alphamanufacturas.fivesys.entities.Categoria
+import io.realm.RealmResults
 
-class ComponenteAdapter(private var componentes: RealmList<Componente>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<ComponenteAdapter.ViewHolder>() {
+class CategoriaAdapter(private var categorias: RealmResults<Categoria>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<CategoriaAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = layout?.let { LayoutInflater.from(parent.context).inflate(it, parent, false) }
@@ -18,11 +18,11 @@ class ComponenteAdapter(private var componentes: RealmList<Componente>, private 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        listener?.let { holder.bind(componentes[position]!!, it) }
+        listener?.let { holder.bind(categorias[position]!!, it) }
     }
 
     override fun getItemCount(): Int {
-        return componentes.size
+        return categorias.size
     }
 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
@@ -31,14 +31,14 @@ class ComponenteAdapter(private var componentes: RealmList<Componente>, private 
         private var textViewId: TextView = v.findViewById(R.id.textViewId)
 
         @SuppressLint("SetTextI18n")
-        internal fun bind(c: Componente, listener: OnItemClickListener) {
-            textViewId.text = c.ComponenteId.toString()
+        internal fun bind(c: Categoria, listener: OnItemClickListener) {
+            textViewId.text = c.CategoriaId.toString()
             textViewNombre.text = c.Nombre
             itemView.setOnClickListener { listener.onItemClick(c, adapterPosition) }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(c: Componente, position: Int)
+        fun onItemClick(c: Categoria, position: Int)
     }
 }
