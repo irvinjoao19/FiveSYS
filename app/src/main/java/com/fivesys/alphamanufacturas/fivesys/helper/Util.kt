@@ -10,9 +10,11 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
+import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputLayout
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import java.io.*
 import java.nio.channels.FileChannel
@@ -374,6 +376,12 @@ object Util {
 
     fun toastMensaje(context: Context, mensaje: String) {
         Toast.makeText(context, mensaje, Toast.LENGTH_LONG).show()
+    }
+
+    fun snackBarMensaje(view: View, mensaje: String) {
+        val mSnackbar = Snackbar.make(view, mensaje, Snackbar.LENGTH_SHORT)
+        mSnackbar.setAction("Cerrar") { mSnackbar.dismiss() }
+        mSnackbar.show()
     }
 
 

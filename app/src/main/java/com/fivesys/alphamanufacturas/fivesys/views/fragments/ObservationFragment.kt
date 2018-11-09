@@ -4,6 +4,7 @@ package com.fivesys.alphamanufacturas.fivesys.views.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
+import android.os.Environment
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
@@ -26,10 +27,12 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOve
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
 import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ObservacionAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
+import java.io.File
 
 
 class ObservationFragment : Fragment(), View.OnClickListener {
@@ -94,6 +97,9 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         layoutManager = LinearLayoutManager(context)
 
         if (a != null) {
+            a.Detalles!!.addChangeListener { _ ->
+                observacionAdapter.notifyDataSetChanged()
+            }
             observacionAdapter = ObservacionAdapter(a.Detalles!!, R.layout.cardview_observaciones, object : ObservacionAdapter.OnItemClickListener {
                 override fun onLongClick(d: Detalle, v: View, position: Int): Boolean {
                     showPopupMenu(d, v, context!!)
@@ -127,7 +133,19 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                     }
 
                     override fun onError(e: Exception) {
-                        imageViewPhoto.setImageResource(R.drawable.photo_error)
+                        val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + nombre)
+                        Picasso.get()
+                                .load(f)
+                                .into(imageViewPhoto, object : Callback {
+                                    override fun onSuccess() {
+                                        progressBar.visibility = View.GONE
+                                    }
+
+                                    override fun onError(e: Exception) {
+                                        progressBar.visibility = View.GONE
+                                        imageViewPhoto.setImageResource(R.drawable.photo_error)
+                                    }
+                                })
                     }
                 })
 

@@ -31,6 +31,11 @@ interface AuditoriaImplementation {
 
     // TODO DETALLE
 
+    fun getDetalleById(AuditoriaDetalleId: Int): Detalle?
+
+    fun getDetalleIdentity(): Int
+
     fun saveDetalle(d: Detalle, AuditoriaId: Int)
+
 
 }

@@ -10,7 +10,7 @@ open class Detalle : RealmObject {
     var Componente: Componente? = null
     var Categoria: Categoria? = null
     var AspectoObservado: String? = ""
-    var Nombre: String? = ""
+    var Nombre: String? = "" // referencia
     var S1: Int? = 0
     var S2: Int? = 0
     var S3: Int? = 0

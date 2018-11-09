@@ -44,4 +44,8 @@
     <string name="elegirFoto">Elegir Foto</string>
     <string name="observacion">Observación</string>
     <string name="edit">Editar</string>
+    <string name="categoria">Categoria</string>
+    <string name="componente">Componente</string>
+    <string name="referencia">Referencia</string>
+    <string name="aspecto_observado">Aspecto Observado</string>
 </resources>

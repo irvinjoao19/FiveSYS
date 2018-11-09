@@ -55,13 +55,32 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
     override val categorias: RealmResults<Categoria>
         get() = realm.where(Categoria::class.java).findAll()
 
+    override fun getDetalleById(AuditoriaDetalleId: Int): Detalle? {
+        return realm.where(Detalle::class.java).equalTo("AuditoriaDetalleId", AuditoriaDetalleId).findFirst()
+    }
+
+    override fun getDetalleIdentity(): Int {
+        val detalle = realm.where(Detalle::class.java).max("AuditoriaDetalleId")
+        val result: Int
+        result = if (detalle == null) 1 else detalle.toInt() + 1
+        return result
+    }
+
     override fun saveDetalle(d: Detalle, AuditoriaId: Int) {
         realm.executeTransaction {
             val dd: Detalle? = realm.where(Detalle::class.java).equalTo("AuditoriaDetalleId", d.AuditoriaDetalleId).findFirst()
             if (dd != null) {
                 dd.AspectoObservado = d.AspectoObservado
-                dd.Categoria = realm.copyFromRealm(d.Categoria!!)
-                dd.Componente = realm.copyFromRealm(d.Componente!!)
+                dd.Categoria = realm.copyToRealmOrUpdate(d.Categoria!!)
+                dd.Componente = realm.copyToRealmOrUpdate(d.Componente!!)
+                dd.Detalle = d.Detalle
+                dd.Nombre = d.Nombre
+                dd.S1 = d.S1
+                dd.S2 = d.S2
+                dd.S3 = d.S3
+                dd.S4 = d.S4
+                dd.S5 = d.S5
+                dd.Url = d.Url
             } else {
                 val a: AuditoriaByOne? = realm.where(AuditoriaByOne::class.java).equalTo("AuditoriaId", AuditoriaId).findFirst()
                 if (a != null) {

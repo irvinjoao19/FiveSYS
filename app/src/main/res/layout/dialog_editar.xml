@@ -44,7 +44,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Categoria"
+                        android:text="@string/categoria"
                         android:textColor="@color/primary_text" />
 
                     <LinearLayout
@@ -61,7 +61,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Categoria" />
+                            android:text="@string/categoria" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -73,7 +73,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Componente"
+                        android:text="@string/componente"
                         android:textColor="@color/primary_text" />
 
                     <LinearLayout
@@ -90,7 +90,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Componente" />
+                            android:text="@string/componente" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -102,7 +102,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Referencia"
+                        android:text="@string/referencia"
                         android:textColor="@color/primary_text" />
 
                     <EditText
@@ -115,7 +115,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Aspecto Observado"
+                        android:text="@string/aspecto_observado"
                         android:textColor="@color/primary_text" />
 
                     <EditText
@@ -149,7 +149,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="S1"
+                            android:text="@string/s1"
                             android:textColor="@color/primary_text" />
 
                         <LinearLayout
@@ -163,8 +163,7 @@
                             <TextView
                                 android:id="@+id/textViewS1"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="S1" />
+                                android:layout_height="wrap_content" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -186,7 +185,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="S2"
+                            android:text="@string/s2"
                             android:textColor="@color/primary_text" />
 
                         <LinearLayout
@@ -200,8 +199,7 @@
                             <TextView
                                 android:id="@+id/textViewS2"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="S2" />
+                                android:layout_height="wrap_content" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -224,7 +222,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="S3"
+                            android:text="@string/s3"
                             android:textColor="@color/primary_text" />
 
                         <LinearLayout
@@ -238,8 +236,7 @@
                             <TextView
                                 android:id="@+id/textViewS3"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="S3" />
+                                android:layout_height="wrap_content" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -261,7 +258,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="S4"
+                            android:text="@string/s4"
                             android:textColor="@color/primary_text" />
 
                         <LinearLayout
@@ -275,8 +272,7 @@
                             <TextView
                                 android:id="@+id/textViewS4"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="S4" />
+                                android:layout_height="wrap_content" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
@@ -298,7 +294,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="S5"
+                            android:text="@string/s5"
                             android:textColor="@color/primary_text" />
 
                         <LinearLayout
@@ -312,8 +308,7 @@
                             <TextView
                                 android:id="@+id/textViewS5"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="S5" />
+                                android:layout_height="wrap_content" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
