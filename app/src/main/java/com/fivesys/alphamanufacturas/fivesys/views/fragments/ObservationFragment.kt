@@ -17,9 +17,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.PopupMenu
-import android.widget.ProgressBar
+import android.widget.*
 
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -54,7 +52,9 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     lateinit var fab: FloatingActionButton
 
     lateinit var builder: AlertDialog.Builder
+    lateinit var builderDelete: AlertDialog.Builder
     lateinit var dialog: AlertDialog
+    lateinit var dialogDelete: AlertDialog
 
     var id: Int? = 0
 
@@ -166,14 +166,51 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     private fun showPopupMenu(d: Detalle, v: View, context: Context) {
         val popupMenu = PopupMenu(context, v)
         popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.edit))
+        popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.eliminar))
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 1 -> {
                     showCreateHeaderDialog("Editar Observación", id!!, d.AuditoriaDetalleId!!)
                 }
+                2 -> {
+                    deletePhoto(d)
+                }
             }
             false
         }
         popupMenu.show()
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun deletePhoto(d: Detalle) {
+
+        builderDelete = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
+
+        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
+        val textViewMessage: TextView = v.findViewById(R.id.textViewMessage)
+        val buttonCancelar: Button = v.findViewById(R.id.buttonCancelar)
+        val buttonAceptar: Button = v.findViewById(R.id.buttonAceptar)
+
+        textViewTitle.text = "Eliminar"
+        textViewMessage.text = "Deseas eliminar esta observación ?"
+
+        buttonAceptar.setOnClickListener {
+            if (auditoriaImp.deleteDetalle(d)) {
+                Util.toastMensaje(context!!, "Observación eliminado")
+            } else {
+                Util.toastMensaje(context!!, "No se pudo eliminar")
+            }
+            dialogDelete.dismiss()
+        }
+
+        buttonCancelar.setOnClickListener {
+            dialogDelete.dismiss()
+        }
+
+        builderDelete.setView(v)
+        dialogDelete = builderDelete.create()
+        dialogDelete.show()
     }
 }

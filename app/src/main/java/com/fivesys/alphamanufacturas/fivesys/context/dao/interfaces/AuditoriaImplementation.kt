@@ -37,5 +37,7 @@ interface AuditoriaImplementation {
 
     fun saveDetalle(d: Detalle, AuditoriaId: Int)
 
+    fun deleteDetalle(d: Detalle): Boolean
+
 
 }

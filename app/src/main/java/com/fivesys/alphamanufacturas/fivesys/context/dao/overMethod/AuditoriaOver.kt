@@ -1,10 +1,13 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod
 
+import android.os.Environment
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.entities.*
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
+import java.io.File
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
@@ -89,6 +92,25 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                 }
             }
         }
+    }
+
+    override fun deleteDetalle(d: Detalle): Boolean {
+        var valor = true
+        val imagepath = Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url
+        val f = File(imagepath)
+        if (f.exists()) {
+            if (f.delete()) {
+                realm.executeTransaction {
+                    d.deleteFromRealm()
+                }
+            }else{
+                valor = false
+            }
+        }else{
+            valor = false
+        }
+
+        return valor
     }
 
 }
