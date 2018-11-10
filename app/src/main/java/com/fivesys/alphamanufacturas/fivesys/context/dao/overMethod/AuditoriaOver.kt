@@ -109,7 +109,6 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }else{
             valor = false
         }
-
         return valor
     }
 
