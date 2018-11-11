@@ -38,4 +38,23 @@ open class Detalle : RealmObject {
         this.Detalle = Detalle
         this.Url = Url
     }
+
+
+    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?) : super() {
+        this.AuditoriaDetalleId = AuditoriaDetalleId
+        this.AuditoriaId = AuditoriaId
+        this.CategoriaId = CategoriaId
+        this.ComponenteId = ComponenteId
+        this.Componente = Componente
+        this.Categoria = Categoria
+        this.AspectoObservado = AspectoObservado
+        this.Nombre = Nombre
+        this.S1 = S1
+        this.S2 = S2
+        this.S3 = S3
+        this.S4 = S4
+        this.S5 = S5
+        this.Detalle = Detalle
+        this.Url = Url
+    }
 }

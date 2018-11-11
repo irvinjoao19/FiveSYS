@@ -452,7 +452,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val referencia = editTextReferencia.text.toString()
 
         if (nameImg != null) {
-            val detalle = Detalle(detalleId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, nameImg)
+            val detalle = Detalle(detalleId, auditoriaId, componente.ComponenteId, category.CategoriaId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, nameImg)
             auditoriaImp.saveDetalle(detalle, auditoriaId!!)
             dismiss()
         } else {
