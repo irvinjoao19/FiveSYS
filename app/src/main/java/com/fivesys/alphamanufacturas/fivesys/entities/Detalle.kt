@@ -7,6 +7,9 @@ open class Detalle : RealmObject {
 
     @PrimaryKey
     var AuditoriaDetalleId: Int? = 0
+    var AuditoriaId: Int? = 0
+    var CategoriaId: Int? = 0
+    var ComponenteId: Int? = 0
     var Componente: Componente? = null
     var Categoria: Categoria? = null
     var AspectoObservado: String? = ""
