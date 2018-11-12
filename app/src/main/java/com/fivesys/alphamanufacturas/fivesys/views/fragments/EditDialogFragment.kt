@@ -23,10 +23,7 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
-import com.fivesys.alphamanufacturas.fivesys.entities.Categoria
-import com.fivesys.alphamanufacturas.fivesys.entities.Componente
-import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
-import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
+import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.CategoriaAdapter
@@ -36,8 +33,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmList
-import io.realm.RealmObject
-import io.realm.kotlin.createObject
 import java.io.File
 
 class EditDialogFragment : DialogFragment(), View.OnClickListener {
@@ -310,8 +305,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         textViewTitulo.text = "Categoria"
-        val categoria = auditoriaImp.categorias
-        val categoriaAdapter = CategoriaAdapter(categoria, R.layout.cardview_combo, object : CategoriaAdapter.OnItemClickListener {
+        val categoria: AuditoriaByOne = auditoriaImp.getAuditoriaByOne(auditoriaId!!)!!
+        val categoriaAdapter = CategoriaAdapter(categoria.Categorias!!, R.layout.cardview_combo, object : CategoriaAdapter.OnItemClickListener {
             override fun onItemClick(c: Categoria, position: Int) {
 
                 category.CategoriaId = c.CategoriaId
@@ -452,7 +447,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val referencia = editTextReferencia.text.toString()
 
         if (nameImg != null) {
-            val detalle = Detalle(detalleId, auditoriaId, componente.ComponenteId, category.CategoriaId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, nameImg)
+            val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, 1, nameImg)
             auditoriaImp.saveDetalle(detalle, auditoriaId!!)
             dismiss()
         } else {

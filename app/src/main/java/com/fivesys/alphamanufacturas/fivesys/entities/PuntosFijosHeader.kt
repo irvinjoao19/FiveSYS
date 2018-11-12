@@ -7,18 +7,20 @@ open class PuntosFijosHeader : RealmObject {
 
     @PrimaryKey
     var AuditoriaPuntoFijoId: Int? = 0
-    var PuntosFijoId: Int? = 0
+    var PuntoFijoId: Int? = 0
     var AuditoriaId: Int? = 0
     var NPuntoFijo: String? = ""
+    var FotoId: Int? = null
     var Url: String? = ""
 
     constructor() : super()
 
-    constructor(AuditoriaPuntoFijoId: Int?, PuntosFijoId: Int?, AuditoriaId: Int?, NPuntoFijo: String?, Url: String?) : super() {
+    constructor(AuditoriaPuntoFijoId: Int?, PuntoFijoId: Int?, AuditoriaId: Int?, NPuntoFijo: String?, FotoId: Int?, Url: String?) : super() {
         this.AuditoriaPuntoFijoId = AuditoriaPuntoFijoId
-        this.PuntosFijoId = PuntosFijoId
+        this.PuntoFijoId = PuntoFijoId
         this.AuditoriaId = AuditoriaId
         this.NPuntoFijo = NPuntoFijo
+        this.FotoId = FotoId
         this.Url = Url
     }
 }

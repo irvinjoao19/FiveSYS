@@ -12,17 +12,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
-import io.realm.RealmList
 import android.widget.ImageView
 import android.widget.ProgressBar
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
-import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.realm.RealmList
+import io.realm.RealmResults
 import java.io.File
 
-class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<ObservacionAdapter.ViewHolder>() {
+class ObservacionAdapter(private var detalles: RealmResults<Detalle>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<ObservacionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = layout?.let { LayoutInflater.from(parent.context).inflate(it, parent, false) }
@@ -150,9 +150,9 @@ class ObservacionAdapter(private var detalles: RealmList<Detalle>, private var l
                         }
                     })
             imageViewPhoto.setOnClickListener { listener.onItemClick(d, adapterPosition) }
-
             itemView.setOnLongClickListener { v -> listener.onLongClick(d, v, adapterPosition) }
         }
+
     }
 
     interface OnItemClickListener {

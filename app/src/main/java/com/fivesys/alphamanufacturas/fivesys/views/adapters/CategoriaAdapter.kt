@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Categoria
-import io.realm.RealmResults
+import io.realm.RealmList
 
-class CategoriaAdapter(private var categorias: RealmResults<Categoria>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<CategoriaAdapter.ViewHolder>() {
+class CategoriaAdapter(private var categorias: RealmList<Categoria>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<CategoriaAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = layout?.let { LayoutInflater.from(parent.context).inflate(it, parent, false) }

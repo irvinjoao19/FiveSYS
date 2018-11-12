@@ -29,8 +29,12 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ObservacionAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.Flowable.fromIterable
+import io.reactivex.Observable.fromIterable
 import io.realm.Realm
+import io.realm.RealmResults
 import java.io.File
+import java.util.*
 
 
 class ObservationFragment : Fragment(), View.OnClickListener {
@@ -83,13 +87,13 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
             id = args.getInt("id")
-            bindUI(view, auditoriaImp.getAuditoriaByOne(id!!))
+            bindUI(view, auditoriaImp.getDetalleByAuditoria(id!!,false))
         }
         return view
     }
 
 
-    private fun bindUI(view: View, a: AuditoriaByOne?) {
+    private fun bindUI(view: View, a: RealmResults<Detalle>?) {
 
         fab = view.findViewById(R.id.fab)
         fab.setOnClickListener(this)
@@ -97,10 +101,11 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         layoutManager = LinearLayoutManager(context)
 
         if (a != null) {
-            a.Detalles!!.addChangeListener { _ ->
+//            a.Detalles!!.filter { i -> i.Eliminado!! }
+            a.addChangeListener { _ ->
                 observacionAdapter.notifyDataSetChanged()
             }
-            observacionAdapter = ObservacionAdapter(a.Detalles!!, R.layout.cardview_observaciones, object : ObservacionAdapter.OnItemClickListener {
+            observacionAdapter = ObservacionAdapter(a, R.layout.cardview_observaciones, object : ObservacionAdapter.OnItemClickListener {
                 override fun onLongClick(d: Detalle, v: View, position: Int): Boolean {
                     showPopupMenu(d, v, context!!)
                     return false

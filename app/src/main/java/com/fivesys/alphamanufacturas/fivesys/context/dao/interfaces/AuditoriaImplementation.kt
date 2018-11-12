@@ -33,6 +33,8 @@ interface AuditoriaImplementation {
 
     fun getDetalleById(AuditoriaDetalleId: Int): Detalle?
 
+    fun getDetalleByAuditoria(AuditoriaId: Int, Eliminado: Boolean): RealmResults<Detalle>
+
     fun getDetalleIdentity(): Int
 
     fun saveDetalle(d: Detalle, AuditoriaId: Int)

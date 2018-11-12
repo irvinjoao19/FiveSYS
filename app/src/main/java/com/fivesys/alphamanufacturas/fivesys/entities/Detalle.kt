@@ -21,11 +21,20 @@ open class Detalle : RealmObject {
     var S5: Int? = 0
     var Detalle: String? = ""
     var Url: String? = ""
+    var FotoId: Int? = null
+    var Eliminado: Boolean? = false
+    var estado: Int? = 0
 
     constructor() : super()
 
-    constructor(AuditoriaDetalleId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?) : super() {
+
+    // TODO LOCAL SAVE REGISTRE
+
+    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?) : super() {
         this.AuditoriaDetalleId = AuditoriaDetalleId
+        this.AuditoriaId = AuditoriaId
+        this.CategoriaId = CategoriaId
+        this.ComponenteId = ComponenteId
         this.Componente = Componente
         this.Categoria = Categoria
         this.AspectoObservado = AspectoObservado
@@ -36,11 +45,15 @@ open class Detalle : RealmObject {
         this.S4 = S4
         this.S5 = S5
         this.Detalle = Detalle
+        this.estado = estado
         this.Url = Url
+
     }
 
 
-    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?) : super() {
+    // TODO RETROFIT
+
+    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?, FotoId: Int?) : super() {
         this.AuditoriaDetalleId = AuditoriaDetalleId
         this.AuditoriaId = AuditoriaId
         this.CategoriaId = CategoriaId
@@ -56,5 +69,6 @@ open class Detalle : RealmObject {
         this.S5 = S5
         this.Detalle = Detalle
         this.Url = Url
+        this.FotoId = FotoId
     }
 }
