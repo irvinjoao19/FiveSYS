@@ -197,11 +197,15 @@ class AuditoriaActivity : AppCompatActivity() {
         b.addFormDataPart("model", json)
 
         for (f: PuntosFijosHeader in auditoria.PuntosFijos!!) {
-            filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url).toString())
+            if (!f.Url.isNullOrEmpty()) {
+                filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url).toString())
+            }
         }
 
         for (d: Detalle in auditoria.Detalles!!) {
-            filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url).toString())
+            if (!d.Url.isNullOrEmpty()) {
+                filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url).toString())
+            }
         }
 
         for (i in 0 until filePaths.size) {
