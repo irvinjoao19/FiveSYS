@@ -198,13 +198,23 @@ class AuditoriaActivity : AppCompatActivity() {
 
         for (f: PuntosFijosHeader in auditoria.PuntosFijos!!) {
             if (!f.Url.isNullOrEmpty()) {
-                filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url).toString())
+
+                val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url)
+                if (file.exists()) {
+                    filePaths.add(file.toString())
+                }
+
             }
         }
 
         for (d: Detalle in auditoria.Detalles!!) {
             if (!d.Url.isNullOrEmpty()) {
-                filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url).toString())
+
+                val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url)
+                if (file.exists()) {
+                    filePaths.add(file.toString())
+                }
+
             }
         }
 
@@ -235,7 +245,7 @@ class AuditoriaActivity : AppCompatActivity() {
 
                     override fun onError(e: Throwable) {
                         dialog.dismiss()
-                        Util.toastMensaje(this@AuditoriaActivity, "Algo paso intente nuevamente")
+                        Util.toastMensaje(this@AuditoriaActivity, e.message!!)
                     }
                 })
 
