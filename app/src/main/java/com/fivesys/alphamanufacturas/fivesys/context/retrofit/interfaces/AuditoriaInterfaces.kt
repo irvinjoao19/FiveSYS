@@ -31,6 +31,6 @@ interface AuditoriaInterfaces {
     fun getFiltroGetAll(): Observable<List<Area>>
 
     @Headers("Cache-Control: no-cache")
-    @POST("url")
+    @POST("/Control/Auditoria/APISave")
     fun sendRegister(@Body query: RequestBody): Observable<Mensaje>
 }

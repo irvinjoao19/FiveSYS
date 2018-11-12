@@ -25,6 +25,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOve
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
+import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
 import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
 import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
@@ -177,13 +178,13 @@ class AuditoriaActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun sendRegister(id: Int) {
 
-//        builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
-//        @SuppressLint("InflateParams") val v = LayoutInflater.from(this@AuditoriaActivity).inflate(R.layout.dialog_alert, null)
-//
-//        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-//        textViewTitle.text = "Enviando ...."
-//
-//        builder.setView(v)
+        builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this@AuditoriaActivity).inflate(R.layout.dialog_alert, null)
+
+        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
+        textViewTitle.text = "Enviando ...."
+
+        builder.setView(v)
 //
         val filePaths: ArrayList<String> = ArrayList()
         val auditoria: AuditoriaByOne = auditoriaImp.getAuditoriaByOne(id)!!
@@ -191,47 +192,53 @@ class AuditoriaActivity : AppCompatActivity() {
         val json = Gson().toJson(realm.copyFromRealm(auditoria))
         Log.i("TAG", json)
 
-//        val b = MultipartBody.Builder()
-//        b.setType(MultipartBody.FORM)
-//        b.addFormDataPart("model", json)
-//
-//        for (f: PuntosFijosHeader in auditoria.PuntosFijos!!) {
-//            filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url).toString())
-//        }
-//
-//        for (i in 0 until filePaths.size) {
-//            val file = File(filePaths[i])
-//            b.addFormDataPart("fotos", file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
-//        }
-//
-//        val requestBody = b.build()
-//        val observableEnvio: Observable<Mensaje> = auditoriaInterfaces.sendRegister(requestBody)
-//
-//        observableEnvio.subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(object : Observer<Mensaje> {
-//                    override fun onComplete() {
-//                        dialog.dismiss()
-//                        Dialog.MensajeOk(this@AuditoriaActivity, "Mensaje", "Enviado")
-//                    }
-//
-//                    override fun onSubscribe(d: Disposable) {
-//                    }
-//
-//                    override fun onNext(t: Mensaje) {
-////                        migrationImp.updateIdentity(p, t.id!!)
-//                    }
-//
-//                    override fun onError(e: Throwable) {
-//                        dialog.dismiss()
-//                        Util.toastMensaje(this@AuditoriaActivity, "Algo paso intente nuevamente")
-//                    }
-//                })
-//
-//        dialog = builder.create()
-//        dialog.setCanceledOnTouchOutside(false)
-//        dialog.setCancelable(false)
-//        dialog.show()
+        val b = MultipartBody.Builder()
+        b.setType(MultipartBody.FORM)
+        b.addFormDataPart("model", json)
+
+        for (f: PuntosFijosHeader in auditoria.PuntosFijos!!) {
+            filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url).toString())
+        }
+
+        for (d: Detalle in auditoria.Detalles!!) {
+            filePaths.add(File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url).toString())
+        }
+
+        for (i in 0 until filePaths.size) {
+            val file = File(filePaths[i])
+            b.addFormDataPart("fotos", file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
+        }
+
+        val requestBody = b.build()
+        val observableEnvio: Observable<Mensaje> = auditoriaInterfaces.sendRegister(requestBody)
+
+        var mensaje: String? = ""
+
+        observableEnvio.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Mensaje> {
+                    override fun onComplete() {
+                        Dialog.MensajeOk(this@AuditoriaActivity, "Mensaje", mensaje)
+                        dialog.dismiss()
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onNext(t: Mensaje) {
+                        mensaje = t.mensaje
+                    }
+
+                    override fun onError(e: Throwable) {
+                        dialog.dismiss()
+                        Util.toastMensaje(this@AuditoriaActivity, "Algo paso intente nuevamente")
+                    }
+                })
+
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 
 }
