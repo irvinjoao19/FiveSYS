@@ -27,12 +27,14 @@
                 android:layout_marginBottom="20dp"
                 card_view:cardElevation="5dp"
                 card_view:cardMaxElevation="5dp"
-                card_view:contentPadding="3dp">
+                card_view:contentPadding="5dp"
+                card_view:cardCornerRadius="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -72,8 +74,8 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="text"
-                                android:focusable="false"
-                                tools:ignore="Autofill,LabelFor" />
+                                tools:ignore="Autofill,LabelFor"
+                                android:focusable="false"/>
                         </LinearLayout>
 
                         <LinearLayout
@@ -93,8 +95,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:inputType="text"
+                                tools:ignore="Autofill,LabelFor"
                                 android:focusable="false"
-                                tools:ignore="Autofill,LabelFor" />
+                                />
                         </LinearLayout>
                     </LinearLayout>
 
@@ -111,11 +114,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="top|left"
-                        android:inputType="textMultiLine"
-                        android:lines="5"
-                        android:maxLines="2"
-                        android:minLines="3"
-                        android:scrollbars="vertical"
+                        android:inputType="text"
+                        android:focusable="false"
                         tools:ignore="Autofill,LabelFor,RtlHardcoded" />
 
                     <TextView
