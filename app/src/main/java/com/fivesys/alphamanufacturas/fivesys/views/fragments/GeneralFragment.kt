@@ -95,7 +95,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
             editTextCodigo.setText(a.Codigo)
             editTextArea.setText(a.Area?.Nombre)
             editTextSector.setText(a.Sector?.Nombre)
-            editTextResponsable.setText("NO HAY EN LA ENTIDAD REVISAR WEB API O NOSE CUAL ES :V")
+            editTextResponsable.setText(a.Responsable?.NombreCompleto)
             editTextNombre.setText(a.Nombre)
             textViewEstado.text = when (a.EstadoAuditoria) {
                 1 -> "Pendiente"
