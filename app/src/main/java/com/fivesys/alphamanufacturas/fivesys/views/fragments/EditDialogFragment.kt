@@ -266,22 +266,67 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                     1 -> {
                         s1 = t.nombre.toInt()
                         textViewS1.text = t.nombre
+
+                        s2 = 0
+                        s3 = 0
+                        s4 = 0
+                        s5 = 0
+                        textViewS2.text = ""
+                        textViewS3.text = ""
+                        textViewS4.text = ""
+                        textViewS5.text = ""
                     }
                     2 -> {
                         s2 = t.nombre.toInt()
                         textViewS2.text = t.nombre
+
+                        s1 = 0
+                        s3 = 0
+                        s4 = 0
+                        s5 = 0
+                        textViewS1.text = ""
+                        textViewS3.text = ""
+                        textViewS4.text = ""
+                        textViewS5.text = ""
                     }
                     3 -> {
                         s3 = t.nombre.toInt()
                         textViewS3.text = t.nombre
+
+                        s2 = 0
+                        s1 = 0
+                        s4 = 0
+                        s5 = 0
+                        textViewS2.text = ""
+                        textViewS1.text = ""
+                        textViewS4.text = ""
+                        textViewS5.text = ""
                     }
                     4 -> {
                         s4 = t.nombre.toInt()
                         textViewS4.text = t.nombre
+
+                        s2 = 0
+                        s3 = 0
+                        s1 = 0
+                        s5 = 0
+                        textViewS2.text = ""
+                        textViewS3.text = ""
+                        textViewS1.text = ""
+                        textViewS5.text = ""
                     }
                     5 -> {
                         s5 = t.nombre.toInt()
                         textViewS5.text = t.nombre
+
+                        s2 = 0
+                        s3 = 0
+                        s4 = 0
+                        s1 = 0
+                        textViewS2.text = ""
+                        textViewS3.text = ""
+                        textViewS4.text = ""
+                        textViewS1.text = ""
                     }
                 }
                 dialog.dismiss()
@@ -295,6 +340,9 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         dialog = builder.create()
         dialog.show()
     }
+
+
+
 
     @SuppressLint("SetTextI18n")
     private fun categoriaDialog() {
