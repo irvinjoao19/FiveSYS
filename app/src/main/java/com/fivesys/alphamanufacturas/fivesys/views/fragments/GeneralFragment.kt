@@ -22,32 +22,30 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOve
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import io.realm.Realm
 
 class GeneralFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.linearLayoutEstado -> estadoDialog()
+            R.id.editTextEstado -> estadoDialog()
         }
     }
 
-    lateinit var linearLayoutEstado: LinearLayout
-    lateinit var textViewEstado: TextView
-
-    lateinit var editTextCodigo: EditText
-    lateinit var editTextArea: EditText
-    lateinit var editTextSector: EditText
-    lateinit var editTextResponsable: EditText
-    lateinit var editTextNombre: EditText
-
+    lateinit var editTextCodigo: TextInputEditText
+    lateinit var editTextArea: TextInputEditText
+    lateinit var editTextSector: TextInputEditText
+    lateinit var editTextResponsable: TextInputEditText
+    lateinit var editTextNombre: TextInputEditText
+    lateinit var editTextEstado: TextInputEditText
 
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
 
     lateinit var builderEstado: AlertDialog.Builder
     lateinit var dialogEstado: AlertDialog
-
 
     companion object {
         fun newInstance(id: Int): GeneralFragment {
@@ -86,10 +84,8 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         editTextSector = view.findViewById(R.id.editTextSector)
         editTextResponsable = view.findViewById(R.id.editTextResponsable)
         editTextNombre = view.findViewById(R.id.editTextNombre)
-        textViewEstado = view.findViewById(R.id.textViewEstado)
-        linearLayoutEstado = view.findViewById(R.id.linearLayoutEstado)
-
-        linearLayoutEstado.setOnClickListener(this)
+        editTextEstado = view.findViewById(R.id.editTextEstado)
+        editTextEstado.setOnClickListener(this)
 
         if (a != null) {
             editTextCodigo.setText(a.Codigo)
@@ -97,12 +93,12 @@ class GeneralFragment : Fragment(), View.OnClickListener {
             editTextSector.setText(a.Sector?.Nombre)
             editTextResponsable.setText(a.Responsable?.NombreCompleto)
             editTextNombre.setText(a.Nombre)
-            textViewEstado.text = when (a.EstadoAuditoria) {
+            editTextEstado.setText(when (a.EstadoAuditoria) {
                 1 -> "Pendiente"
                 2 -> "Terminado"
                 3 -> "Anulado"
                 else -> "Vacio"
-            }
+            })
         }
     }
 
@@ -126,7 +122,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         val tipoDocumentoAdapter = TipoDocumentoAdapter(estado, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
 //                estadoId = tipoDocumento.id
-                textViewEstado.text = t.nombre
+                editTextEstado.setText(t.nombre)
                 dialogEstado.dismiss()
             }
         })

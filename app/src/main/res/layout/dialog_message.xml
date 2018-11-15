@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
@@ -26,21 +25,19 @@
         android:gravity="end|bottom"
         android:orientation="horizontal">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonCancelar"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:text="@string/cancel"
-            tools:ignore="ButtonStyle" />
+            android:textColor="@color/colorBlack" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonAceptar"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:text="@string/ok"
-            android:textColor="@color/colorPrimary"
-            tools:ignore="ButtonStyle" />
+            android:text="@string/ok" />
     </LinearLayout>
 </LinearLayout>

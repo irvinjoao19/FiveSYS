@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.fivesys.alphamanufacturas.fivesys.R;
+import com.google.android.material.button.MaterialButton;
 
 import androidx.appcompat.view.ContextThemeWrapper;
 
@@ -23,9 +24,9 @@ public class Dialog {
         @SuppressLint("InflateParams") View v = LayoutInflater.from(context).inflate(R.layout.dialog_message, null);
         final TextView textViewMessage = v.findViewById(R.id.textViewMessage);
         final TextView textViewTitle = v.findViewById(R.id.textViewTitle);
-        Button buttonCancelar = v.findViewById(R.id.buttonCancelar);
+        MaterialButton buttonCancelar = v.findViewById(R.id.buttonCancelar);
         buttonCancelar.setVisibility(View.GONE);
-        Button buttonAceptar = v.findViewById(R.id.buttonAceptar);
+        MaterialButton buttonAceptar = v.findViewById(R.id.buttonAceptar);
         textViewTitle.setText(titulo);
         textViewMessage.setTextSize(18);
         textViewMessage.setText(m);
