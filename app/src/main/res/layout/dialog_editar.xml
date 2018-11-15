@@ -357,25 +357,27 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp"
                     android:gravity="end|bottom"
                     android:orientation="horizontal">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonCancelar"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorTrans"
                         android:text="@string/cancel"
-                        tools:ignore="ButtonStyle" />
+                        android:textColor="@color/colorBlack" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonAceptar"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/colorTrans"
-                        android:text="@string/ok"
-                        android:textColor="@color/colorPrimary"
-                        tools:ignore="ButtonStyle" />
+                        android:text="@string/ok" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>

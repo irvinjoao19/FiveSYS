@@ -32,12 +32,13 @@
 
             <ImageView
                 android:id="@+id/imageViewPhoto"
-                android:layout_width="match_parent"
-                android:layout_height="140dp"
+                android:layout_width="fill_parent"
+                android:layout_height="180dp"
+                android:adjustViewBounds="true"
                 android:contentDescription="@string/img"
+                android:scaleType="centerCrop"
                 android:src="@drawable/photo_error" />
         </LinearLayout>
-
 
         <TextView
             android:id="@+id/textViewTitulo"

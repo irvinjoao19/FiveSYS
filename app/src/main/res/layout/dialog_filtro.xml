@@ -178,25 +178,22 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonCancelar"
+                        style="@style/Widget.MaterialComponents.Button.TextButton"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-
-                        android:background="@color/colorTrans"
                         android:text="@string/cancel"
-                        tools:ignore="ButtonStyle" />
+                        android:textColor="@color/colorBlack" />
 
-                    <Button
+                    <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonAceptar"
+                        style="@style/Widget.MaterialComponents.Button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        android:background="@color/colorAzulOscuro"
-                        android:text="@string/ok"
-                        android:textColor="@color/colorAmarrillo"
-                        tools:ignore="ButtonStyle" />
+                        android:text="@string/ok" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -26,6 +25,7 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.AreaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
+import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
@@ -61,8 +61,8 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     lateinit var textViewResponsable: TextView
     lateinit var textViewEstado: TextView
 
-    lateinit var buttonAceptar: Button
-    lateinit var buttonCancelar: Button
+    lateinit var buttonAceptar: MaterialButton
+    lateinit var buttonCancelar: MaterialButton
     lateinit var linearLayoutArea: LinearLayout
     lateinit var linearLayoutSector: LinearLayout
     lateinit var linearLayoutResponsable: LinearLayout

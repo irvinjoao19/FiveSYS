@@ -14,6 +14,8 @@ import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,11 +30,13 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.CategoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ComponenteAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
+import com.google.android.material.button.MaterialButton
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmList
 import java.io.File
+
 
 class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
@@ -88,8 +92,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     lateinit var editTextObservacion: EditText
 
     lateinit var imageViewObservacion: ImageView
-    lateinit var buttonCancelar: Button
-    lateinit var buttonAceptar: Button
+    lateinit var buttonCancelar: MaterialButton
+    lateinit var buttonAceptar: MaterialButton
 
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
