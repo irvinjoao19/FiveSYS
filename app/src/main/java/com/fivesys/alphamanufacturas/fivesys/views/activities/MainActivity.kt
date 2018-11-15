@@ -2,16 +2,16 @@ package com.fivesys.alphamanufacturas.fivesys.views.activities
 
 import android.content.Intent
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.support.v7.app.ActionBar
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AccesoImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor

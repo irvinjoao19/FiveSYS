@@ -10,12 +10,12 @@ import android.os.Build
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
-import android.support.design.widget.Snackbar
-import android.support.design.widget.TextInputLayout
 import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputLayout
 import java.io.*
 import java.nio.channels.FileChannel
 import java.text.SimpleDateFormat

@@ -3,18 +3,18 @@ package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.view.ContextThemeWrapper
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -124,9 +124,9 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         estado.add(TipoDocumento(3, "Anulado"))
 
         val tipoDocumentoAdapter = TipoDocumentoAdapter(estado, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
-            override fun onItemClick(tipoDocumento: TipoDocumento, position: Int) {
+            override fun onItemClick(t: TipoDocumento, position: Int) {
 //                estadoId = tipoDocumento.id
-                textViewEstado.text = tipoDocumento.nombre
+                textViewEstado.text = t.nombre
                 dialogEstado.dismiss()
             }
         })

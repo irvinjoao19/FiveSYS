@@ -2,18 +2,19 @@ package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
+import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
 import io.realm.RealmResults
 import java.util.*
@@ -41,7 +42,7 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        private val cardViewPrincipal: CardView = itemView.findViewById(R.id.cardViewPrincipal)
+        private val cardViewPrincipal: MaterialCardView = itemView.findViewById(R.id.cardViewPrincipal)
         private val textViewCodigo: TextView = itemView.findViewById(R.id.textViewCodigo)
         private val textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
         private val textViewEstado: TextView = itemView.findViewById(R.id.textViewEstado)

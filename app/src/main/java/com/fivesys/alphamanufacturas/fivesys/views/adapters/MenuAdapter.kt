@@ -1,19 +1,20 @@
 package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.CardView
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
+import com.google.android.material.card.MaterialCardView
+
 
 class MenuAdapter(private val titulos: Array<String>, private val imagenes: IntArray, private val listener: OnItemClickListener) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.cardview_menu, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.cardview_menu, parent, false)
         return ViewHolder(view)
     }
 
@@ -26,7 +27,7 @@ class MenuAdapter(private val titulos: Array<String>, private val imagenes: IntA
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val card_view: CardView = itemView.findViewById(R.id.card_view)
+        private val card_view: MaterialCardView = itemView.findViewById(R.id.card_view)
         private val imageViewPhoto: ImageView = itemView.findViewById(R.id.imageViewPhoto)
         private val textViewTitulo: TextView = itemView.findViewById(R.id.textViewTitulo)
 

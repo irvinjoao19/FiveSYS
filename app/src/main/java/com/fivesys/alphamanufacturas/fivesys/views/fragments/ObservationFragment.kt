@@ -1,40 +1,35 @@
 package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Environment
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.AlertDialog
-import android.support.v7.view.ContextThemeWrapper
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
-import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
 import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ObservacionAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-import io.reactivex.Flowable.fromIterable
-import io.reactivex.Observable.fromIterable
 import io.realm.Realm
 import io.realm.RealmResults
 import java.io.File
-import java.util.*
 
 
 class ObservationFragment : Fragment(), View.OnClickListener {
@@ -87,7 +82,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
             id = args.getInt("id")
-            bindUI(view, auditoriaImp.getDetalleByAuditoria(id!!,false))
+            bindUI(view, auditoriaImp.getDetalleByAuditoria(id!!, false))
         }
         return view
     }

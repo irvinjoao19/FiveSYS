@@ -4,12 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
-import android.support.v7.view.ContextThemeWrapper
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +12,12 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.DialogFragment
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
@@ -264,9 +264,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         estado.add(TipoDocumento(3, "Anulado"))
 
         val tipoDocumentoAdapter = TipoDocumentoAdapter(estado, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
-            override fun onItemClick(tipoDocumento: TipoDocumento, position: Int) {
-                estadoId = tipoDocumento.id
-                textViewEstado.text = tipoDocumento.nombre
+            override fun onItemClick(t: TipoDocumento, position: Int) {
+                estadoId = t.id
+                textViewEstado.text = t.nombre
                 dialogEstado.dismiss()
             }
         })

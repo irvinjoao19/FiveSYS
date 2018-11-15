@@ -5,21 +5,19 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.fivesys.alphamanufacturas.fivesys.R
-import android.support.design.widget.TextInputLayout
-import android.support.design.widget.TextInputEditText
-import android.support.v4.app.ActivityCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.view.ContextThemeWrapper
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AccesoImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
@@ -31,6 +29,8 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
 import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import io.realm.Realm
 import okhttp3.MediaType
@@ -147,9 +147,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
         textViewTitulo.text = "Tipo de Documento"
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipoDocumento, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
-            override fun onItemClick(tipoDocumento: TipoDocumento, position: Int) {
-                tipoDocumentoId = tipoDocumento.id
-                textViewTipoDocumento.text = tipoDocumento.nombre
+            override fun onItemClick(t: TipoDocumento, position: Int) {
+                tipoDocumentoId = t.id
+                textViewTipoDocumento.text = t.nombre
                 dialog.dismiss()
             }
 

@@ -3,13 +3,14 @@ package com.fivesys.alphamanufacturas.fivesys.helper;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import com.fivesys.alphamanufacturas.fivesys.R;
+
+import androidx.appcompat.view.ContextThemeWrapper;
 
 
 public class Dialog {

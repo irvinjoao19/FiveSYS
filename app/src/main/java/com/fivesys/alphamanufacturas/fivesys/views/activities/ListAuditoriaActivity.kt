@@ -3,21 +3,20 @@ package com.fivesys.alphamanufacturas.fivesys.views.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.annotation.RequiresApi
-import android.support.design.widget.FloatingActionButton
-import android.support.v4.app.FragmentTransaction
-import android.support.v7.app.ActionBar
-import android.support.v7.app.AlertDialog
-import android.support.v7.widget.DefaultItemAnimator
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
@@ -28,6 +27,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -124,9 +124,9 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             auditoriaAdapter?.notifyDataSetChanged()
         }
         auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
-            override fun onItemClick(auditoria: Auditoria, position: Int) {
+            override fun onItemClick(a: Auditoria, position: Int) {
                 val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
-                intent.putExtra("auditoriaId", auditoria.AuditoriaId)
+                intent.putExtra("auditoriaId", a.AuditoriaId)
                 startActivity(intent)
             }
         })
