@@ -59,6 +59,7 @@ class ObservacionAdapter(private var detalles: RealmResults<Detalle>, private va
         private val imageViewCategoria: ImageView = itemView.findViewById(R.id.imageViewCategoria)
         private val imageViewComponente: ImageView = itemView.findViewById(R.id.imageViewComponente)
         private val imageViewAspectoObservado: ImageView = itemView.findViewById(R.id.imageViewAspectoObservado)
+        private val imageViewOption: ImageView = itemView.findViewById(R.id.imageViewOption)
 
         private val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
 
@@ -88,6 +89,7 @@ class ObservacionAdapter(private var detalles: RealmResults<Detalle>, private va
                 imageViewCategoria.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
                 imageViewComponente.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
                 imageViewAspectoObservado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                imageViewOption.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorWhite), android.graphics.PorterDuff.Mode.SRC_IN)
             } else {
                 textViewCategoria.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
                 textViewComponente.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
@@ -124,39 +126,39 @@ class ObservacionAdapter(private var detalles: RealmResults<Detalle>, private va
             textViewS4.text = d.S4.toString()
             textViewS5.text = d.S5.toString()
 
-            val url = ConexionRetrofit.BaseUrl + d.Url
+
+            val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + d.Url)
             Picasso.get()
-                    .load(url)
+                    .load(f)
                     .into(imageViewPhoto, object : Callback {
                         override fun onSuccess() {
                             progressBar.visibility = View.GONE
                         }
 
                         override fun onError(e: Exception) {
-                            val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + d.Url)
+                            val url = ConexionRetrofit.BaseUrl + d.Url
                             Picasso.get()
-                                    .load(f)
+                                    .load(url)
                                     .into(imageViewPhoto, object : Callback {
                                         override fun onSuccess() {
                                             progressBar.visibility = View.GONE
                                         }
 
                                         override fun onError(e: Exception) {
+
                                             progressBar.visibility = View.GONE
                                             imageViewPhoto.setImageResource(R.drawable.photo_error)
                                         }
                                     })
                         }
                     })
-            imageViewPhoto.setOnClickListener { listener.onItemClick(d, adapterPosition) }
-            itemView.setOnLongClickListener { v -> listener.onLongClick(d, v, adapterPosition) }
-        }
 
+            imageViewPhoto.setOnClickListener { v -> listener.onItemClick(d, v, adapterPosition) }
+            imageViewOption.setOnClickListener { v -> listener.onItemClick(d, v, adapterPosition) }
+        }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(detalle: Detalle, position: Int)
-
-        fun onLongClick(d: Detalle, v: View, position: Int): Boolean
+        fun onItemClick(d: Detalle, v: View, position: Int)
     }
 }

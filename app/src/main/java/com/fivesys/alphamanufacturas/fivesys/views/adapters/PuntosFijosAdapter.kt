@@ -44,18 +44,19 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
         internal fun bind(p: PuntosFijosHeader, listener: OnItemClickListener) {
 
             textViewTitulo.text = p.NPuntoFijo
-            val url = ConexionRetrofit.BaseUrl + p.Url
+
+            val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + p.Url)
             Picasso.get()
-                    .load(url)
+                    .load(f)
                     .into(imageViewPhoto, object : Callback {
                         override fun onSuccess() {
                             progressBar.visibility = View.GONE
                         }
 
                         override fun onError(e: Exception) {
-                            val urlPath = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + p.Url)
+                            val url = ConexionRetrofit.BaseUrl + p.Url
                             Picasso.get()
-                                    .load(urlPath)
+                                    .load(url)
                                     .into(imageViewPhoto, object : Callback {
                                         override fun onSuccess() {
                                             progressBar.visibility = View.GONE
@@ -68,9 +69,11 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
                                     })
                         }
                     })
+
             imageViewPhoto.setOnLongClickListener { v -> listener.onLongClick(p, v, adapterPosition) }
         }
     }
+
 
     interface OnItemClickListener {
         fun onLongClick(p: PuntosFijosHeader, v: View, position: Int): Boolean

@@ -4,10 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Environment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
@@ -101,13 +98,11 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                 observacionAdapter.notifyDataSetChanged()
             }
             observacionAdapter = ObservacionAdapter(a, R.layout.cardview_observaciones, object : ObservacionAdapter.OnItemClickListener {
-                override fun onLongClick(d: Detalle, v: View, position: Int): Boolean {
-                    showPopupMenu(d, v, context!!)
-                    return false
-                }
-
-                override fun onItemClick(detalle: Detalle, position: Int) {
-                    showPhoto(detalle.Url)
+                override fun onItemClick(d: Detalle, v: View, position: Int) {
+                    when (v.id) {
+                        R.id.imageViewPhoto -> showPhoto(d.Url)
+                        R.id.imageViewOption -> showPopupMenu(d, v, context!!)
+                    }
                 }
             })
             recyclerView.itemAnimator = DefaultItemAnimator()
@@ -164,7 +159,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     }
 
     private fun showPopupMenu(d: Detalle, v: View, context: Context) {
-        val popupMenu = PopupMenu(context, v)
+        val popupMenu = PopupMenu(context, v, Gravity.BOTTOM)
         popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.edit))
         popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.eliminar))
         popupMenu.setOnMenuItemClickListener { item ->
