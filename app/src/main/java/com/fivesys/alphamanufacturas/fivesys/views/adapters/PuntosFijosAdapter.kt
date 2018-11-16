@@ -39,6 +39,7 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
         private val textViewTitulo: TextView = itemView.findViewById(R.id.textViewTitulo)
         private val progressBar: ProgressBar = itemView.findViewById(R.id.progressBar)
         private val imageViewPhoto: ImageView = itemView.findViewById(R.id.imageViewPhoto)
+        private val imageViewOption: ImageView = itemView.findViewById(R.id.imageViewOption)
 
         @SuppressLint("SetTextI18n")
         internal fun bind(p: PuntosFijosHeader, listener: OnItemClickListener) {
@@ -70,12 +71,13 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
                         }
                     })
 
-            imageViewPhoto.setOnLongClickListener { v -> listener.onLongClick(p, v, adapterPosition) }
+            imageViewPhoto.setOnClickListener { v -> listener.onItemClick(p, v, adapterPosition) }
+            imageViewOption.setOnClickListener { v -> listener.onItemClick(p, v, adapterPosition) }
         }
     }
 
 
     interface OnItemClickListener {
-        fun onLongClick(p: PuntosFijosHeader, v: View, position: Int): Boolean
+        fun onItemClick(p: PuntosFijosHeader, v: View, position: Int)
     }
 }

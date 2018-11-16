@@ -8,7 +8,7 @@
     android:layout_marginLeft="10dp"
     android:layout_marginTop="20dp"
     android:layout_marginRight="10dp"
-    card_view:cardCornerRadius="20dp"
+    card_view:cardCornerRadius="5dp"
     card_view:cardElevation="5dp"
     card_view:cardMaxElevation="5dp">
 
@@ -39,11 +39,45 @@
                 android:src="@drawable/photo_error" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewTitulo"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20sp"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:baselineAligned="false"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.8"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/textViewTitulo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20sp"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:id="@+id/imageViewOption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20sp"
+                    android:contentDescription="@string/img"
+                    android:src="@drawable/ic_menu" />
+            </LinearLayout>
+        </LinearLayout>
+
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

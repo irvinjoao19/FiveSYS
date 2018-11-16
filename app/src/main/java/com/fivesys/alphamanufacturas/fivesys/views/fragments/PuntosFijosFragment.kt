@@ -1,18 +1,24 @@
 package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -22,11 +28,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
+import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
 import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.PuntosFijosAdapter
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import io.realm.Realm
 import java.io.File
 
@@ -41,6 +50,9 @@ class PuntosFijosFragment : Fragment() {
 
     lateinit var folder: File
     lateinit var image: File
+
+    lateinit var builder: AlertDialog.Builder
+    lateinit var dialog: AlertDialog
 
     var receive: Int? = 0
     lateinit var nameImg: String
@@ -86,15 +98,54 @@ class PuntosFijosFragment : Fragment() {
                 puntosFijosAdapter.notifyDataSetChanged()
             }
             puntosFijosAdapter = PuntosFijosAdapter(a.PuntosFijos!!, R.layout.cardview_puntos_fijos, object : PuntosFijosAdapter.OnItemClickListener {
-                override fun onLongClick(p: PuntosFijosHeader, v: View, position: Int): Boolean {
-                    showPopupMenu(p, v, context!!)
-                    return false
+                override fun onItemClick(p: PuntosFijosHeader, v: View, position: Int) {
+                    when (v.id) {
+                        R.id.imageViewPhoto -> showPhoto(p.Url)
+                        R.id.imageViewOption -> showPopupMenu(p, v, context!!)
+                    }
                 }
             })
             recyclerView.itemAnimator = DefaultItemAnimator()
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = puntosFijosAdapter
         }
+    }
+
+    private fun showPhoto(nombre: String?) {
+        builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_photo, null)
+
+        val progressBar: ProgressBar = v.findViewById(R.id.progressBar)
+        val imageViewPhoto: ImageView = v.findViewById(R.id.imageViewPhoto)
+        val url = ConexionRetrofit.BaseUrl + nombre
+        progressBar.visibility = View.VISIBLE
+        Picasso.get()
+                .load(url)
+                .into(imageViewPhoto, object : Callback {
+                    override fun onSuccess() {
+                        progressBar.visibility = View.GONE
+                    }
+
+                    override fun onError(e: Exception) {
+                        val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + nombre)
+                        Picasso.get()
+                                .load(f)
+                                .into(imageViewPhoto, object : Callback {
+                                    override fun onSuccess() {
+                                        progressBar.visibility = View.GONE
+                                    }
+
+                                    override fun onError(e: Exception) {
+                                        progressBar.visibility = View.GONE
+                                        imageViewPhoto.setImageResource(R.drawable.photo_error)
+                                    }
+                                })
+                    }
+                })
+
+        builder.setView(v)
+        dialog = builder.create()
+        dialog.show()
     }
 
     private fun showPopupMenu(p: PuntosFijosHeader, v: View, context: Context) {
@@ -173,4 +224,6 @@ class PuntosFijosFragment : Fragment() {
     private fun savePhoto(id: Int, nameImg: String) {
         auditoriaImp.savePhoto(id, nameImg)
     }
+
+
 }

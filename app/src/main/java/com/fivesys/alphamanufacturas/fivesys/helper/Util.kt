@@ -69,21 +69,23 @@ object Util {
 
     // TODO SOBRE ADJUNTAR PHOTO
 
-    @Throws(IOException::class)
-    fun copyFile(sourceFile: File, destFile: File) {
-        if (!sourceFile.exists()) {
-            return
+
+    private fun copyFile(sourceFile: File?, destFile: File) {
+        if (sourceFile != null) {
+            if (!sourceFile.exists()) {
+                return
+            }
+            val source: FileChannel? = FileInputStream(sourceFile).channel
+            val destination: FileChannel = FileOutputStream(destFile).channel
+            if (source != null) {
+                destination.transferFrom(source, 0, source.size())
+            }
+            source?.close()
+            destination.close()
         }
-        val source: FileChannel? = FileInputStream(sourceFile).channel
-        val destination: FileChannel = FileOutputStream(destFile).channel
-        if (source != null) {
-            destination.transferFrom(source, 0, source.size())
-        }
-        source?.close()
-        destination.close()
     }
 
-    fun getRealPathFromURI(context: Context, contentUri: Uri): String? {
+    private fun getRealPathFromURI(context: Context, contentUri: Uri): String? {
         var result: String? = null
         val proj = arrayOf(MediaStore.Video.Media.DATA)
         @SuppressLint("Recycle") val cursor = Objects.requireNonNull(context).contentResolver.query(contentUri, proj, null, null, null)
@@ -123,14 +125,16 @@ object Util {
         val imagepath = Environment.getExternalStorageDirectory().toString() + "/" + FolderImg + "/" + file
         val f = File(imagepath)
         if (!f.exists()) {
+            val success = f.createNewFile()
+            if (success) {
+                Log.i("TAG", "FILE CREATED")
+            }
+
             try {
-                val success = f.createNewFile()
-                if (success) {
-                    Log.i("TAG", "FILE CREATED")
-                }
-                copyFile(File(getRealPathFromURI(context, data.data!!)!!), f)
-            } catch (e: IOException) {
-                e.printStackTrace()
+                copyFile(File(getRealPathFromURI(context, data.data!!)), f)
+            } catch (ex: Exception) {
+                Log.i("exception", ex.message)
+
             }
 
         }

@@ -332,7 +332,7 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
                         android:gravity="top|left"
-                        android:hint="@string/observacion"
+                        android:hint="@string/detalle"
                         android:inputType="textMultiLine"
                         android:lines="5"
                         android:maxLines="2"
