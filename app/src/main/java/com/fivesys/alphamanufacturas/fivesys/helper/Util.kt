@@ -12,8 +12,15 @@ import android.provider.MediaStore
 import android.provider.Settings
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
+import com.fivesys.alphamanufacturas.fivesys.R
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputLayout
 import java.io.*
@@ -31,6 +38,10 @@ object Util {
 
     private const val img_height_default = 800
     private const val img_width_default = 600
+
+
+    lateinit var builder: AlertDialog.Builder
+    lateinit var dialog: AlertDialog
 
 
     fun getFechaActual(): String {
@@ -388,5 +399,26 @@ object Util {
         mSnackbar.show()
     }
 
+
+    // TODO DIALOG MENSAJE
+
+
+    fun MensajeOk(context: Context, titulo: String, m: String) {
+        builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
+        val textViewMessage = v.findViewById<TextView>(R.id.textViewMessage)
+        val textViewTitle = v.findViewById<TextView>(R.id.textViewTitle)
+        val buttonCancelar = v.findViewById<Button>(R.id.buttonCancelar)
+        buttonCancelar.visibility = View.GONE
+        val buttonAceptar = v.findViewById<Button>(R.id.buttonAceptar)
+        textViewTitle.text = titulo
+        textViewMessage.textSize = 18f
+        textViewMessage.text = m
+        buttonAceptar.setOnClickListener { dialog.cancel() }
+        builder.setView(v)
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
 
 }

@@ -1,7 +1,7 @@
 package com.fivesys.alphamanufacturas.fivesys.helper;
 
+
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.fivesys.alphamanufacturas.fivesys.R;
 import com.google.android.material.button.MaterialButton;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.ContextThemeWrapper;
-
 
 public class Dialog {
 

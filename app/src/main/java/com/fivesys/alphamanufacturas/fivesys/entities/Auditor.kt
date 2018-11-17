@@ -12,18 +12,20 @@ open class Auditor : RealmObject {
     var NombreCompleto: String = ""
     var Correo: String = ""
     var Clave: String = ""
+    var Error: String = ""
     //46936232
     //Qwerty12345-
 
     constructor() : super()
 
-    constructor(AuditorId: Int, TipoDocumentoId: Int, NroDocumento: String, NombreCompleto: String, Correo: String, Clave: String) : super() {
+    constructor(AuditorId: Int, TipoDocumentoId: Int, NroDocumento: String, NombreCompleto: String, Correo: String, Clave: String, Error: String) : super() {
         this.AuditorId = AuditorId
         this.TipoDocumentoId = TipoDocumentoId
         this.NroDocumento = NroDocumento
         this.NombreCompleto = NombreCompleto
         this.Correo = Correo
         this.Clave = Clave
+        this.Error = Error
     }
 
     constructor(TipoDocumentoId: Int, NroDocumento: String, Clave: String) : super() {
@@ -31,4 +33,6 @@ open class Auditor : RealmObject {
         this.NroDocumento = NroDocumento
         this.Clave = Clave
     }
+
+
 }
