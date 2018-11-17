@@ -135,32 +135,35 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                 val keyword: Filtro? = Gson().fromJson(charSequence.toString(), Filtro::class.java)
                 if (keyword != null) {
                     val filteredList = ArrayList<Auditoria>()
+                    var ok: Boolean = true
                     for (auditoria: Auditoria in auditorias) {
-                        if (auditoria.Estado == keyword.EstadoAuditoria) {
-                            if (auditoria.Area != null) {
-                                if (auditoria.Area!!.AreaId == keyword.AreaId) {
-                                    filteredList.add(auditoria)
-                                }
-                            }
 
-                            if (auditoria.Sector != null) {
-                                if (auditoria.Sector!!.SectorId == keyword.SectorId) {
-                                    filteredList.add(auditoria)
-                                }
-                            }
+                        ok = auditoria.Estado == keyword.EstadoAuditoria
 
-                            if (auditoria.Responsable != null) {
-                                if (auditoria.Responsable!!.ResponsableId == keyword.ResponsableId) {
-                                    filteredList.add(auditoria)
-                                }
-                            }
-
-                            if (auditoria.Nombre != null) {
-                                if (auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)) {
-                                    filteredList.add(auditoria)
-                                }
+                        if (keyword.AreaId!! > 0 && ok) {
+                            if(auditoria.Area != null){
+                                ok = auditoria.Area!!.AreaId == keyword.AreaId
                             }
                         }
+                        if (keyword.SectorId!! > 0 && ok) {
+                            if (auditoria.Area != null ) {
+                                ok = auditoria.Sector!!.SectorId == keyword.SectorId
+                            }
+                        }
+                        if (keyword.ResponsableId!! > 0 && ok) {
+                            if (auditoria.Responsable != null ) {
+                                ok = auditoria.Responsable!!.ResponsableId == keyword.ResponsableId
+                            }
+                        }
+                        /*
+                        if (auditoria.Nombre != null && ok) {
+                            if (auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)) {
+
+                            }
+                        }
+                        */
+
+                        if(ok) filteredList.add(auditoria)
                     }
                     auditoriasList = filteredList
                 } else {
