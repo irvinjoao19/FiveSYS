@@ -135,10 +135,16 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                 val keyword: Filtro? = Gson().fromJson(charSequence.toString(), Filtro::class.java)
                 if (keyword != null) {
                     val filteredList = ArrayList<Auditoria>()
-                    var ok: Boolean
+                    var ok = true
                     for (auditoria: Auditoria in auditorias) {
 
-                        ok = auditoria.Estado == keyword.EstadoAuditoria
+                        if(keyword.Codigo!!.trim().isNotEmpty()){
+                            ok = auditoria.Codigo!!.toLowerCase().contains(keyword.Codigo!!)
+                        }
+
+                        if(keyword.EstadoAuditoria!! > 0){
+                            ok = auditoria.Estado == keyword.EstadoAuditoria
+                        }
 
                         if (keyword.AreaId!! > 0 && ok) {
                             if(auditoria.Area != null){
@@ -155,13 +161,12 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                                 ok = auditoria.Responsable!!.ResponsableId == keyword.ResponsableId
                             }
                         }
-                        /*
-                        if (auditoria.Nombre != null && ok) {
-                            if (auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)) {
 
+                        if(keyword.Nombre!!.trim().isNotEmpty()){
+                            if(auditoria.Nombre != null){
+                                ok = auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)
                             }
                         }
-                        */
 
                         if(ok) filteredList.add(auditoria)
                     }
