@@ -135,7 +135,7 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                 val keyword: Filtro? = Gson().fromJson(charSequence.toString(), Filtro::class.java)
                 if (keyword != null) {
                     val filteredList = ArrayList<Auditoria>()
-                    var ok: Boolean = true
+                    var ok: Boolean
                     for (auditoria: Auditoria in auditorias) {
 
                         ok = auditoria.Estado == keyword.EstadoAuditoria
