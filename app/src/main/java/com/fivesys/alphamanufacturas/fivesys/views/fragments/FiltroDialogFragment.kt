@@ -88,7 +88,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     var sectorId: Int = 0
     var responsableId: Int = 0
     var nresponsable: String? = ""
-    var estadoId: Int = 1
+    var estadoId: Int = 0
 
 
     private var titulo: String? = null
