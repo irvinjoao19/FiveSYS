@@ -166,9 +166,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                 textViewArea.text = area.Nombre
 
                 sectores = area.Sectores!!
-                textViewSector.text = area.Sectores!![0]!!.Nombre
-                sectorId = area.Sectores!![0]!!.AreaId
-
                 dialogArea.dismiss()
 
             }
@@ -198,8 +195,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                     sectorId = sector.SectorId
                     textViewSector.text = sector.Nombre
                     responsable = sector.Responsables!!
-                    textViewResponsable.text = sector.Responsables!![0]!!.NombreCompleto
-                    responsableId = sector.Responsables!![0]!!.ResponsableId
                     dialogSector.dismiss()
                 }
             })
