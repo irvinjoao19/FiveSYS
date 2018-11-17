@@ -239,7 +239,7 @@ class AuditoriaActivity : AppCompatActivity() {
                     }
 
                     override fun onError(e: Throwable) {
-                        Util.toastMensaje(this@AuditoriaActivity, e.message!!)
+//                        Util.toastMensaje(this@AuditoriaActivity, e.message!!)
                         dialog.dismiss()
                     }
                 })

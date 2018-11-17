@@ -485,10 +485,14 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                 image = File(folder, nameImg)
                 val imagepath = Util.getFolderAdjunto(nameImg!!, context!!, data)
 
-                if (!Util.comprimirImagen(imagepath)) {
-                    Toast.makeText(context, "No se pudo reducir imagen. Favor de volver a intentarlo !", Toast.LENGTH_LONG).show()
+                if (imagepath != null) {
+                    if (!Util.comprimirImagen(imagepath)) {
+                        Util.toastMensaje(context!!, "No se pudo reducir imagen. Favor de volver a intentarlo !")
+                    } else {
+                        Picasso.get().load(image).into(imageViewObservacion)
+                    }
                 } else {
-                    Picasso.get().load(image).into(imageViewObservacion)
+                    Util.toastMensaje(context!!, "Esta Foto no existe en tu galeria")
                 }
             }
         }

@@ -209,12 +209,14 @@ class PuntosFijosFragment : Fragment() {
                 folder = Util.getFolder()
                 nameImg = Util.getFechaActualForPhoto() + ".jpg"
                 val imagepath = Util.getFolderAdjunto(nameImg, context!!, data)
-
-                // TODO NO COPIES Y PEGUESSSSS FIJATE EL DetalleInspeccionId2
-                if (!Util.comprimirImagen(imagepath)) {
-                    Toast.makeText(context, "No se pudo reducir imagen. Favor de volver a intentarlo !", Toast.LENGTH_LONG).show()
+                if (imagepath != null) {
+                    if (!Util.comprimirImagen(imagepath)) {
+                        Util.toastMensaje(context!!, "No se pudo reducir imagen. Favor de volver a intentarlo !")
+                    } else {
+                        savePhoto(receive!!, nameImg)
+                    }
                 } else {
-                    savePhoto(receive!!, nameImg)
+                    Util.toastMensaje(context!!, "Esta Foto no existe en tu galeria")
                 }
             }
         }

@@ -132,7 +132,8 @@ object Util {
         }
     }
 
-    fun getFolderAdjunto(file: String, context: Context, data: Intent): String {
+    fun getFolderAdjunto(file: String, context: Context, data: Intent): String? {
+        var result: String? = null
         val imagepath = Environment.getExternalStorageDirectory().toString() + "/" + FolderImg + "/" + file
         val f = File(imagepath)
         if (!f.exists()) {
@@ -143,13 +144,12 @@ object Util {
 
             try {
                 copyFile(File(getRealPathFromURI(context, data.data!!)), f)
+                result = imagepath
             } catch (ex: Exception) {
-                Log.i("exception", ex.message)
 
             }
-
         }
-        return imagepath
+        return result
     }
 
     private fun getDateTimeFormatString(date: Date): String {
