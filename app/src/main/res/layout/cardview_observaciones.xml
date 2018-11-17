@@ -5,9 +5,7 @@
     android:id="@+id/cardViewPrincipal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="10dp"
-    android:layout_marginTop="20dp"
-    android:layout_marginRight="10dp"
+    android:layout_margin="10dp"
     card_view:cardCornerRadius="5dp"
     card_view:cardElevation="5dp"
     card_view:cardMaxElevation="5dp">
@@ -60,7 +58,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.8"
+                    android:layout_weight="0.9"
                     android:orientation="horizontal"
                     tools:ignore="UseCompoundDrawables">
 
@@ -83,7 +81,7 @@
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
+                    android:layout_weight="0.1"
                     android:gravity="center"
                     android:orientation="horizontal"
                     tools:ignore="UseCompoundDrawables">
@@ -144,11 +142,13 @@
                 android:id="@+id/textViewNombre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp" />
 
             <TextView
                 android:id="@+id/textViewDetalle"
+                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -165,6 +165,7 @@
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:paddingLeft="2dp"
+                android:layout_marginTop="10dp"
                 android:paddingRight="2dp">
 
                 <LinearLayout
@@ -177,6 +178,7 @@
                         android:id="@+id/textViewTitleS1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textStyle="bold"
                         android:text="@string/s1"
                         android:textColor="@color/primary_text" />
 
@@ -184,7 +186,7 @@
                         android:id="@+id/textViewS1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
@@ -198,7 +200,7 @@
                         android:id="@+id/textViewTitleS2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:textStyle="bold"
                         android:text="@string/s2"
                         android:textColor="@color/primary_text" />
 
@@ -206,7 +208,7 @@
                         android:id="@+id/textViewS2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
@@ -220,7 +222,7 @@
                         android:id="@+id/textViewTitleS3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:textStyle="bold"
                         android:text="@string/s3"
                         android:textColor="@color/primary_text" />
 
@@ -228,7 +230,7 @@
                         android:id="@+id/textViewS3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
@@ -242,7 +244,7 @@
                         android:id="@+id/textViewTitleS4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:textStyle="bold"
                         android:text="@string/s4"
                         android:textColor="@color/primary_text" />
 
@@ -250,7 +252,7 @@
                         android:id="@+id/textViewS4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
@@ -264,7 +266,7 @@
                         android:id="@+id/textViewTitleS5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:textStyle="bold"
                         android:text="@string/s5"
                         android:textColor="@color/primary_text" />
 
@@ -272,7 +274,7 @@
                         android:id="@+id/textViewS5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-
+                        android:layout_marginLeft="5dp"
                         android:textColor="@color/secondary_text" />
                 </LinearLayout>
             </LinearLayout>

@@ -49,7 +49,7 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8"
+                android:layout_weight="0.9"
                 android:orientation="horizontal"
                 tools:ignore="UseCompoundDrawables">
 
@@ -57,15 +57,15 @@
                     android:id="@+id/textViewTitulo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20sp"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    android:layout_margin="20sp"/>
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
+                android:layout_weight="0.1"
+
                 tools:ignore="UseCompoundDrawables">
 
                 <ImageView
@@ -73,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_margin="20sp"
+                    android:layout_margin="10sp"
                     android:contentDescription="@string/img"
                     android:src="@drawable/ic_menu" />
             </LinearLayout>

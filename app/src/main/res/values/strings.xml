@@ -22,11 +22,11 @@
     <string name="cancel">Cancelar</string>
     <string name="ok">Aceptar</string>
     <string name="mensajeFoto">Foto no encontrada</string>
-    <string name="s1">S1:</string>
-    <string name="s2">S2:</string>
-    <string name="s3">S3:</string>
-    <string name="s4">S4:</string>
-    <string name="s5">S5:</string>
+    <string name="s1">S1: </string>
+    <string name="s2">S2: </string>
+    <string name="s3">S3: </string>
+    <string name="s4">S4: </string>
+    <string name="s5">S5: </string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="codigo">Codigo</string>
     <string name="estado">Estado</string>

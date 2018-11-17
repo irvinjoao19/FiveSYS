@@ -25,10 +25,12 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
+            style="@style/Widget.Design.TabLayout"
+            app:tabTextAppearance="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorWhite"
-            android:elevation="4dp"
+            android:elevation="3dp"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/TabLayout_Theme"
             app:tabIndicatorColor="@color/colorAccent"

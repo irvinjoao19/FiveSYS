@@ -193,7 +193,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 response.code() == 404 -> result = "users"
                 else -> {
                     val message = Gson().fromJson(response.errorBody()?.string(), MessageError::class.java)
-                    result = "Codigo :" + response.code() + "\nMensaje :" + message.ExceptionMessage
+                    //result = "Codigo :" + response.code() + "\nMensaje :" + message.ExceptionMessage
+                    result = "Error\nEl usuario no existe o la clave es incorrecta."
                 }
             }
         } catch (e: IOException) {
