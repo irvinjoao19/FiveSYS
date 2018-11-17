@@ -1,7 +1,6 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod
 
 import android.os.Environment
-import android.util.Log
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
@@ -124,6 +123,20 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             }
         }
         return valor
+    }
+
+    override fun updateAuditoriaByOne(id: Int, ids: Array<IntArray>?) {
+        realm.executeTransaction {
+
+            val auditoria: AuditoriaByOne? = getAuditoriaByOne(id)!!
+            if (auditoria != null) {
+                for (x in 0 until ids!!.size) {
+                    for (y in 0 until ids[x].size) {
+                        System.out.println(ids[x][y])
+                    }
+                }
+            }
+        }
     }
 
 }
