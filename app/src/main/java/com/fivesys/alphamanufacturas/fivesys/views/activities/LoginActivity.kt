@@ -8,6 +8,7 @@ import android.os.Build
 import android.os.Bundle
 import com.fivesys.alphamanufacturas.fivesys.R
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
@@ -109,6 +110,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             permision()
         }
     }
+
     private fun permision() {
         if (!Permission.hasPermissions(this@LoginActivity, *Permission.PERMISSIONS)) {
             ActivityCompat.requestPermissions(this@LoginActivity, Permission.PERMISSIONS, Permission.PERMISSION_ALL)
@@ -183,18 +185,22 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             when {
                 response.code() == 200 -> {
                     auditor = response.body() as Auditor
-                    result = if (auditor.NombreCompleto.isNotEmpty()) {
-                        accesoImp.saveAuditor(auditor)
-                        "enter"
-                    } else {
-                        "pass"
+                    result = when {
+                        auditor.Error == "La clave es incorrecta." -> "pass"
+                        auditor.Error == "No existe el usuario." -> "users"
+                        auditor.NombreCompleto.isNotEmpty() -> {
+                            accesoImp.saveAuditor(auditor)
+                            "enter"
+                        }
+                        else -> "users"
                     }
+
                 }
                 response.code() == 404 -> result = "users"
                 else -> {
                     val message = Gson().fromJson(response.errorBody()?.string(), MessageError::class.java)
-                    //result = "Codigo :" + response.code() + "\nMensaje :" + message.ExceptionMessage
-                    result = "Error\nEl usuario no existe o la clave es incorrecta."
+                     Log.i("TAG", message.Error)
+                    result = message.Error
                 }
             }
         } catch (e: IOException) {
@@ -249,15 +255,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
             if (s != null) {
                 when (s) {
-                    "pass" -> editTextPassError.error = "Contraseña Incorrecta"
-                    "users" -> editTextUserError.error = "Usuario no existe."
+//                    "pass" -> editTextPassError.error = "Contraseña Incorrecta"
+//                    "users" -> editTextUserError.error = "Usuario no existe."
                     "enter" -> {
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                     else -> {
-                        Dialog.MensajeOk(this@LoginActivity, "Error", s)
+                        Util.MensajeOk(this@LoginActivity, "Error", s)
                     }
                 }
             }
