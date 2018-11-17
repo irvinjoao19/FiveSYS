@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -29,8 +30,6 @@ import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
-import kotlinx.android.synthetic.main.dialog_filtro.*
-
 
 class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
@@ -42,7 +41,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.buttonAceptar -> {
-                val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
+                val f = Filtro(editTextCodigo.text.toString(), estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                 val json = Gson().toJson(f)
                 listener?.sendRequest(json, if (titulo != "Nueva Auditoria") 1 else 0)
                 dismiss()
@@ -54,6 +53,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.linearLayoutEstado -> estadoDialog()
         }
     }
+
+    lateinit var editTextCodigo: EditText
+    lateinit var editTextNombre: EditText
 
     lateinit var textViewTitulo: TextView
     lateinit var textViewArea: TextView
@@ -125,6 +127,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun bindUI(view: View) {
+
+        editTextCodigo = view.findViewById(R.id.editTextCodigo)
+        editTextNombre = view.findViewById(R.id.editTextNombre)
         textViewTitulo = view.findViewById(R.id.textViewTitulo)
         textViewTitulo.text = titulo
         textViewArea = view.findViewById(R.id.textViewArea)
