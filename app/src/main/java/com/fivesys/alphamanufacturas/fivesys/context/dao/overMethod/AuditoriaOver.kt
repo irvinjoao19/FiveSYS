@@ -92,7 +92,6 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                 dd.S4 = d.S4
                 dd.S5 = d.S5
                 dd.Url = d.Url
-                dd.estado = d.estado
             } else {
                 val a: AuditoriaByOne? = realm.where(AuditoriaByOne::class.java).equalTo("AuditoriaId", AuditoriaId).findFirst()
                 if (a != null) {

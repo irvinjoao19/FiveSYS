@@ -127,6 +127,9 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     var s4: Int? = 0
     var s5: Int? = 0
 
+    var Nuevo: Boolean? = false
+    var estado: Int? = 1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         realm = Realm.getDefaultInstance()
@@ -134,6 +137,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         title = arguments!!.getString("title")
         auditoriaId = arguments!!.getInt("id")
         detalleId = if (arguments!!.getInt("detalleId") == 0) auditoriaImp.getDetalleIdentity() else arguments!!.getInt("detalleId")
+        Nuevo = arguments!!.getInt("detalleId") != 0
+        estado = if (arguments!!.getInt("detalleId") == 0) 1 else 0
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -345,8 +350,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
 
-
-
     @SuppressLint("SetTextI18n")
     private fun categoriaDialog() {
         builderCategoria = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
@@ -498,7 +501,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val referencia = editTextReferencia.text.toString()
 
         if (nameImg != null) {
-            val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, 1, nameImg)
+            val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg, Nuevo)
             auditoriaImp.saveDetalle(detalle, auditoriaId!!)
             dismiss()
         } else {

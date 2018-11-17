@@ -23,14 +23,17 @@ open class Detalle : RealmObject {
     var Url: String? = ""
     var FotoId: Int? = null
     var Eliminado: Boolean? = false
+    var Nuevo: Boolean? = false
+
     var estado: Int? = 0
+
 
     constructor() : super()
 
 
     // TODO LOCAL SAVE REGISTRE
 
-    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?) : super() {
+    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?, Nuevo: Boolean?) : super() {
         this.AuditoriaDetalleId = AuditoriaDetalleId
         this.AuditoriaId = AuditoriaId
         this.CategoriaId = CategoriaId
@@ -47,7 +50,7 @@ open class Detalle : RealmObject {
         this.Detalle = Detalle
         this.estado = estado
         this.Url = Url
-
+        this.Nuevo = Nuevo
     }
 
 
