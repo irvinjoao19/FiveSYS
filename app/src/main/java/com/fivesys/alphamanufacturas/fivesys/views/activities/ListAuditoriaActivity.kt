@@ -67,7 +67,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                showFiltro("Nueva Auditoria",0)
+                showFiltro("Nueva Auditoria", 0)
             }
         }
     }
@@ -199,12 +199,21 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     }
 
     private fun showCreateHeaderDialog(titulo: String, tipo: Int) {
-        val fragmentManager = supportFragmentManager
-        val newFragment = if (tipo == 1) FiltroDialogFragment.newInstance(titulo) else NuevaAuditoriaDialogFragment.newInstance(titulo)
-        val transaction = fragmentManager!!.beginTransaction()
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        transaction.add(android.R.id.content, newFragment)
-                .addToBackStack(null).commit()
+        if (tipo == 1) {
+            val fragmentManager = supportFragmentManager
+            val filtroFragment = FiltroDialogFragment.newInstance(titulo)
+            val transaction = fragmentManager!!.beginTransaction()
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            transaction.add(android.R.id.content, filtroFragment)
+                    .addToBackStack(null).commit()
+        } else {
+            val fragmentManager = supportFragmentManager
+            val nuevaAuditoriaFragment = NuevaAuditoriaDialogFragment.newInstance(titulo)
+            val transaction = fragmentManager!!.beginTransaction()
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            transaction.add(android.R.id.content, nuevaAuditoriaFragment)
+                    .addToBackStack(null).commit()
+        }
     }
 
     @SuppressLint("SetTextI18n")

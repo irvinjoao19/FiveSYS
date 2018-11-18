@@ -96,8 +96,8 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     var listener: InterfaceCommunicator? = null
 
     companion object {
-        fun newInstance(titulo: String): FiltroDialogFragment {
-            val f = FiltroDialogFragment()
+        fun newInstance(titulo: String): NuevaAuditoriaDialogFragment {
+            val f = NuevaAuditoriaDialogFragment()
             val args = Bundle()
             args.putString("titulo", titulo)
             f.arguments = args
