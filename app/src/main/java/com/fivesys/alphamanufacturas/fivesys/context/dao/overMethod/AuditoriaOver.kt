@@ -11,6 +11,7 @@ import java.io.File
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
+
     override fun saveAuditoria(auditoria: List<Auditoria>) {
         realm.executeTransaction { realm ->
             realm.copyToRealmOrUpdate(auditoria)
@@ -57,6 +58,10 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
     override val categorias: RealmResults<Categoria>
         get() = realm.where(Categoria::class.java).findAll()
+
+    override fun getCategoriasById(CategoriaId: Int): Categoria? {
+        return realm.where(Categoria::class.java).equalTo("CategoriaId", CategoriaId).findFirst()
+    }
 
     override fun getDetalleById(AuditoriaDetalleId: Int): Detalle? {
         return realm.where(Detalle::class.java).equalTo("Id", AuditoriaDetalleId).findFirst()

@@ -43,7 +43,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.editTextCategoria -> categoriaDialog()
-            R.id.editTextComponente -> componenteDialog()
+            R.id.editTextComponente -> componenteDialog(v)
             R.id.editTextS1 -> tipoS(1)
             R.id.editTextS2 -> tipoS(2)
             R.id.editTextS3 -> tipoS(3)
@@ -184,11 +184,17 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         tipoDocumento.add(TipoDocumento(5, "5"))
 
         if (d != null) {
+
             val c: Categoria? = d.Categoria
             if (c != null) {
                 category.Nombre = c.Nombre
                 category.CategoriaId = c.CategoriaId
                 editTextCategoria.setText(c.Nombre)
+
+                val categoria: Categoria? = auditoriaImp.getCategoriasById(c.CategoriaId!!)
+                if (categoria != null) {
+                    componentes = categoria.Componentes
+                }
             }
             val cc: Componente? = d.Componente
             if (cc != null) {
@@ -310,7 +316,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                     }
                     5 -> {
                         s5 = t.nombre.toInt()
-                        editTextS4.setText(t.nombre)
+                        editTextS5.setText(t.nombre)
 
                         s2 = 0
                         s3 = 0
@@ -334,7 +340,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         dialog.show()
     }
 
-
     @SuppressLint("SetTextI18n")
     private fun categoriaDialog() {
         builderCategoria = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
@@ -346,7 +351,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         textViewTitulo.text = "Categoria"
         val categoria: AuditoriaByOne = auditoriaImp.getAuditoriaByOne(auditoriaId!!)!!
         val categoriaAdapter = CategoriaAdapter(categoria.Categorias!!, R.layout.cardview_combo, object : CategoriaAdapter.OnItemClickListener {
-            override fun onItemClick(c: Categoria, position: Int) {
+            override fun onItemClick(c: Categoria, v: View, position: Int) {
 
                 category.CategoriaId = c.CategoriaId
                 category.Nombre = c.Nombre
@@ -360,7 +365,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                     componente.Nombre = c.Componentes!![0]!!.Nombre
                     editTextComponente.setText(c.Componentes!![0]!!.Nombre)
                 } else {
-                    Util.toastMensaje(context!!, "Elige otra Opción")
+                    Util.snackBarMensaje(v, "Elige otra opción")
                 }
                 dialogCategoria.dismiss()
             }
@@ -375,7 +380,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun componenteDialog() {
+    private fun componenteDialog(view: View) {
         if (componentes != null) {
             builderComponente = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
@@ -403,7 +408,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             dialogComponente = builderComponente.create()
             dialogComponente.show()
         } else {
-            Util.toastMensaje(context!!, "Eliga una categoria")
+            Util.snackBarMensaje(view, "Eliga una Categoria")
         }
     }
 

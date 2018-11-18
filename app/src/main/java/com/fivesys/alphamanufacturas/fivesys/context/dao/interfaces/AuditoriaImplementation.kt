@@ -29,6 +29,8 @@ interface AuditoriaImplementation {
 
     val categorias: RealmResults<Categoria>
 
+    fun getCategoriasById(CategoriaId:Int) : Categoria?
+
     // TODO DETALLE
 
     fun getDetalleById(AuditoriaDetalleId: Int): Detalle?

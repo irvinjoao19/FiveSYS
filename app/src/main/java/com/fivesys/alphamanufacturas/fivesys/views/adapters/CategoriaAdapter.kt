@@ -34,11 +34,11 @@ class CategoriaAdapter(private var categorias: RealmList<Categoria>, private var
         internal fun bind(c: Categoria, listener: OnItemClickListener) {
             textViewId.text = c.CategoriaId.toString()
             textViewNombre.text = c.Nombre
-            itemView.setOnClickListener { listener.onItemClick(c, adapterPosition) }
+            itemView.setOnClickListener { v -> listener.onItemClick(c, v, adapterPosition) }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(c: Categoria, position: Int)
+        fun onItemClick(c: Categoria, v: View, position: Int)
     }
 }
