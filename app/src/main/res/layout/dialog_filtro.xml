@@ -42,11 +42,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextCodigo"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp" />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -60,10 +56,6 @@
                         android:id="@+id/editTextEstado"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
                         android:drawableEnd="@drawable/ic_down"
                         android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -79,10 +71,6 @@
                         android:id="@+id/editTextArea"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
                         android:drawableEnd="@drawable/ic_down"
                         android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -98,10 +86,6 @@
                         android:id="@+id/editTextSector"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
                         android:drawableEnd="@drawable/ic_down"
                         android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -117,10 +101,6 @@
                         android:id="@+id/editTextResponsable"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
                         android:drawableEnd="@drawable/ic_down"
                         android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -135,11 +115,7 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextNombre"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp" />
+                        android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
