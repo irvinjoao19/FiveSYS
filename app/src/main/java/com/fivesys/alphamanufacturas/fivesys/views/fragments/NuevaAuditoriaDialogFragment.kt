@@ -20,6 +20,7 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.*
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AreaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
@@ -48,8 +49,8 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.buttonCancelar -> dismiss()
             R.id.editTextEstado -> estadoDialog()
             R.id.editTextArea -> areaDialog()
-            R.id.editTextSector -> sectorDialog()
-            R.id.editTextResponsable -> responsableDialog()
+            R.id.editTextSector -> sectorDialog(v)
+            R.id.editTextResponsable -> responsableDialog(v)
         }
     }
 
@@ -164,8 +165,15 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                 editTextArea.setText(area.Nombre)
 
                 sectores = area.Sectores!!
+
                 editTextSector.setText(area.Sectores!![0]!!.Nombre)
                 sectorId = area.Sectores!![0]!!.AreaId
+
+                responsable = area.Sectores!![0]!!.Responsables!!
+
+                editTextResponsable.setText(area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto)
+                responsableId = area.Sectores!![0]!!.Responsables!![0]!!.ResponsableId
+
                 dialogArea.dismiss()
 
             }
@@ -180,7 +188,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun sectorDialog() {
+    private fun sectorDialog(view: View) {
         if (sectores != null) {
             builderSector = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
@@ -208,12 +216,12 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             dialogSector = builderSector.create()
             dialogSector.show()
         } else {
-            Toast.makeText(context, "Primero elige un Area", Toast.LENGTH_LONG).show()
+            Util.snackBarMensaje(view, "Primero elige un Area")
         }
     }
 
     @SuppressLint("SetTextI18n")
-    private fun responsableDialog() {
+    private fun responsableDialog(view: View) {
         if (responsable != null) {
             builderResponsable = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
@@ -239,7 +247,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             dialogResponasble = builderResponsable.create()
             dialogResponasble.show()
         } else {
-            Toast.makeText(context, "Primero elige un Sector", Toast.LENGTH_LONG).show()
+            Util.snackBarMensaje(view, "Primero elige un Sector")
         }
     }
 
@@ -274,7 +282,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         builderEstado.setView(v)
         dialogEstado = builderEstado.create()
         dialogEstado.show()
-
 
     }
 
