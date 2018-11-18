@@ -22,5 +22,12 @@ open class Filtro {
         this.NResponsable = NResponsable
     }
 
-
+    constructor(EstadoAuditoria: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
+        this.EstadoAuditoria = EstadoAuditoria
+        this.AreaId = AreaId
+        this.SectorId = SectorId
+        this.ResponsableId = ResponsableId
+        this.Nombre = Nombre
+        this.NResponsable = NResponsable
+    }
 }

@@ -31,7 +31,7 @@ import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
 
-class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
+class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -41,9 +41,9 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.buttonAceptar -> {
-                val f = Filtro(editTextCodigo.text.toString(), estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
+                val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                 val json = Gson().toJson(f)
-                listener?.filtroRequest(json)
+                listener?.sendRequest(json)
                 dismiss()
             }
             R.id.buttonCancelar -> dismiss()
@@ -54,7 +54,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    lateinit var editTextCodigo: EditText
     lateinit var editTextNombre: EditText
 
     lateinit var textViewTitulo: TextView
@@ -120,7 +119,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dialog_filtro, container, false)
+        val view = inflater.inflate(R.layout.dialog_nueva_auditoria, container, false)
         bindUI(view)
         setHasOptionsMenu(true)
         return view
@@ -128,7 +127,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
     private fun bindUI(view: View) {
 
-        editTextCodigo = view.findViewById(R.id.editTextCodigo)
         editTextNombre = view.findViewById(R.id.editTextNombre)
         textViewTitulo = view.findViewById(R.id.textViewTitulo)
         textViewTitulo.text = titulo
@@ -171,6 +169,8 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                 textViewArea.text = area.Nombre
 
                 sectores = area.Sectores!!
+                textViewSector.text = area.Sectores!![0]!!.Nombre
+                sectorId = area.Sectores!![0]!!.AreaId
                 dialogArea.dismiss()
 
             }
@@ -200,6 +200,8 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                     sectorId = sector.SectorId
                     textViewSector.text = sector.Nombre
                     responsable = sector.Responsables!!
+                    textViewResponsable.text = sector.Responsables!![0]!!.NombreCompleto
+                    responsableId = sector.Responsables!![0]!!.ResponsableId
                     dialogSector.dismiss()
                 }
             })
@@ -282,6 +284,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     interface InterfaceCommunicator {
-        fun filtroRequest(value: String)
+        fun sendRequest(value: String)
     }
 }

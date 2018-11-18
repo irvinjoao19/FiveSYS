@@ -27,6 +27,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
+import com.fivesys.alphamanufacturas.fivesys.views.fragments.NuevaAuditoriaDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -39,14 +40,13 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
 
-class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroDialogFragment.InterfaceCommunicator {
+class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroDialogFragment.InterfaceCommunicator, NuevaAuditoriaDialogFragment.InterfaceCommunicator {
+    override fun filtroRequest(value: String) {
+        auditoriaAdapter?.getFilter()?.filter(value)
+    }
 
-    override fun sendRequest(value: String, tipo: Int) {
-        if (tipo == 1) {
-            auditoriaAdapter?.getFilter()?.filter(value)
-        } else {
-            sendAuditoria(value)
-        }
+    override fun sendRequest(value: String) {
+        sendAuditoria(value)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -57,7 +57,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.filter -> {
-                showFiltro("Filtro")
+                showFiltro("Filtro", 1)
                 return true
             }
         }
@@ -67,7 +67,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                showFiltro("Nueva Auditoria")
+                showFiltro("Nueva Auditoria",0)
             }
         }
     }
@@ -162,7 +162,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
 
     @SuppressLint("SetTextI18n")
-    private fun showFiltro(titulo: String) {
+    private fun showFiltro(titulo: String, tipo: Int) {
         builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
 
@@ -175,7 +175,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                 .subscribe(object : Observer<List<Area>> {
 
                     override fun onComplete() {
-                        showCreateHeaderDialog(titulo)
+                        showCreateHeaderDialog(titulo, tipo)
                         dialog.dismiss()
                     }
 
@@ -198,9 +198,9 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         dialog.show()
     }
 
-    private fun showCreateHeaderDialog(titulo: String) {
+    private fun showCreateHeaderDialog(titulo: String, tipo: Int) {
         val fragmentManager = supportFragmentManager
-        val newFragment = FiltroDialogFragment.newInstance(titulo)
+        val newFragment = if (tipo == 1) FiltroDialogFragment.newInstance(titulo) else NuevaAuditoriaDialogFragment.newInstance(titulo)
         val transaction = fragmentManager!!.beginTransaction()
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
         transaction.add(android.R.id.content, newFragment)
