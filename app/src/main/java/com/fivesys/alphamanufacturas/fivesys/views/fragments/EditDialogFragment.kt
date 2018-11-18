@@ -120,7 +120,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     var s4: Int? = 0
     var s5: Int? = 0
 
-    var Nuevo: Boolean? = true
     var estado: Int? = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -130,7 +129,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         title = arguments!!.getString("title")
         auditoriaId = arguments!!.getInt("id")
         detalleId = if (arguments!!.getInt("detalleId") == 0) auditoriaImp.getDetalleIdentity() else arguments!!.getInt("detalleId")
-        Nuevo = arguments!!.getInt("detalleId") == 0
         estado = if (arguments!!.getInt("detalleId") == 0) 1 else 0
     }
 
@@ -495,7 +493,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             if (componente.ComponenteId != 0) {
                 if (!referencia.isEmpty()) {
                     if (!aspecto.isEmpty()) {
-                        val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg, Nuevo)
+                        val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg)
                         auditoriaImp.saveDetalle(detalle, auditoriaId!!)
                         dismiss()
                     } else {

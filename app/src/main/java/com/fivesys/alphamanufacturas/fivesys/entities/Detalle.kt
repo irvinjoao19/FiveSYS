@@ -24,7 +24,6 @@ open class Detalle : RealmObject {
     var Url: String? = ""
     var FotoId: Int? = null
     var Eliminado: Boolean? = false
-    var Nuevo: Boolean? = false
 
     var estado: Int? = 0
 
@@ -32,7 +31,7 @@ open class Detalle : RealmObject {
 
     // TODO LOCAL SAVE REGISTRE
 
-    constructor(Id: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?, Nuevo: Boolean?) : super() {
+    constructor(Id: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?) : super() {
         this.Id = Id
         this.AuditoriaId = AuditoriaId
         this.CategoriaId = CategoriaId
@@ -49,12 +48,11 @@ open class Detalle : RealmObject {
         this.Detalle = Detalle
         this.estado = estado
         this.Url = Url
-        this.Nuevo = Nuevo
     }
 
     // TODO RETROFIT
 
-    constructor(Id: Int?, AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?, FotoId: Int?, Eliminado: Boolean?, Nuevo: Boolean?, estado: Int?) : super() {
+    constructor(Id: Int?, AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?, FotoId: Int?, Eliminado: Boolean?, estado: Int?) : super() {
         this.Id = Id
         this.AuditoriaDetalleId = AuditoriaDetalleId
         this.AuditoriaId = AuditoriaId
@@ -73,7 +71,6 @@ open class Detalle : RealmObject {
         this.Url = Url
         this.FotoId = FotoId
         this.Eliminado = Eliminado
-        this.Nuevo = Nuevo
         this.estado = estado
     }
 }
