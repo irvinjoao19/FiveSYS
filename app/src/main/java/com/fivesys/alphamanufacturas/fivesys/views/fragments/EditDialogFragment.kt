@@ -31,6 +31,7 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.CategoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ComponenteAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
@@ -41,13 +42,13 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.linearLayoutCategoria -> categoriaDialog()
-            R.id.linearLayoutComponente -> componenteDialog()
-            R.id.linearLayoutS1 -> tipoS(1)
-            R.id.linearLayoutS2 -> tipoS(2)
-            R.id.linearLayoutS3 -> tipoS(3)
-            R.id.linearLayoutS4 -> tipoS(4)
-            R.id.linearLayoutS5 -> tipoS(5)
+            R.id.editTextCategoria -> categoriaDialog()
+            R.id.editTextComponente -> componenteDialog()
+            R.id.editTextS1 -> tipoS(1)
+            R.id.editTextS2 -> tipoS(2)
+            R.id.editTextS3 -> tipoS(3)
+            R.id.editTextS4 -> tipoS(4)
+            R.id.editTextS5 -> tipoS(5)
             R.id.imageViewObservacion -> showPopupMenu(v, context!!)
             R.id.buttonCancelar -> dismiss()
             R.id.buttonAceptar -> {
@@ -71,24 +72,17 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     private var title: String? = null
 
     lateinit var textViewTitulo: TextView
-    lateinit var linearLayoutCategoria: LinearLayout
-    lateinit var textViewCategoria: TextView
-    lateinit var linearLayoutComponente: LinearLayout
-    lateinit var textViewComponente: TextView
-    lateinit var linearLayoutS1: LinearLayout
-    lateinit var textViewS1: TextView
-    lateinit var linearLayoutS2: LinearLayout
-    lateinit var textViewS2: TextView
-    lateinit var linearLayoutS3: LinearLayout
-    lateinit var textViewS3: TextView
-    lateinit var linearLayoutS4: LinearLayout
-    lateinit var textViewS4: TextView
-    lateinit var linearLayoutS5: LinearLayout
-    lateinit var textViewS5: TextView
+    lateinit var editTextCategoria: TextInputEditText
+    lateinit var editTextComponente: TextInputEditText
+    lateinit var editTextS1: TextInputEditText
+    lateinit var editTextS2: TextInputEditText
+    lateinit var editTextS3: TextInputEditText
+    lateinit var editTextS4: TextInputEditText
+    lateinit var editTextS5: TextInputEditText
 
-    lateinit var editTextReferencia: EditText
-    lateinit var editTextAspecto: EditText
-    lateinit var editTextObservacion: EditText
+    lateinit var editTextReferencia: TextInputEditText
+    lateinit var editTextAspecto: TextInputEditText
+    lateinit var editTextObservacion: TextInputEditText
 
     lateinit var imageViewObservacion: ImageView
     lateinit var buttonCancelar: MaterialButton
@@ -156,20 +150,13 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
         textViewTitulo = v.findViewById(R.id.textViewTitulo)
         textViewTitulo.text = title
-        linearLayoutCategoria = v.findViewById(R.id.linearLayoutCategoria)
-        textViewCategoria = v.findViewById(R.id.textViewCategoria)
-        linearLayoutComponente = v.findViewById(R.id.linearLayoutComponente)
-        textViewComponente = v.findViewById(R.id.textViewComponente)
-        linearLayoutS1 = v.findViewById(R.id.linearLayoutS1)
-        textViewS1 = v.findViewById(R.id.textViewS1)
-        linearLayoutS2 = v.findViewById(R.id.linearLayoutS2)
-        textViewS2 = v.findViewById(R.id.textViewS2)
-        linearLayoutS3 = v.findViewById(R.id.linearLayoutS3)
-        textViewS3 = v.findViewById(R.id.textViewS3)
-        linearLayoutS4 = v.findViewById(R.id.linearLayoutS4)
-        textViewS4 = v.findViewById(R.id.textViewS4)
-        linearLayoutS5 = v.findViewById(R.id.linearLayoutS5)
-        textViewS5 = v.findViewById(R.id.textViewS5)
+        editTextCategoria = v.findViewById(R.id.editTextCategoria)
+        editTextComponente = v.findViewById(R.id.editTextComponente)
+        editTextS1 = v.findViewById(R.id.editTextS1)
+        editTextS2 = v.findViewById(R.id.editTextS2)
+        editTextS3 = v.findViewById(R.id.editTextS3)
+        editTextS4 = v.findViewById(R.id.editTextS4)
+        editTextS5 = v.findViewById(R.id.editTextS5)
 
         editTextReferencia = v.findViewById(R.id.editTextReferencia)
         editTextAspecto = v.findViewById(R.id.editTextAspecto)
@@ -179,13 +166,14 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         buttonCancelar = v.findViewById(R.id.buttonCancelar)
         buttonAceptar = v.findViewById(R.id.buttonAceptar)
 
-        linearLayoutCategoria.setOnClickListener(this)
-        linearLayoutComponente.setOnClickListener(this)
-        linearLayoutS1.setOnClickListener(this)
-        linearLayoutS2.setOnClickListener(this)
-        linearLayoutS3.setOnClickListener(this)
-        linearLayoutS4.setOnClickListener(this)
-        linearLayoutS5.setOnClickListener(this)
+        editTextCategoria.setOnClickListener(this)
+        editTextComponente.setOnClickListener(this)
+
+        editTextS1.setOnClickListener(this)
+        editTextS2.setOnClickListener(this)
+        editTextS3.setOnClickListener(this)
+        editTextS4.setOnClickListener(this)
+        editTextS5.setOnClickListener(this)
 
         imageViewObservacion.setOnClickListener(this)
         buttonCancelar.setOnClickListener(this)
@@ -202,14 +190,14 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             if (c != null) {
                 category.Nombre = c.Nombre
                 category.CategoriaId = c.CategoriaId
-                textViewCategoria.text = c.Nombre
+                editTextCategoria.setText(c.Nombre)
             }
             val cc: Componente? = d.Componente
             if (cc != null) {
                 componente.Nombre = cc.Nombre
                 componente.ComponenteId = cc.ComponenteId
                 componente.CategoriaId = cc.CategoriaId
-                textViewComponente.text = cc.Nombre
+                editTextComponente.setText(cc.Nombre)
             }
 
             editTextAspecto.setText(d.AspectoObservado)
@@ -217,15 +205,15 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             editTextReferencia.setText(d.Nombre)
 
             s1 = d.S1
-            textViewS1.text = if (d.S1 == 0) "" else d.S1.toString()
+            editTextS1.setText(if (d.S1 == 0) "" else d.S1.toString())
             s2 = d.S2
-            textViewS2.text = if (d.S2 == 0) "" else d.S2.toString()
+            editTextS2.setText(if (d.S2 == 0) "" else d.S2.toString())
             s3 = d.S3
-            textViewS3.text = if (d.S3 == 0) "" else d.S3.toString()
+            editTextS3.setText(if (d.S3 == 0) "" else d.S3.toString())
             s4 = d.S4
-            textViewS4.text = if (d.S4 == 0) "" else d.S4.toString()
+            editTextS4.setText(if (d.S4 == 0) "" else d.S4.toString())
             s5 = d.S5
-            textViewS5.text = if (d.S5 == 0) "" else d.S5.toString()
+            editTextS5.setText(if (d.S5 == 0) "" else d.S5.toString())
 
             editTextObservacion.setText(d.Detalle)
 
@@ -271,68 +259,69 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                 when (type) {
                     1 -> {
                         s1 = t.nombre.toInt()
-                        textViewS1.text = t.nombre
+                        editTextS1.setText(t.nombre)
 
                         s2 = 0
                         s3 = 0
                         s4 = 0
                         s5 = 0
-                        textViewS2.text = ""
-                        textViewS3.text = ""
-                        textViewS4.text = ""
-                        textViewS5.text = ""
+                        editTextS2.text = null
+                        editTextS3.text = null
+                        editTextS4.text = null
+                        editTextS5.text = null
                     }
                     2 -> {
                         s2 = t.nombre.toInt()
-                        textViewS2.text = t.nombre
+                        editTextS2.setText(t.nombre)
 
                         s1 = 0
                         s3 = 0
                         s4 = 0
                         s5 = 0
-                        textViewS1.text = ""
-                        textViewS3.text = ""
-                        textViewS4.text = ""
-                        textViewS5.text = ""
+                        editTextS1.text = null
+                        editTextS3.text = null
+                        editTextS4.text = null
+                        editTextS5.text = null
                     }
                     3 -> {
                         s3 = t.nombre.toInt()
-                        textViewS3.text = t.nombre
+                        editTextS3.setText(t.nombre)
+
 
                         s2 = 0
                         s1 = 0
                         s4 = 0
                         s5 = 0
-                        textViewS2.text = ""
-                        textViewS1.text = ""
-                        textViewS4.text = ""
-                        textViewS5.text = ""
+                        editTextS2.text = null
+                        editTextS1.text = null
+                        editTextS4.text = null
+                        editTextS5.text = null
                     }
                     4 -> {
                         s4 = t.nombre.toInt()
-                        textViewS4.text = t.nombre
+                        editTextS4.setText(t.nombre)
 
                         s2 = 0
                         s3 = 0
                         s1 = 0
                         s5 = 0
-                        textViewS2.text = ""
-                        textViewS3.text = ""
-                        textViewS1.text = ""
-                        textViewS5.text = ""
+                        editTextS2.text = null
+                        editTextS3.text = null
+                        editTextS1.text = null
+                        editTextS5.text = null
                     }
                     5 -> {
                         s5 = t.nombre.toInt()
-                        textViewS5.text = t.nombre
+                        editTextS4.setText(t.nombre)
 
                         s2 = 0
                         s3 = 0
                         s4 = 0
                         s1 = 0
-                        textViewS2.text = ""
-                        textViewS3.text = ""
-                        textViewS4.text = ""
-                        textViewS1.text = ""
+                        editTextS2.text = null
+                        editTextS3.text = null
+                        editTextS4.text = null
+                        editTextS1.text = null
                     }
                 }
                 dialog.dismiss()
@@ -364,14 +353,14 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                 category.CategoriaId = c.CategoriaId
                 category.Nombre = c.Nombre
 
-                textViewCategoria.text = c.Nombre
+                editTextCategoria.setText(c.Nombre)
                 componentes = c.Componentes
 
                 if (c.Componentes!!.size > 0) {
                     componente.ComponenteId = c.Componentes!![0]!!.ComponenteId
                     componente.CategoriaId = c.Componentes!![0]!!.CategoriaId
                     componente.Nombre = c.Componentes!![0]!!.Nombre
-                    textViewComponente.text = c.Componentes!![0]!!.Nombre
+                    editTextComponente.setText(c.Componentes!![0]!!.Nombre)
                 } else {
                     Util.toastMensaje(context!!, "Elige otra Opción")
                 }
@@ -404,7 +393,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                     componente.CategoriaId = c.CategoriaId
                     componente.Nombre = c.Nombre
 
-                    textViewComponente.text = c.Nombre
+                    editTextComponente.setText(c.Nombre)
                     dialogComponente.dismiss()
                 }
             })
@@ -506,9 +495,9 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             if (componente.ComponenteId != 0) {
                 if (!referencia.isEmpty()) {
                     if (!aspecto.isEmpty()) {
-                            val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg, Nuevo)
-                            auditoriaImp.saveDetalle(detalle, auditoriaId!!)
-                            dismiss()
+                        val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg, Nuevo)
+                        auditoriaImp.saveDetalle(detalle, auditoriaId!!)
+                        dismiss()
                     } else {
                         Util.snackBarMensaje(v, "Escriba un aspecto observado")
                     }

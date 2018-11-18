@@ -6,6 +6,7 @@ import io.realm.annotations.PrimaryKey
 open class Detalle : RealmObject {
 
     @PrimaryKey
+    var Id: Int? = 0
     var AuditoriaDetalleId: Int? = 0
     var AuditoriaId: Int? = 0
     var CategoriaId: Int? = 0
@@ -27,14 +28,12 @@ open class Detalle : RealmObject {
 
     var estado: Int? = 0
 
-
     constructor() : super()
-
 
     // TODO LOCAL SAVE REGISTRE
 
-    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?, Nuevo: Boolean?) : super() {
-        this.AuditoriaDetalleId = AuditoriaDetalleId
+    constructor(Id: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?, Nuevo: Boolean?) : super() {
+        this.Id = Id
         this.AuditoriaId = AuditoriaId
         this.CategoriaId = CategoriaId
         this.ComponenteId = ComponenteId
@@ -53,10 +52,10 @@ open class Detalle : RealmObject {
         this.Nuevo = Nuevo
     }
 
-
     // TODO RETROFIT
 
-    constructor(AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?, FotoId: Int?) : super() {
+    constructor(Id: Int?, AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?, FotoId: Int?, Eliminado: Boolean?, Nuevo: Boolean?, estado: Int?) : super() {
+        this.Id = Id
         this.AuditoriaDetalleId = AuditoriaDetalleId
         this.AuditoriaId = AuditoriaId
         this.CategoriaId = CategoriaId
@@ -73,5 +72,8 @@ open class Detalle : RealmObject {
         this.Detalle = Detalle
         this.Url = Url
         this.FotoId = FotoId
+        this.Eliminado = Eliminado
+        this.Nuevo = Nuevo
+        this.estado = estado
     }
 }

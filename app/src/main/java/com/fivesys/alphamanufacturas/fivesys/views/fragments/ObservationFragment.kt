@@ -165,7 +165,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 1 -> {
-                    showCreateHeaderDialog("Editar Observación", id!!, d.AuditoriaDetalleId!!)
+                    showCreateHeaderDialog("Editar Observación", id!!, d.Id!!)
                 }
                 2 -> {
                     deletePhoto(d)

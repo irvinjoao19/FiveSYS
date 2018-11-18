@@ -31,100 +31,76 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp" />
 
-                <LinearLayout
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:orientation="vertical">
+                    android:hint="@string/categoria">
 
-
-                    <TextView
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextCategoria"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/categoria"
-                        android:textColor="@color/primary_text" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
-                        android:id="@+id/linearLayoutCategoria"
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/componente">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextComponente"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                        <TextView
-                            android:id="@+id/textViewCategoria"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/categoria" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/referencia">
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/img"
-                            android:src="@drawable/ic_down" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/componente"
-                        android:textColor="@color/primary_text" />
-
-                    <LinearLayout
-                        android:id="@+id/linearLayoutComponente"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="20dp"
-                        android:orientation="horizontal"
-                        tools:ignore="UseCompoundDrawables">
-
-                        <TextView
-                            android:id="@+id/textViewComponente"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/componente" />
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:contentDescription="@string/img"
-                            android:src="@drawable/ic_down" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/referencia"
-                        android:textColor="@color/primary_text" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editTextReferencia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        tools:ignore="Autofill,LabelFor" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/aspecto_observado"
-                        android:textColor="@color/primary_text" />
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/aspecto_observado">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
+
                         android:id="@+id/editTextAspecto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text"
-                        tools:ignore="Autofill,LabelFor" />
-                </LinearLayout>
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
                 <LinearLayout
@@ -137,210 +113,111 @@
                     android:baselineAligned="false"
                     android:orientation="horizontal">
 
-                    <LinearLayout
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:hint="@string/s1">
 
-                        <TextView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextS1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/s1"
-                            android:textColor="@color/primary_text" />
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <LinearLayout
-                            android:id="@+id/linearLayoutS1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <TextView
-                                android:id="@+id/textViewS1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:hint="@string/s2">
 
-                        <TextView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextS2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/s2"
-                            android:textColor="@color/primary_text" />
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <LinearLayout
-                            android:id="@+id/linearLayoutS2"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <TextView
-                                android:id="@+id/textViewS2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:hint="@string/s3">
 
-                        <TextView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextS3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/s3"
-                            android:textColor="@color/primary_text" />
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <LinearLayout
-                            android:id="@+id/linearLayoutS3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <TextView
-                                android:id="@+id/textViewS3"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:hint="@string/s4">
 
-                        <TextView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextS4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/s4"
-                            android:textColor="@color/primary_text" />
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
-                        <LinearLayout
-                            android:id="@+id/linearLayoutS4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <TextView
-                                android:id="@+id/textViewS4"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
                         android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:hint="@string/s5">
 
-                        <TextView
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextS5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:text="@string/s5"
-                            android:textColor="@color/primary_text" />
-
-                        <LinearLayout
-                            android:id="@+id/linearLayoutS5"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            tools:ignore="UseCompoundDrawables">
-
-                            <TextView
-                                android:id="@+id/textViewS5"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:contentDescription="@string/img"
-                                android:src="@drawable/ic_down" />
-                        </LinearLayout>
-                    </LinearLayout>
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
+                    </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
                 <androidx.core.widget.NestedScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <EditText
-                        android:id="@+id/editTextObservacion"
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:gravity="top|left"
-                        android:hint="@string/detalle"
-                        android:inputType="textMultiLine"
-                        android:lines="5"
-                        android:maxLines="2"
-                        android:minLines="4"
-                        android:overScrollMode="always"
-                        android:scrollbarStyle="insideInset"
-                        android:scrollbars="vertical"
-                        tools:ignore="Autofill,LabelFor,RtlHardcoded" />
+                        android:hint="@string/detalle">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextObservacion"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginBottom="5dp"
+                            android:gravity="start|end"
+                            android:inputType="textMultiLine"
+                            android:lines="5"
+                            android:maxLines="2"
+                            android:minLines="4"
+                            android:overScrollMode="always"
+                            android:scrollbarStyle="insideInset"
+                            android:scrollbars="vertical" />
+                    </com.google.android.material.textfield.TextInputLayout>
                 </androidx.core.widget.NestedScrollView>
 
                 <ImageView
