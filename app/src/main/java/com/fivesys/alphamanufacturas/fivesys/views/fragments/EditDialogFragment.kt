@@ -198,7 +198,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         tipoDocumento.add(TipoDocumento(4, "-5"))
         tipoDocumento.add(TipoDocumento(5, "5"))
 
-
         if (d != null) {
             val c: Categoria? = d.Categoria
             if (c != null) {
@@ -500,17 +499,32 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
     private fun saveDetalle(v: View) {
 
+        val referencia = editTextReferencia.text.toString()
         val aspecto = editTextAspecto.text.toString()
         val observacion = editTextObservacion.text.toString()
-        val referencia = editTextReferencia.text.toString()
 
-        if (nameImg != null) {
-            val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg, Nuevo)
-            auditoriaImp.saveDetalle(detalle, auditoriaId!!)
-            dismiss()
+        if (category.CategoriaId != 0) {
+            if (componente.ComponenteId != 0) {
+                if (!referencia.isEmpty()) {
+                    if (!aspecto.isEmpty()) {
+                        if (s1 != 0 || s2 != 0 || s3 != 0 || s4 != 0 || s5 != 0) {
+                            val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg, Nuevo)
+                            auditoriaImp.saveDetalle(detalle, auditoriaId!!)
+                            dismiss()
+                        } else {
+                            Util.snackBarMensaje(v, "Eliga un tipo de S")
+                        }
+                    } else {
+                        Util.snackBarMensaje(v, "Escriba un aspecto observado")
+                    }
+                } else {
+                    Util.snackBarMensaje(v, "Escriba una referencia")
+                }
+            } else {
+                Util.snackBarMensaje(v, "Eliga un componente")
+            }
         } else {
-            Util.snackBarMensaje(v, "Tomar una Foto")
-
+            Util.snackBarMensaje(v, "Eliga una categoria")
         }
     }
 }
