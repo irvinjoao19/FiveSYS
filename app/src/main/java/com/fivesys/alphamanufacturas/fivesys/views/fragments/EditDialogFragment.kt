@@ -37,7 +37,6 @@ import io.realm.Realm
 import io.realm.RealmList
 import java.io.File
 
-
 class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
@@ -507,13 +506,9 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             if (componente.ComponenteId != 0) {
                 if (!referencia.isEmpty()) {
                     if (!aspecto.isEmpty()) {
-                        if (s1 != 0 || s2 != 0 || s3 != 0 || s4 != 0 || s5 != 0) {
                             val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg, Nuevo)
                             auditoriaImp.saveDetalle(detalle, auditoriaId!!)
                             dismiss()
-                        } else {
-                            Util.snackBarMensaje(v, "Eliga un tipo de S")
-                        }
                     } else {
                         Util.snackBarMensaje(v, "Escriba un aspecto observado")
                     }
