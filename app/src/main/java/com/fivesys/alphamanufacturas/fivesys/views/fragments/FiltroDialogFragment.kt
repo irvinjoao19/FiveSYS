@@ -8,8 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -27,6 +25,7 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
@@ -47,28 +46,25 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                 dismiss()
             }
             R.id.buttonCancelar -> dismiss()
-            R.id.linearLayoutArea -> areaDialog()
-            R.id.linearLayoutSector -> sectorDialog()
-            R.id.linearLayoutResponsable -> responsableDialog()
-            R.id.linearLayoutEstado -> estadoDialog()
+            R.id.editTextEstado -> estadoDialog()
+            R.id.editTextArea -> areaDialog()
+            R.id.editTextSector -> sectorDialog()
+            R.id.editTextResponsable -> responsableDialog()
         }
     }
 
-    lateinit var editTextCodigo: EditText
-    lateinit var editTextNombre: EditText
-
     lateinit var textViewTitulo: TextView
-    lateinit var textViewArea: TextView
-    lateinit var textViewSector: TextView
-    lateinit var textViewResponsable: TextView
-    lateinit var textViewEstado: TextView
+    lateinit var editTextCodigo: TextInputEditText
+
+    lateinit var editTextEstado: TextInputEditText
+    lateinit var editTextArea: TextInputEditText
+    lateinit var editTextSector: TextInputEditText
+    lateinit var editTextResponsable: TextInputEditText
+
+    lateinit var editTextNombre: TextInputEditText
 
     lateinit var buttonAceptar: MaterialButton
     lateinit var buttonCancelar: MaterialButton
-    lateinit var linearLayoutArea: LinearLayout
-    lateinit var linearLayoutSector: LinearLayout
-    lateinit var linearLayoutResponsable: LinearLayout
-    lateinit var linearLayoutEstado: LinearLayout
 
     lateinit var builderArea: AlertDialog.Builder
     lateinit var builderSector: AlertDialog.Builder
@@ -92,8 +88,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     var nresponsable: String? = ""
     var estadoId: Int = 0
 
-
-    private var titulo: String? = null
+    var titulo: String? = null
     var listener: InterfaceCommunicator? = null
 
     companion object {
@@ -127,29 +122,30 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun bindUI(view: View) {
-
-        editTextCodigo = view.findViewById(R.id.editTextCodigo)
-        editTextNombre = view.findViewById(R.id.editTextNombre)
         textViewTitulo = view.findViewById(R.id.textViewTitulo)
         textViewTitulo.text = titulo
-        textViewArea = view.findViewById(R.id.textViewArea)
-        textViewSector = view.findViewById(R.id.textViewSector)
-        textViewResponsable = view.findViewById(R.id.textViewResponsable)
-        textViewEstado = view.findViewById(R.id.textViewEstado)
+
+        editTextCodigo = view.findViewById(R.id.editTextCodigo)
+
+        editTextEstado = view.findViewById(R.id.editTextEstado)
+        editTextArea = view.findViewById(R.id.editTextArea)
+        editTextSector = view.findViewById(R.id.editTextSector)
+        editTextResponsable = view.findViewById(R.id.editTextResponsable)
+
+        editTextNombre = view.findViewById(R.id.editTextNombre)
 
         buttonAceptar = view.findViewById(R.id.buttonAceptar)
         buttonCancelar = view.findViewById(R.id.buttonCancelar)
-        linearLayoutArea = view.findViewById(R.id.linearLayoutArea)
-        linearLayoutSector = view.findViewById(R.id.linearLayoutSector)
-        linearLayoutResponsable = view.findViewById(R.id.linearLayoutResponsable)
-        linearLayoutEstado = view.findViewById(R.id.linearLayoutEstado)
+
+        editTextEstado.setOnClickListener(this)
+        editTextArea.setOnClickListener(this)
+        editTextSector.setOnClickListener(this)
+        editTextResponsable.setOnClickListener(this)
 
         buttonAceptar.setOnClickListener(this)
         buttonCancelar.setOnClickListener(this)
-        linearLayoutArea.setOnClickListener(this)
-        linearLayoutSector.setOnClickListener(this)
-        linearLayoutResponsable.setOnClickListener(this)
-        linearLayoutEstado.setOnClickListener(this)
+
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -168,7 +164,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         val areaAdapter = AreaAdapter(areas, R.layout.cardview_combo, object : AreaAdapter.OnItemClickListener {
             override fun onItemClick(area: Area, position: Int) {
                 areaId = area.AreaId
-                textViewArea.text = area.Nombre
+                editTextArea.setText(area.Nombre)
 
                 sectores = area.Sectores!!
                 dialogArea.dismiss()
@@ -198,7 +194,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             val areaAdapter = SectorAdapter(sectores!!, R.layout.cardview_combo, object : SectorAdapter.OnItemClickListener {
                 override fun onItemClick(sector: Sector, position: Int) {
                     sectorId = sector.SectorId
-                    textViewSector.text = sector.Nombre
+                    editTextSector.setText(sector.Nombre)
                     responsable = sector.Responsables!!
                     dialogSector.dismiss()
                 }
@@ -230,7 +226,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
                 override fun onItemClick(responsable: Responsable, position: Int) {
                     responsableId = responsable.ResponsableId
                     nresponsable = responsable.NombreCompleto
-                    textViewResponsable.text = responsable.NombreCompleto
+                    editTextResponsable.setText(responsable.NombreCompleto)
                     dialogResponasble.dismiss()
                 }
             })
@@ -266,7 +262,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         val tipoDocumentoAdapter = TipoDocumentoAdapter(estado, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
                 estadoId = t.id
-                textViewEstado.text = t.nombre
+                editTextEstado.setText(t.nombre)
                 dialogEstado.dismiss()
             }
         })

@@ -33,161 +33,115 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="18sp" />
 
-
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/codigo"
-                    android:textColor="@color/primary_text" />
+                    android:hint="@string/codigo">
 
-                <EditText
-                    android:id="@+id/editTextCodigo"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextCodigo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:inputType="text"
-                    tools:ignore="Autofill,LabelFor" />
+                    android:hint="@string/estado">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextEstado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/estado"
-                    android:textColor="@color/primary_text" />
+                    android:hint="@string/area">
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutEstado"
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:id="@+id/textViewEstado"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextArea"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/estado" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/img"
-                        android:src="@drawable/ic_down" />
-                </LinearLayout>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/area"
-                    android:textColor="@color/primary_text"
-                    tools:ignore="Suspicious0dp" />
+                    android:hint="@string/sector">
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:id="@+id/textViewArea"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextSector"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="@string/area" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/img"
-                        android:src="@drawable/ic_down" />
-                </LinearLayout>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/sector"
-                    android:textColor="@color/primary_text"
-                    tools:ignore="Suspicious0dp" />
+                    android:hint="@string/sector">
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutSector"
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:id="@+id/textViewSector"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextResponsable"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="@string/sector" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/img"
-                        android:src="@drawable/ic_down" />
-                </LinearLayout>
 
-                <TextView
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/responsable"
-                    android:textColor="@color/primary_text" />
+                    android:hint="@string/nombre">
 
-                <LinearLayout
-                    android:id="@+id/linearLayoutResponsable"
-                    android:layout_width="match_parent"
-                    android:layout_height="24dp"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <TextView
-                        android:id="@+id/textViewResponsable"
-                        android:layout_width="0dp"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextNombre"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="@string/responsable" />
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/img"
-                        android:src="@drawable/ic_down" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/nombre"
-                    android:textColor="@color/primary_text" />
-
-                <EditText
-                    android:id="@+id/editTextNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:inputType="text"
-                    tools:ignore="Autofill,LabelFor" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
