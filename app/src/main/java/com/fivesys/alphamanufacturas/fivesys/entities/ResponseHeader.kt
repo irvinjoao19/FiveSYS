@@ -20,6 +20,4 @@ open class ResponseHeader : RealmObject {
         this.id = id
         this.puntosFijos = puntosFijos
     }
-
-
 }

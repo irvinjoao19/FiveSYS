@@ -8,6 +8,7 @@ open class Auditoria : RealmObject {
     @PrimaryKey
     var AuditoriaId: Int? = 0
     var Codigo: String? = ""
+    var Nombre: String? = ""
     var Area: Area? = null
     var Sector: Sector? = null
     var Grupo: Grupo? = null
@@ -15,7 +16,7 @@ open class Auditoria : RealmObject {
     var FechaRegistro: String? = ""
     var FechaProgramado: String? = ""
     var Estado: Int? = 0
-    var Nombre: String? = ""
+
 
     constructor() : super()
 
