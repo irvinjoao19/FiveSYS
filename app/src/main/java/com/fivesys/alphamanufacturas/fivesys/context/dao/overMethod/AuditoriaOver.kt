@@ -22,6 +22,8 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
     override fun saveAuditoriaByOne(auditoriaByOne: AuditoriaByOne) {
         realm.executeTransaction { realm ->
+            val detalle = realm.where(Detalle::class.java).equalTo("AuditoriaId",auditoriaByOne.AuditoriaId).findAll()
+            detalle.deleteAllFromRealm()
             realm.copyToRealmOrUpdate(auditoriaByOne)
         }
     }

@@ -41,6 +41,7 @@ import okhttp3.RequestBody
 import java.util.*
 
 class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroDialogFragment.InterfaceCommunicator, NuevaAuditoriaDialogFragment.InterfaceCommunicator {
+
     override fun filtroRequest(value: String) {
         auditoriaAdapter?.getFilter()?.filter(value)
     }
@@ -237,7 +238,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                         intent.putExtra("auditoriaId", auditoriaId)
                         startActivity(intent)
                         dialog.dismiss()
-
                     }
 
                     override fun onSubscribe(d: Disposable) {

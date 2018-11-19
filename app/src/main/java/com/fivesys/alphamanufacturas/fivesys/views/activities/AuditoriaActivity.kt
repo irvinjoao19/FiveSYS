@@ -225,7 +225,6 @@ class AuditoriaActivity : AppCompatActivity() {
                 .subscribe(object : Observer<Mensaje> {
                     override fun onComplete() {
                         Dialog.MensajeOk(this@AuditoriaActivity, "Mensaje", mensaje)
-
                         dialog.dismiss()
                     }
 
