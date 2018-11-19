@@ -11,7 +11,6 @@ import java.io.File
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
-
     override fun saveAuditoria(auditoria: List<Auditoria>) {
         realm.executeTransaction { realm ->
             realm.copyToRealmOrUpdate(auditoria)
@@ -120,7 +119,9 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                     valor = false
                 }
             } else {
-                valor = false
+                realm.executeTransaction {
+                    d.deleteFromRealm()
+                }
             }
         } else {
             realm.executeTransaction {
@@ -130,18 +131,27 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         return valor
     }
 
-    override fun updateAuditoriaByOne(id: Int, ids: Array<IntArray>?) {
+    override fun updateAuditoriaByOne(id: Int, ids: List<Detalle>?) {
         realm.executeTransaction {
+
+            val delete = realm.where(Detalle::class.java).equalTo("AuditoriaId",id).equalTo("Eliminado", true).findAll()
+            delete.deleteAllFromRealm()
 
             val auditoria: AuditoriaByOne? = getAuditoriaByOne(id)!!
             if (auditoria != null) {
-                for (x in 0 until ids!!.size) {
-                    for (y in 0 until ids[x].size) {
-                        System.out.println(ids[x][y])
+                if (ids != null) {
+                    for (dd: Detalle in ids) {
+                        if (auditoria.Detalles != null) {
+                            for (d: Detalle in auditoria.Detalles!!) {
+                                if (d.Id == dd.Id) {
+                                    d.AuditoriaDetalleId = dd.AuditoriaDetalleId
+                                    d.estado = 0
+                                }
+                            }
+                        }
                     }
                 }
             }
         }
     }
-
 }

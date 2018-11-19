@@ -73,4 +73,13 @@ open class Detalle : RealmObject {
         this.Eliminado = Eliminado
         this.estado = estado
     }
+
+    // TODO SAVE RETURN
+
+    constructor(Id: Int?, AuditoriaDetalleId: Int?) : super() {
+        this.Id = Id
+        this.AuditoriaDetalleId = AuditoriaDetalleId
+    }
+
+
 }

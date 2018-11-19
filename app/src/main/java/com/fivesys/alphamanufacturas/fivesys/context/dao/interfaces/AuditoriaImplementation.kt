@@ -29,7 +29,7 @@ interface AuditoriaImplementation {
 
     val categorias: RealmResults<Categoria>
 
-    fun getCategoriasById(CategoriaId:Int) : Categoria?
+    fun getCategoriasById(CategoriaId: Int): Categoria?
 
     // TODO DETALLE
 
@@ -43,9 +43,8 @@ interface AuditoriaImplementation {
 
     fun deleteDetalle(d: Detalle): Boolean
 
-
     // TODO UPDATE AUDITORIABYONE
 
-    fun updateAuditoriaByOne(id: Int, ids: Array<IntArray>?)
+    fun updateAuditoriaByOne(id: Int, ids: List<Detalle>?)
 
 }

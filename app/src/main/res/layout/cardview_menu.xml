@@ -20,6 +20,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
@@ -30,7 +31,8 @@
             android:layout_gravity="center|start"
             android:contentDescription="@string/img"
             android:paddingStart="15sp"
-            tools:ignore="RtlSymmetry" />
+            android:paddingEnd="0sp"
+            android:src="@mipmap/ic_auditoria" />
 
         <TextView
             android:id="@+id/textViewTitulo"
@@ -38,6 +40,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:paddingStart="15sp"
+            android:text="asdasdasdasd"
+            android:paddingEnd="0sp"
             android:textSize="20sp"
             android:textStyle="bold"
             tools:ignore="RtlSymmetry" />

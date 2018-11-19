@@ -72,7 +72,6 @@ class AuditoriaActivity : AppCompatActivity() {
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
 
-
     var envioId: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -166,8 +165,6 @@ class AuditoriaActivity : AppCompatActivity() {
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -180,7 +177,7 @@ class AuditoriaActivity : AppCompatActivity() {
         textViewTitle.text = "Enviando ...."
 
         builder.setView(v)
-//
+
         val filePaths: ArrayList<String> = ArrayList()
         val auditoria: AuditoriaByOne = auditoriaImp.getAuditoriaByOne(id)!!
 
@@ -228,6 +225,7 @@ class AuditoriaActivity : AppCompatActivity() {
                 .subscribe(object : Observer<Mensaje> {
                     override fun onComplete() {
                         Dialog.MensajeOk(this@AuditoriaActivity, "Mensaje", mensaje)
+
                         dialog.dismiss()
                     }
 
@@ -236,10 +234,11 @@ class AuditoriaActivity : AppCompatActivity() {
 
                     override fun onNext(t: Mensaje) {
                         mensaje = t.mensaje
+                        auditoriaImp.updateAuditoriaByOne(id, t.ids)
                     }
 
                     override fun onError(e: Throwable) {
-//                        Util.toastMensaje(this@AuditoriaActivity, e.message!!)
+                        Util.toastMensaje(this@AuditoriaActivity, "Volver a intentarlo")
                         dialog.dismiss()
                     }
                 })
