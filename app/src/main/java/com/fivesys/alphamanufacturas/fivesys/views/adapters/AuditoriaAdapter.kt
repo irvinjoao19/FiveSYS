@@ -23,17 +23,13 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
 
     private var auditoriasList: ArrayList<Auditoria> = ArrayList(auditorias)
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = layout?.let { LayoutInflater.from(parent.context).inflate(it, parent, false) }
         return ViewHolder(v!!)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        if (Objects.requireNonNull<Auditoria>(auditoriasList[position]).isValid) {
-            listener?.let { holder.bind(Objects.requireNonNull<Auditoria>(auditoriasList[position]), position, it) }
-        }
+        listener?.let { holder.bind(auditoriasList[position], position, it) }
     }
 
     override fun getItemCount(): Int {
@@ -138,37 +134,37 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                     var ok: Boolean
                     for (auditoria: Auditoria in auditorias) {
                         ok = true
-                        if(keyword.Codigo!!.trim().isNotEmpty()){
+                        if (keyword.Codigo!!.trim().isNotEmpty()) {
                             ok = auditoria.Codigo!!.toLowerCase().contains(keyword.Codigo!!)
                         }
 
-                        if(keyword.EstadoAuditoria!! > 0 && ok){
+                        if (keyword.EstadoAuditoria!! > 0 && ok) {
                             ok = auditoria.Estado == keyword.EstadoAuditoria
                         }
 
                         if (keyword.AreaId!! > 0 && ok) {
-                            if(auditoria.Area != null){
+                            if (auditoria.Area != null) {
                                 ok = auditoria.Area!!.AreaId == keyword.AreaId
                             }
                         }
                         if (keyword.SectorId!! > 0 && ok) {
-                            if (auditoria.Area != null ) {
+                            if (auditoria.Area != null) {
                                 ok = auditoria.Sector!!.SectorId == keyword.SectorId
                             }
                         }
                         if (keyword.ResponsableId!! > 0 && ok) {
-                            if (auditoria.Responsable != null ) {
+                            if (auditoria.Responsable != null) {
                                 ok = auditoria.Responsable!!.ResponsableId == keyword.ResponsableId
                             }
                         }
 
-                        if(keyword.Nombre!!.trim().isNotEmpty() && ok){
-                            if(auditoria.Nombre != null){
+                        if (keyword.Nombre!!.trim().isNotEmpty() && ok) {
+                            if (auditoria.Nombre != null) {
                                 ok = auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)
                             }
                         }
 
-                        if(ok) filteredList.add(auditoria)
+                        if (ok) filteredList.add(auditoria)
                     }
                     auditoriasList = filteredList
                 } else {

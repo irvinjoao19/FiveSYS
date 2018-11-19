@@ -20,27 +20,21 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
     override val getAllAuditoria: RealmResults<Auditoria>
         get() = realm.where(Auditoria::class.java).findAll().sort("AuditoriaId", Sort.DESCENDING)
 
-    override fun saveAuditoriaByOne(auditoriaByOne: AuditoriaByOne) {
+    override fun saveAuditoriaByOne(auditoria: Auditoria) {
         realm.executeTransaction { realm ->
-            val detalle = realm.where(Detalle::class.java).equalTo("AuditoriaId",auditoriaByOne.AuditoriaId).findAll()
-            detalle.deleteAllFromRealm()
-            realm.copyToRealmOrUpdate(auditoriaByOne)
+            val detalle: RealmResults<Detalle>? = realm.where(Detalle::class.java).equalTo("AuditoriaId", auditoria.AuditoriaId).findAll()
+            detalle?.deleteAllFromRealm()
+            realm.copyToRealmOrUpdate(auditoria)
         }
     }
 
-    override fun getAuditoriaByOne(id: Int): AuditoriaByOne? {
-        return realm.where(AuditoriaByOne::class.java).equalTo("AuditoriaId", id).findFirst()
+    override fun getAuditoriaByOne(id: Int): Auditoria? {
+        return realm.where(Auditoria::class.java).equalTo("AuditoriaId", id).findFirst()
     }
 
     override fun saveFiltroAuditoria(area: List<Area>) {
         realm.executeTransaction { realm ->
             realm.copyToRealmOrUpdate(area)
-        }
-    }
-
-    override fun saveHeader(response: ResponseHeader) {
-        realm.executeTransaction { realm ->
-            realm.copyToRealmOrUpdate(response)
         }
     }
 
@@ -98,7 +92,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                 dd.S5 = d.S5
                 dd.Url = d.Url
             } else {
-                val a: AuditoriaByOne? = realm.where(AuditoriaByOne::class.java).equalTo("AuditoriaId", AuditoriaId).findFirst()
+                val a: Auditoria? = realm.where(Auditoria::class.java).equalTo("AuditoriaId", AuditoriaId).findFirst()
                 if (a != null) {
                     realm.copyToRealmOrUpdate(d)
                     a.Detalles?.add(d)
@@ -136,10 +130,10 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
     override fun updateAuditoriaByOne(id: Int, ids: List<Detalle>?) {
         realm.executeTransaction {
 
-            val delete = realm.where(Detalle::class.java).equalTo("AuditoriaId",id).equalTo("Eliminado", true).findAll()
-            delete.deleteAllFromRealm()
+            val delete: RealmResults<Detalle>? = realm.where(Detalle::class.java).equalTo("AuditoriaId", id).equalTo("Eliminado", true).findAll()
+            delete?.deleteAllFromRealm()
 
-            val auditoria: AuditoriaByOne? = getAuditoriaByOne(id)!!
+            val auditoria: Auditoria? = getAuditoriaByOne(id)!!
             if (auditoria != null) {
                 if (ids != null) {
                     for (dd: Detalle in ids) {

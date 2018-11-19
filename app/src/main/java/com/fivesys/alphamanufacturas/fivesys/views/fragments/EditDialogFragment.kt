@@ -349,7 +349,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         textViewTitulo.text = "Categoria"
-        val categoria: AuditoriaByOne = auditoriaImp.getAuditoriaByOne(auditoriaId!!)!!
+        val categoria: Auditoria = auditoriaImp.getAuditoriaByOne(auditoriaId!!)!!
         val categoriaAdapter = CategoriaAdapter(categoria.Categorias!!, R.layout.cardview_combo, object : CategoriaAdapter.OnItemClickListener {
             override fun onItemClick(c: Categoria, v: View, position: Int) {
 

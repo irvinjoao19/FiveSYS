@@ -13,8 +13,8 @@ open class Sector : RealmObject {
     var PuntosFijos: RealmList<PuntosFijos>? = null
     var Responsables: RealmList<Responsable>? = null
 
-
     constructor() : super()
+
     constructor(SectorId: Int, Nombre: String?) : super() {
         this.SectorId = SectorId
         this.Nombre = Nombre

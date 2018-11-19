@@ -9,13 +9,11 @@ interface AuditoriaImplementation {
 
     val getAllAuditoria: RealmResults<Auditoria>
 
-    fun saveAuditoriaByOne(auditoriaByOne: AuditoriaByOne)
+    fun saveAuditoriaByOne(auditoria: Auditoria)
 
-    fun getAuditoriaByOne(id: Int): AuditoriaByOne?
+    fun getAuditoriaByOne(id: Int): Auditoria?
 
     fun saveFiltroAuditoria(area: List<Area>)
-
-    fun saveHeader(response: ResponseHeader)
 
     // TODO FILTOR
 

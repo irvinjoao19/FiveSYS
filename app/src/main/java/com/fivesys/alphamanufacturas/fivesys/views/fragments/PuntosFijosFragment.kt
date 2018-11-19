@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -29,7 +28,7 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
-import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
+import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
@@ -88,7 +87,7 @@ class PuntosFijosFragment : Fragment() {
         return view
     }
 
-    private fun bindUI(view: View, a: AuditoriaByOne?) {
+    private fun bindUI(view: View, a: Auditoria?) {
 
         recyclerView = view.findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(context)

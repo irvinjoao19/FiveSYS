@@ -1,6 +1,7 @@
 package com.fivesys.alphamanufacturas.fivesys.views.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -18,7 +19,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImp
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
-import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
+import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
 import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
@@ -53,7 +54,7 @@ class AuditoriaActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save -> {
-                confirmLogOut(envioId!!)
+                confirmRegister(envioId!!)
                 return true
             }
         }
@@ -73,6 +74,7 @@ class AuditoriaActivity : AppCompatActivity() {
     lateinit var dialog: AlertDialog
 
     var envioId: Int? = 0
+    var tipo: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,7 +85,9 @@ class AuditoriaActivity : AppCompatActivity() {
         val bundle = intent.extras
         if (bundle != null) {
             auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
+            tipo = bundle.getInt("tipo")
             getAuditoriaByOne(bundle.getInt("auditoriaId"))
+
         }
     }
 
@@ -93,7 +97,12 @@ class AuditoriaActivity : AppCompatActivity() {
         Objects.requireNonNull<ActionBar>(supportActionBar).title = "Nueva Auditoria"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
-            finish()
+            if (tipo == 1) {
+                startActivity(Intent(this, ListAuditoriaActivity::class.java))
+                finish()
+            } else {
+                finish()
+            }
         }
     }
 
@@ -125,11 +134,11 @@ class AuditoriaActivity : AppCompatActivity() {
     private fun getAuditoriaByOne(id: Int) {
 
         val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
-        val auditoriaCall: Observable<AuditoriaByOne> = auditoriaInterfaces.getAuditoriasByOne(id)
+        val auditoriaCall: Observable<Auditoria> = auditoriaInterfaces.getAuditoriasByOne(id)
 
         auditoriaCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<AuditoriaByOne> {
+                .subscribe(object : Observer<Auditoria> {
                     override fun onComplete() {
                         progressBar.visibility = View.GONE
                         bindToolbar()
@@ -140,7 +149,7 @@ class AuditoriaActivity : AppCompatActivity() {
 
                     }
 
-                    override fun onNext(t: AuditoriaByOne) {
+                    override fun onNext(t: Auditoria) {
                         auditoriaImp.saveAuditoriaByOne(t)
                     }
 
@@ -151,7 +160,7 @@ class AuditoriaActivity : AppCompatActivity() {
     }
 
 
-    private fun confirmLogOut(id: Int) {
+    private fun confirmRegister(id: Int) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
         val dialog: AlertDialog
 
@@ -179,7 +188,7 @@ class AuditoriaActivity : AppCompatActivity() {
         builder.setView(v)
 
         val filePaths: ArrayList<String> = ArrayList()
-        val auditoria: AuditoriaByOne = auditoriaImp.getAuditoriaByOne(id)!!
+        val auditoria: Auditoria = auditoriaImp.getAuditoriaByOne(id)!!
 
         val json = Gson().toJson(realm.copyFromRealm(auditoria))
         Log.i("TAG", json)
@@ -246,6 +255,18 @@ class AuditoriaActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         dialog.show()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (tipo == 1) {
+                startActivity(Intent(this@AuditoriaActivity, ListAuditoriaActivity::class.java))
+                finish()
+            } else {
+                finish()
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
 }

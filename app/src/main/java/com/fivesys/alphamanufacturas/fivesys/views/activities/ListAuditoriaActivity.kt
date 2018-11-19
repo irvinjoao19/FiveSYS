@@ -24,7 +24,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
-import com.fivesys.alphamanufacturas.fivesys.entities.ResponseHeader
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.NuevaAuditoriaDialogFragment
@@ -73,20 +72,20 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
     }
 
-    private lateinit var progressBar: ProgressBar
-    private lateinit var fab: FloatingActionButton
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var toolbar: Toolbar
-    private lateinit var layoutManager: RecyclerView.LayoutManager
+    lateinit var progressBar: ProgressBar
+    lateinit var fab: FloatingActionButton
+    lateinit var recyclerView: RecyclerView
+    lateinit var toolbar: Toolbar
+    lateinit var layoutManager: RecyclerView.LayoutManager
 
-    private lateinit var auditoriaImp: AuditoriaImplementation
+    lateinit var auditoriaImp: AuditoriaImplementation
     private var auditoriaAdapter: AuditoriaAdapter? = null
-    private lateinit var realm: Realm
+    lateinit var realm: Realm
 
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
 
-    private lateinit var auditoriaInterfaces: AuditoriaInterfaces
+    lateinit var auditoriaInterfaces: AuditoriaInterfaces
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,6 +105,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         Objects.requireNonNull<ActionBar>(supportActionBar).title = "Mis Auditorias"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }
@@ -117,25 +117,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
     }
-
-    private fun getListAuditoria() {
-        progressBar.visibility = View.GONE
-        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
-        auditorias.addChangeListener { _ ->
-            auditoriaAdapter?.notifyDataSetChanged()
-        }
-        auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
-            override fun onItemClick(a: Auditoria, position: Int) {
-                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
-                intent.putExtra("auditoriaId", a.AuditoriaId)
-                startActivity(intent)
-            }
-        })
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = auditoriaAdapter
-    }
-
 
     @SuppressLint("CheckResult")
     private fun getListAuditoriaCall() {
@@ -159,6 +140,25 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                         Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
                     }
                 })
+    }
+
+    private fun getListAuditoria() {
+        progressBar.visibility = View.GONE
+        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
+        auditorias.addChangeListener { _ ->
+            auditoriaAdapter?.notifyDataSetChanged()
+        }
+        auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
+            override fun onItemClick(a: Auditoria, position: Int) {
+                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                intent.putExtra("auditoriaId", a.AuditoriaId)
+                intent.putExtra("tipo", 0)
+                startActivity(intent)
+            }
+        })
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = auditoriaAdapter
     }
 
 
@@ -228,15 +228,17 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         var auditoriaId: Int? = 0
 
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)
-        val headerCall: Observable<ResponseHeader> = auditoriaInterfaces.saveHeader(requestBody)
+        val headerCall: Observable<Auditoria> = auditoriaInterfaces.saveHeader(requestBody)
 
         headerCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<ResponseHeader> {
+                .subscribe(object : Observer<Auditoria> {
                     override fun onComplete() {
                         val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
                         intent.putExtra("auditoriaId", auditoriaId)
+                        intent.putExtra("tipo", 1)
                         startActivity(intent)
+                        finish()
                         dialog.dismiss()
                     }
 
@@ -244,9 +246,8 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
                     }
 
-                    override fun onNext(t: ResponseHeader) {
-                        auditoriaId = t.id
-                        auditoriaImp.saveHeader(t)
+                    override fun onNext(t: Auditoria) {
+                        auditoriaId = t.AuditoriaId
                     }
 
                     override fun onError(e: Throwable) {
@@ -259,5 +260,14 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         dialog = builder.create()
         dialog.show()
     }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            startActivity(Intent(this@ListAuditoriaActivity, MainActivity::class.java))
+            finish()
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
 
 }

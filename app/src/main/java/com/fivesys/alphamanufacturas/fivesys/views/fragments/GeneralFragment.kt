@@ -6,8 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
@@ -19,11 +17,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
-import com.fivesys.alphamanufacturas.fivesys.entities.AuditoriaByOne
+import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import io.realm.Realm
 
 class GeneralFragment : Fragment(), View.OnClickListener {
@@ -78,7 +75,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindUI(view: View, a: AuditoriaByOne?) {
+    private fun bindUI(view: View, a: Auditoria?) {
         editTextCodigo = view.findViewById(R.id.editTextCodigo)
         editTextArea = view.findViewById(R.id.editTextArea)
         editTextSector = view.findViewById(R.id.editTextSector)
