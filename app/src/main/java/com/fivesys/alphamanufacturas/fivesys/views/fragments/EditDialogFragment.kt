@@ -111,8 +111,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     var nameImg: String? = null
     var Direccion: String? = ""
 
-    var componente = Componente()
-    var category = Categoria()
+    var componente = ComponenteByDetalle()
+    var category = CategoriaByDetalle()
 
     var s1: Int? = 0
     var s2: Int? = 0
@@ -185,7 +185,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
         if (d != null) {
 
-            val c: Categoria? = d.Categoria
+            val c: CategoriaByDetalle? = d.Categoria
             if (c != null) {
                 category.Nombre = c.Nombre
                 category.CategoriaId = c.CategoriaId
@@ -196,11 +196,10 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                     componentes = categoria.Componentes
                 }
             }
-            val cc: Componente? = d.Componente
+            val cc: ComponenteByDetalle? = d.Componente
             if (cc != null) {
                 componente.Nombre = cc.Nombre
                 componente.ComponenteId = cc.ComponenteId
-                componente.CategoriaId = cc.CategoriaId
                 editTextComponente.setText(cc.Nombre)
             }
 
@@ -361,7 +360,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
                 if (c.Componentes!!.size > 0) {
                     componente.ComponenteId = c.Componentes!![0]!!.ComponenteId
-                    componente.CategoriaId = c.Componentes!![0]!!.CategoriaId
                     componente.Nombre = c.Componentes!![0]!!.Nombre
                     editTextComponente.setText(c.Componentes!![0]!!.Nombre)
                 } else {
@@ -393,9 +391,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             val componenteAdapter = ComponenteAdapter(componentes!!, R.layout.cardview_combo, object : ComponenteAdapter.OnItemClickListener {
                 override fun onItemClick(c: Componente, position: Int) {
                     componente.ComponenteId = c.ComponenteId
-                    componente.CategoriaId = c.CategoriaId
                     componente.Nombre = c.Nombre
-
                     editTextComponente.setText(c.Nombre)
                     dialogComponente.dismiss()
                 }

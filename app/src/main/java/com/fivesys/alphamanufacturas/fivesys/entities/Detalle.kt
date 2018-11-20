@@ -11,8 +11,8 @@ open class Detalle : RealmObject {
     var AuditoriaId: Int? = 0
     var CategoriaId: Int? = 0
     var ComponenteId: Int? = 0
-    var Componente: Componente? = null
-    var Categoria: Categoria? = null
+    var Componente: ComponenteByDetalle? = null
+    var Categoria: CategoriaByDetalle? = null
     var AspectoObservado: String? = ""
     var Nombre: String? = "" // referencia
     var S1: Int? = 0
@@ -31,7 +31,7 @@ open class Detalle : RealmObject {
 
     // TODO LOCAL SAVE REGISTRE
 
-    constructor(Id: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?) : super() {
+    constructor(Id: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: ComponenteByDetalle?, Categoria: CategoriaByDetalle?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, estado: Int?, Url: String?) : super() {
         this.Id = Id
         this.AuditoriaId = AuditoriaId
         this.CategoriaId = CategoriaId
@@ -52,7 +52,7 @@ open class Detalle : RealmObject {
 
     // TODO RETROFIT
 
-    constructor(Id: Int?, AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: Componente?, Categoria: Categoria?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?, FotoId: Int?, Eliminado: Boolean?, estado: Int?) : super() {
+    constructor(Id: Int?, AuditoriaDetalleId: Int?, AuditoriaId: Int?, CategoriaId: Int?, ComponenteId: Int?, Componente: ComponenteByDetalle?, Categoria: CategoriaByDetalle?, AspectoObservado: String?, Nombre: String?, S1: Int?, S2: Int?, S3: Int?, S4: Int?, S5: Int?, Detalle: String?, Url: String?, FotoId: Int?, Eliminado: Boolean?, estado: Int?) : super() {
         this.Id = Id
         this.AuditoriaDetalleId = AuditoriaDetalleId
         this.AuditoriaId = AuditoriaId
