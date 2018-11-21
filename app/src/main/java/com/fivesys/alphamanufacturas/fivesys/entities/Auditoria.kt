@@ -19,7 +19,7 @@ open class Auditoria : RealmObject {
     var Detalles: RealmList<Detalle>? = null
     var PuntosFijos: RealmList<PuntosFijosHeader>? = null
     var Categorias: RealmList<Categoria>? = null
-    var FechaRegistro: String? = ""
+    var FechaRegistro: String? = "01/01/0001"
     var FechaProgramado: String? = ""
     var Estado: Int? = 0
 
