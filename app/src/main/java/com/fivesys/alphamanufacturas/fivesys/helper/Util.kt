@@ -1,12 +1,16 @@
 package com.fivesys.alphamanufacturas.fivesys.helper
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.provider.Settings
@@ -14,11 +18,11 @@ import android.telephony.TelephonyManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.DialogFragment
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
@@ -408,9 +412,9 @@ object Util {
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
         val textViewMessage = v.findViewById<TextView>(R.id.textViewMessage)
         val textViewTitle = v.findViewById<TextView>(R.id.textViewTitle)
-        val buttonCancelar = v.findViewById<Button>(R.id.buttonCancelar)
+        val buttonCancelar = v.findViewById<MaterialButton>(R.id.buttonCancelar)
         buttonCancelar.visibility = View.GONE
-        val buttonAceptar = v.findViewById<Button>(R.id.buttonAceptar)
+        val buttonAceptar = v.findViewById<MaterialButton>(R.id.buttonAceptar)
         textViewTitle.text = titulo
         textViewMessage.textSize = 18f
         textViewMessage.text = m
@@ -418,6 +422,19 @@ object Util {
         builder.setView(v)
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
+    fun mensajeDialog(context: Activity, titulo: String, m: String?) {
+        val alertDialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        alertDialog.setTitle(titulo)
+        alertDialog.setMessage(m)
+
+        alertDialog.setPositiveButton("Aceptar"
+        ) { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = alertDialog.create()
         dialog.show()
     }
 

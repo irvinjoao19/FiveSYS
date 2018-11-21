@@ -168,7 +168,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                     showCreateHeaderDialog("Editar Observación", id!!, d.Id!!)
                 }
                 2 -> {
-                    deletePhoto(d)
+                    deletePhoto(d, v)
                 }
             }
             false
@@ -178,34 +178,26 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
 
     @SuppressLint("SetTextI18n")
-    private fun deletePhoto(d: Detalle) {
+    private fun deletePhoto(d: Detalle, v: View) {
+        val alertDialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        alertDialog.setTitle("Eliminar")
+        alertDialog.setMessage("Deseas eliminar esta observación ?")
 
-        builderDelete = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_message, null)
-
-        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        val textViewMessage: TextView = v.findViewById(R.id.textViewMessage)
-        val buttonCancelar: Button = v.findViewById(R.id.buttonCancelar)
-        val buttonAceptar: Button = v.findViewById(R.id.buttonAceptar)
-
-        textViewTitle.text = "Eliminar"
-        textViewMessage.text = "Deseas eliminar esta observación ?"
-
-        buttonAceptar.setOnClickListener {
+        alertDialog.setPositiveButton("Aceptar"
+        ) { dialog, _ ->
             if (auditoriaImp.deleteDetalle(d)) {
-                Util.toastMensaje(context!!, "Observación eliminado")
+                Util.snackBarMensaje(v, "Observación eliminado")
             } else {
-                Util.toastMensaje(context!!, "No se pudo eliminar")
+                Util.snackBarMensaje(v, "No se pudo eliminar")
             }
-            dialogDelete.dismiss()
+            dialog.dismiss()
         }
 
-        buttonCancelar.setOnClickListener {
-            dialogDelete.dismiss()
+        alertDialog.setNegativeButton("Cancelar"
+        ) { dialog, _ ->
+            dialog.dismiss()
         }
-
-        builderDelete.setView(v)
-        dialogDelete = builderDelete.create()
-        dialogDelete.show()
+        val dialog = alertDialog.create()
+        dialog.show()
     }
 }

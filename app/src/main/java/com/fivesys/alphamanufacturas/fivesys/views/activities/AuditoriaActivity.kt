@@ -22,7 +22,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.Auditor
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
 import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
-import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
 import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.google.android.material.tabs.TabLayout
@@ -233,7 +232,7 @@ class AuditoriaActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Mensaje> {
                     override fun onComplete() {
-                        Dialog.MensajeOk(this@AuditoriaActivity, "Mensaje", mensaje)
+                        Util.mensajeDialog(this@AuditoriaActivity, "Mensaje", mensaje)
                         dialog.dismiss()
                     }
 

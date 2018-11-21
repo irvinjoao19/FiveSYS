@@ -26,7 +26,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
-import com.fivesys.alphamanufacturas.fivesys.helper.Dialog
 import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
@@ -186,8 +185,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 response.code() == 200 -> {
                     auditor = response.body() as Auditor
                     result = when {
-                        auditor.Error == "La clave es incorrecta." -> "pass"
-                        auditor.Error == "No existe el usuario." -> "users"
                         auditor.NombreCompleto.isNotEmpty() -> {
                             accesoImp.saveAuditor(auditor)
                             "enter"
@@ -199,7 +196,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 response.code() == 404 -> result = "users"
                 else -> {
                     val message = Gson().fromJson(response.errorBody()?.string(), MessageError::class.java)
-                     Log.i("TAG", message.Error)
+                    Log.i("TAG", message.Error)
                     result = message.Error
                 }
             }
@@ -255,15 +252,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
             if (s != null) {
                 when (s) {
-//                    "pass" -> editTextPassError.error = "Contraseña Incorrecta"
-//                    "users" -> editTextUserError.error = "Usuario no existe."
                     "enter" -> {
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
                     else -> {
-                        Util.MensajeOk(this@LoginActivity, "Error", s)
+                        Util.mensajeDialog(this@LoginActivity, "Error", s)
                     }
                 }
             }

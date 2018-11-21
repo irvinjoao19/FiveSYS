@@ -35,7 +35,6 @@
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="codigo">Codigo</string>
     <string name="estado">Estado</string>
-    <string name="nombre">Nombre</string>
     <string name="fecha_registro">Fecha Registro</string>
     <string name="fecha_inicio_programado">Fecha Inicio Programado</string>
     <string name="pendiente">Pendiente</string>
@@ -55,4 +54,10 @@
     <string name="aspecto_observado">Aspecto Observado</string>
     <string name="eliminar">Eliminar</string>
     <string name="detalle">Detalle</string>
+
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="fecha_de_nacimiento">Fecha de Nacimiento</string>
+    <string name="correo">Correo</string>
+    <string name="nueva_clave">Nueva clave</string>
 </resources>
