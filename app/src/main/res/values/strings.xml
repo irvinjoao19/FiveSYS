@@ -27,6 +27,11 @@
     <string name="s3">S3: </string>
     <string name="s4">S4: </string>
     <string name="s5">S5: </string>
+    <string name="s11">S1</string>
+    <string name="s22">S2</string>
+    <string name="s33">S3</string>
+    <string name="s44">S4</string>
+    <string name="s55">S5</string>
     <string name="cerrar_sesion">Cerrar Sesion</string>
     <string name="codigo">Codigo</string>
     <string name="estado">Estado</string>

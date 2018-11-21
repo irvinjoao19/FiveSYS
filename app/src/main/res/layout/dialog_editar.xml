@@ -88,9 +88,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
                     android:baselineAligned="false"
                     android:orientation="horizontal">
@@ -100,14 +98,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/s1">
+                        android:hint="@string/s11">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextS1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/ic_down"
-                            android:focusable="false" />
+                            android:focusable="false"
+                            android:textSize="12sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -115,14 +114,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/s2">
+                        android:hint="@string/s22">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextS2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/ic_down"
-                            android:focusable="false" />
+                            android:focusable="false"
+                            android:textSize="12sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -130,14 +130,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/s3">
+                        android:hint="@string/s33">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextS3"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/ic_down"
-                            android:focusable="false" />
+                            android:focusable="false"
+                            android:textSize="12sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -145,14 +146,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/s4">
+                        android:hint="@string/s44">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextS4"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/ic_down"
-                            android:focusable="false" />
+                            android:focusable="false"
+                            android:textSize="12sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -160,14 +162,15 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:hint="@string/s5">
+                        android:hint="@string/s55">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/editTextS5"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:drawableEnd="@drawable/ic_down"
-                            android:focusable="false" />
+                            android:focusable="false"
+                            android:textSize="12sp" />
                     </com.google.android.material.textfield.TextInputLayout>
                 </LinearLayout>
 
