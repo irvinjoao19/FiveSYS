@@ -6,7 +6,7 @@ interface AccesoImplementation {
 
     fun saveAuditor(auditor: Auditor)
 
-    fun getAuditor(): Auditor?
+    val getAuditor : Auditor?
 
     fun deleteAuditor()
 

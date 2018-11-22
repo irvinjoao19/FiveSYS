@@ -12,9 +12,8 @@ class AccesoOver(private val realm: Realm) : AccesoImplementation {
         }
     }
 
-    override fun getAuditor(): Auditor? {
-        return realm.where(Auditor::class.java).findFirst()
-    }
+    override val getAuditor: Auditor?
+        get() =  realm.where(Auditor::class.java).findFirst()
 
     override fun deleteAuditor() {
         realm.executeTransaction {

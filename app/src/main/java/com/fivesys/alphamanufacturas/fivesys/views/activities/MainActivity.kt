@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         realm = Realm.getDefaultInstance()
         accesoImp = AccesoOver(realm)
-        existsUser(accesoImp.getAuditor())
+        existsUser(accesoImp.getAuditor)
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

@@ -185,13 +185,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 response.code() == 200 -> {
                     auditor = response.body() as Auditor
                     result = when {
-                        auditor.NombreCompleto.isNotEmpty() -> {
+                        auditor.NombreCompleto!!.isNotEmpty() -> {
                             accesoImp.saveAuditor(auditor)
                             "enter"
                         }
                         else -> "users"
                     }
-
                 }
                 response.code() == 404 -> result = "users"
                 else -> {

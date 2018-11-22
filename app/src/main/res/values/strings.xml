@@ -60,4 +60,7 @@
     <string name="fecha_de_nacimiento">Fecha de Nacimiento</string>
     <string name="correo">Correo</string>
     <string name="nueva_clave">Nueva clave</string>
+    <string name="clave_actual">Clave Actual</string>
+    <string name="confirmar_nueva_clave">Confirmar Nueva Clave</string>
+    <string name="guardar">Guardar</string>
 </resources>
