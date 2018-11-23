@@ -236,6 +236,8 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
                         if (e is HttpException) {
                             val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
                             Util.snackBarMensaje(view, message.Error!!)
+                        } else {
+                            Util.snackBarMensaje(view, "Por favor volver a intentarlo")
                         }
                         dialog.dismiss()
                     }
