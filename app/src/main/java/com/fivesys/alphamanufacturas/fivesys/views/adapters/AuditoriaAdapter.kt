@@ -101,10 +101,11 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                 3 -> "Anulado"
                 else -> "Vacio"
             }
+
             textViewEstado.setTextColor(when (a.Estado) {
                 1 -> ContextCompat.getColor(itemView.context, R.color.colorPendiente)
                 2 -> ContextCompat.getColor(itemView.context, R.color.colorRealizada)
-                3 -> ContextCompat.getColor(itemView.context, R.color.colorAzul)
+                3 -> if (position % 2 == 1) ContextCompat.getColor(itemView.context, R.color.colorWhite) else ContextCompat.getColor(itemView.context, R.color.colorAzul)
                 else -> ContextCompat.getColor(itemView.context, R.color.colorWhite)
             })
 
