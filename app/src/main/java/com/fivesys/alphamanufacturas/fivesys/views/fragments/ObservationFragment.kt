@@ -28,13 +28,16 @@ import io.realm.Realm
 import io.realm.RealmResults
 import java.io.File
 
-
 class ObservationFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                showCreateHeaderDialog("Nueva Observación", id!!, 0)
+                if (estado == 1) {
+                    showCreateHeaderDialog("Nueva Observación", id!!, 0)
+                } else {
+                    Util.snackBarMensaje(v, "Inhabilitado para editar")
+                }
             }
         }
     }
@@ -48,11 +51,10 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     lateinit var fab: FloatingActionButton
 
     lateinit var builder: AlertDialog.Builder
-    lateinit var builderDelete: AlertDialog.Builder
     lateinit var dialog: AlertDialog
-    lateinit var dialogDelete: AlertDialog
 
     var id: Int? = 0
+    var estado: Int? = 0
 
     companion object {
         fun newInstance(id: Int): ObservationFragment {
@@ -79,6 +81,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
             id = args.getInt("id")
+            estado = auditoriaImp.getAuditoriaByOne(id!!)!!.Estado
             bindUI(view, auditoriaImp.getDetalleByAuditoria(id!!, false))
         }
         return view
@@ -93,7 +96,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         layoutManager = LinearLayoutManager(context)
 
         if (a != null) {
-//            a.Detalles!!.filter { i -> i.Eliminado!! }
             a.addChangeListener { _ ->
                 observacionAdapter.notifyDataSetChanged()
             }
@@ -101,7 +103,13 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                 override fun onItemClick(d: Detalle, v: View, position: Int) {
                     when (v.id) {
                         R.id.imageViewPhoto -> showPhoto(d.Url)
-                        R.id.imageViewOption -> showPopupMenu(d, v, context!!)
+                        R.id.imageViewOption -> {
+                            if (estado == 1) {
+                                showPopupMenu(d, v, context!!)
+                            } else {
+                                Util.snackBarMensaje(v, "Inhabilitado para editar")
+                            }
+                        }
                     }
                 }
             })

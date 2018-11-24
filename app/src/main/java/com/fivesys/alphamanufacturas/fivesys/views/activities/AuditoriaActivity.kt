@@ -53,7 +53,12 @@ class AuditoriaActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save -> {
-                confirmRegister(envioId!!)
+                val auditoria: Auditoria = auditoriaImp.getAuditoriaByOne(envioId!!)!!
+                if (auditoria.Estado == 1) {
+                    confirmRegister(envioId!!)
+                } else {
+                    Util.snackBarMensaje(window.decorView, "Inhabilitado para editar")
+                }
                 return true
             }
         }
@@ -86,7 +91,7 @@ class AuditoriaActivity : AppCompatActivity() {
             auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
             tipo = bundle.getInt("tipo")
             getAuditoriaByOne(bundle.getInt("auditoriaId"))
-
+            Log.i("TAG", bundle.getInt("auditoriaId").toString())
         }
     }
 

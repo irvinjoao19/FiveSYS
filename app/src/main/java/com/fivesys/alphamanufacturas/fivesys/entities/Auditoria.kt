@@ -10,7 +10,6 @@ open class Auditoria : RealmObject {
     var AuditoriaId: Int? = 0
     var Codigo: String? = ""
     var Nombre: String? = ""
-    var EstadoAuditoria: Int? = 0
     var ResponsableId: Int? = 0
     var Responsable: Responsable? = null
     var Grupo: Grupo? = null
@@ -42,11 +41,11 @@ open class Auditoria : RealmObject {
 
     // TODO GET ONE
 
-    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, EstadoAuditoria: Int?, ResponsableId: Int?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?, Categorias: RealmList<Categoria>?) : super() {
+    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, Estado: Int?, ResponsableId: Int?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?, Categorias: RealmList<Categoria>?) : super() {
         this.AuditoriaId = AuditoriaId
         this.Codigo = Codigo
         this.Nombre = Nombre
-        this.EstadoAuditoria = EstadoAuditoria
+        this.Estado = Estado
         this.ResponsableId = ResponsableId
         this.Responsable = Responsable
         this.Grupo = Grupo

@@ -90,7 +90,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
             editTextSector.setText(a.Sector?.Nombre)
             editTextResponsable.setText(a.Responsable?.NombreCompleto)
             editTextNombre.setText(a.Nombre)
-            editTextEstado.setText(when (a.EstadoAuditoria) {
+            editTextEstado.setText(when (a.Estado) {
                 1 -> "Pendiente"
                 2 -> "Terminado"
                 3 -> "Anulado"

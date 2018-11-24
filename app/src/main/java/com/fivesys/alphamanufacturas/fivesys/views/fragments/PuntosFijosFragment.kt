@@ -54,8 +54,11 @@ class PuntosFijosFragment : Fragment() {
     lateinit var dialog: AlertDialog
 
     var receive: Int? = 0
+    var estado: Int? = 0
+
     lateinit var nameImg: String
     lateinit var Direccion: String
+
 
     companion object {
         fun newInstance(id: Int): PuntosFijosFragment {
@@ -93,6 +96,7 @@ class PuntosFijosFragment : Fragment() {
         layoutManager = LinearLayoutManager(context)
 
         if (a != null) {
+            estado = a.Estado
             a.PuntosFijos!!.addChangeListener { _ ->
                 puntosFijosAdapter.notifyDataSetChanged()
             }
@@ -100,7 +104,13 @@ class PuntosFijosFragment : Fragment() {
                 override fun onItemClick(p: PuntosFijosHeader, v: View, position: Int) {
                     when (v.id) {
                         R.id.imageViewPhoto -> showPhoto(p.Url)
-                        R.id.imageViewOption -> showPopupMenu(p, v, context!!)
+                        R.id.imageViewOption -> {
+                            if (estado == 1) {
+                                showPopupMenu(p, v, context!!)
+                            } else {
+                                Util.snackBarMensaje(v, " Inhabilitado para editar")
+                            }
+                        }
                     }
                 }
             })
