@@ -18,11 +18,14 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
+import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
+import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -163,7 +166,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
                                     ) { dialog, _ ->
                                         val auditor = Auditor(AuditorId, Nombre, Apellido, FechaNacimiento, Correo, ClaveAnterior, ClaveNueva)
                                         val jsonAuditor = Gson().toJson(auditor)
-                                        sendPerfil(jsonAuditor)
+                                        sendPerfil(jsonAuditor, v)
                                         dialog.dismiss()
                                     }
                                     alertDialog.setNegativeButton("Cancelar"
@@ -199,7 +202,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
 
     @SuppressLint("SetTextI18n")
-    private fun sendPerfil(auditor: String) {
+    private fun sendPerfil(auditor: String, view: View) {
 
         builder = AlertDialog.Builder(android.view.ContextThemeWrapper(this@PerfilActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@PerfilActivity).inflate(R.layout.dialog_alert, null)
@@ -211,12 +214,12 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
         Log.i("TAG", auditor)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), auditor)
-        val observableEnvio: Observable<String> = loginInterfaces.sendPerfil(requestBody)
-        val mensaje: String? = ""
+        val observableEnvio: Observable<Mensaje> = loginInterfaces.sendPerfil(requestBody)
+        var mensaje: String? = ""
 
         observableEnvio.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<String> {
+                .subscribe(object : Observer<Mensaje> {
                     override fun onComplete() {
                         Util.mensajeDialog(this@PerfilActivity, "Mensaje", mensaje)
                         dialog.dismiss()
@@ -225,12 +228,17 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
                     override fun onSubscribe(d: Disposable) {
                     }
 
-                    override fun onNext(t: String) {
-//                        mensaje = t.mensaje
+                    override fun onNext(t: Mensaje) {
+                        mensaje = t.mensaje
                     }
 
                     override fun onError(e: Throwable) {
-                        Util.toastMensaje(this@PerfilActivity, "Volver a intentarlo")
+                        if (e is HttpException) {
+                            val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
+                            Util.snackBarMensaje(view, message.Error!!)
+                        } else {
+                            Util.snackBarMensaje(view, "Por favor volver a intentarlo")
+                        }
                         dialog.dismiss()
                     }
                 })
