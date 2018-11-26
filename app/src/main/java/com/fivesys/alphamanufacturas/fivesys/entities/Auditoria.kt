@@ -22,6 +22,10 @@ open class Auditoria : RealmObject {
     var FechaProgramado: String? = ""
     var Estado: Int? = 0
 
+
+    var envio: Int? = 0
+
+
     constructor() : super()
 
     // TODO GET ALL
@@ -37,6 +41,7 @@ open class Auditoria : RealmObject {
         this.FechaRegistro = FechaRegistro
         this.FechaProgramado = FechaProgramado
         this.Estado = Estado
+        this.envio = 0
     }
 
     // TODO GET ONE

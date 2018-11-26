@@ -57,7 +57,11 @@ class AuditoriaActivity : AppCompatActivity() {
                 if (auditoria.Estado == 1) {
                     confirmRegister(envioId!!)
                 } else {
-                    Util.snackBarMensaje(window.decorView, "Inhabilitado para editar")
+                    if (auditoria.envio == 1) {
+                        confirmRegister(envioId!!)
+                    } else {
+                        Util.snackBarMensaje(window.decorView, "Inhabilitado para editar")
+                    }
                 }
                 return true
             }

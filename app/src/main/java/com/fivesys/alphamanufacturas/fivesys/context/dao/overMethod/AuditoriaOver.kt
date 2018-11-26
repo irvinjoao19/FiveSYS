@@ -150,4 +150,14 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             }
         }
     }
+
+    override fun updateAuditoriaByEstado(a: Auditoria?, estado: Int, nombre: String, envio: Int) {
+        realm.executeTransaction {
+            if (a != null) {
+                a.Estado = estado
+                a.Nombre = nombre
+                a.envio = envio
+            }
+        }
+    }
 }

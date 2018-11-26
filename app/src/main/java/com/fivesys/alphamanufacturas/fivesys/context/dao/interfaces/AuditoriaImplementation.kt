@@ -45,4 +45,8 @@ interface AuditoriaImplementation {
 
     fun updateAuditoriaByOne(id: Int, ids: List<Detalle>?)
 
+    fun updateAuditoriaByEstado(a: Auditoria?, estado: Int, nombre: String, envio: Int)
+
+
+
 }

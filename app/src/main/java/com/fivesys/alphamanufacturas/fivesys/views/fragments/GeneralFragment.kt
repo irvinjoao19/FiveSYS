@@ -1,11 +1,13 @@
 package com.fivesys.alphamanufacturas.fivesys.views.fragments
 
-
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextSwitcher
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
@@ -19,6 +21,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImp
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
 import com.google.android.material.textfield.TextInputEditText
 import io.realm.Realm
@@ -27,7 +30,13 @@ class GeneralFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.editTextEstado -> estadoDialog()
+            R.id.editTextEstado -> {
+                if (estado == 1) {
+                    estadoDialog()
+                } else {
+                    Util.snackBarMensaje(v, "Inhabilitado para editar")
+                }
+            }
         }
     }
 
@@ -43,6 +52,10 @@ class GeneralFragment : Fragment(), View.OnClickListener {
 
     lateinit var builderEstado: AlertDialog.Builder
     lateinit var dialogEstado: AlertDialog
+
+    var estado: Int? = null
+
+    var a: Auditoria? = null
 
     companion object {
         fun newInstance(id: Int): GeneralFragment {
@@ -69,13 +82,14 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
             val id = args.getInt("id")
-            bindUI(view, auditoriaImp.getAuditoriaByOne(id))
+            a = auditoriaImp.getAuditoriaByOne(id)
+            bindUI(view)
         }
         return view
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindUI(view: View, a: Auditoria?) {
+    private fun bindUI(view: View) {
         editTextCodigo = view.findViewById(R.id.editTextCodigo)
         editTextArea = view.findViewById(R.id.editTextArea)
         editTextSector = view.findViewById(R.id.editTextSector)
@@ -85,18 +99,35 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         editTextEstado.setOnClickListener(this)
 
         if (a != null) {
-            editTextCodigo.setText(a.Codigo)
-            editTextArea.setText(a.Area?.Nombre)
-            editTextSector.setText(a.Sector?.Nombre)
-            editTextResponsable.setText(a.Responsable?.NombreCompleto)
-            editTextNombre.setText(a.Nombre)
-            editTextEstado.setText(when (a.Estado) {
+            editTextCodigo.setText(a!!.Codigo)
+            editTextArea.setText(a!!.Area?.Nombre)
+            editTextSector.setText(a!!.Sector?.Nombre)
+            editTextResponsable.setText(a!!.Responsable?.NombreCompleto)
+            editTextNombre.setText(a!!.Nombre)
+            editTextEstado.setText(when (a!!.Estado) {
                 1 -> "Pendiente"
                 2 -> "Terminado"
                 3 -> "Anulado"
                 else -> "Vacio"
             })
+
+            estado = a!!.Estado
+            editTextNombre.isEnabled = estado == 1
         }
+
+        editTextNombre.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(p0: Editable?) {
+                update(a!!, p0.toString(), 1)
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+        })
     }
 
 
@@ -111,14 +142,15 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
         textViewTitulo.text = "Estado"
 
-        val estado = ArrayList<TipoDocumento>()
-        estado.add(TipoDocumento(1, "Pendiente"))
-        estado.add(TipoDocumento(2, "Terminado"))
-        estado.add(TipoDocumento(3, "Anulado"))
+        val tipo = ArrayList<TipoDocumento>()
+        tipo.add(TipoDocumento(1, "Pendiente"))
+        tipo.add(TipoDocumento(2, "Terminado"))
+        tipo.add(TipoDocumento(3, "Anulado"))
 
-        val tipoDocumentoAdapter = TipoDocumentoAdapter(estado, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
+        val tipoDocumentoAdapter = TipoDocumentoAdapter(tipo, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
-//                estadoId = tipoDocumento.id
+                estado = t.id
+                update(a!!, editTextNombre.text.toString(), 1)
                 editTextEstado.setText(t.nombre)
                 dialogEstado.dismiss()
             }
@@ -130,8 +162,11 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         builderEstado.setView(v)
         dialogEstado = builderEstado.create()
         dialogEstado.show()
+    }
 
 
+    private fun update(a: Auditoria, nombre: String, tipo: Int) {
+        auditoriaImp.updateAuditoriaByEstado(a, estado!!, nombre, tipo)
     }
 
 }
