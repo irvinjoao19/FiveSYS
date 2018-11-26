@@ -141,6 +141,15 @@
                             android:textSize="12sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal">
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="0dp"
@@ -172,6 +181,7 @@
                             android:focusable="false"
                             android:textSize="12sp" />
                     </com.google.android.material.textfield.TextInputLayout>
+
                 </LinearLayout>
 
                 <androidx.core.widget.NestedScrollView
