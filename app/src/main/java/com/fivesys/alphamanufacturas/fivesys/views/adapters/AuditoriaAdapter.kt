@@ -139,8 +139,8 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                             ok = auditoria.Codigo!!.toLowerCase().contains(keyword.Codigo!!)
                         }
 
-                        if (keyword.EstadoAuditoria!! > 0 && ok) {
-                            ok = auditoria.Estado == keyword.EstadoAuditoria
+                        if (keyword.Estado!! > 0 && ok) {
+                            ok = auditoria.Estado == keyword.Estado
                         }
 
                         if (keyword.AreaId!! > 0 && ok) {
