@@ -3,7 +3,7 @@ package com.fivesys.alphamanufacturas.fivesys.entities
 open class Filtro {
 
     var Codigo: String? = ""
-    var EstadoAuditoria: Int? = 0
+    var Estado: Int? = 0
     var AreaId: Int? = 0
     var SectorId: Int? = 0
     var ResponsableId: Int? = 0
@@ -12,9 +12,9 @@ open class Filtro {
 
     constructor()
 
-    constructor(Codigo: String?, EstadoAuditoria: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
+    constructor(Codigo: String?, Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
         this.Codigo = Codigo
-        this.EstadoAuditoria = EstadoAuditoria
+        this.Estado = Estado
         this.AreaId = AreaId
         this.SectorId = SectorId
         this.ResponsableId = ResponsableId
@@ -22,8 +22,8 @@ open class Filtro {
         this.NResponsable = NResponsable
     }
 
-    constructor(EstadoAuditoria: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
-        this.EstadoAuditoria = EstadoAuditoria
+    constructor(Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
+        this.Estado = Estado
         this.AreaId = AreaId
         this.SectorId = SectorId
         this.ResponsableId = ResponsableId

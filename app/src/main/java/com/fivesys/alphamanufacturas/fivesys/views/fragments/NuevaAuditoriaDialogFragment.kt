@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.buttonAceptar -> {
                 val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                 val json = Gson().toJson(f)
+                Log.i("TAG", json)
                 listener?.sendRequest(json)
                 dismiss()
             }
@@ -173,6 +175,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
                 editTextResponsable.setText(area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto)
                 responsableId = area.Sectores!![0]!!.Responsables!![0]!!.ResponsableId
+                nresponsable = area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto
 
                 dialogArea.dismiss()
 
