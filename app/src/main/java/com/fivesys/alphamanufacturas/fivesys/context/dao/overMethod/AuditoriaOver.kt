@@ -63,7 +63,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
     }
 
     override fun getDetalleByAuditoria(AuditoriaId: Int, Eliminado: Boolean): RealmResults<Detalle> {
-        return realm.where(Detalle::class.java).equalTo("AuditoriaId", AuditoriaId).equalTo("Eliminado", Eliminado).findAll()
+        return realm.where(Detalle::class.java).equalTo("AuditoriaId", AuditoriaId).equalTo("Eliminado", Eliminado).findAll().sort("Categoria.CategoriaId", Sort.DESCENDING)
     }
 
     override fun getDetalleIdentity(): Int {

@@ -496,6 +496,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                     if (!aspecto.isEmpty()) {
                         val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg)
                         auditoriaImp.saveDetalle(detalle, auditoriaId!!)
+                        Util.hideKeyboardFrom(context!!, v)
                         dismiss()
                     } else {
                         Util.snackBarMensaje(v, "Escriba un aspecto observado")
