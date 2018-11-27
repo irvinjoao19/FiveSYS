@@ -109,7 +109,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     var sectorId: Int = 0
     var responsableId: Int = 0
     var nresponsable: String? = ""
-    var estadoId: Int = 0
+    var estadoId: Int = 1
 
 
     private var titulo: String? = null
@@ -288,8 +288,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
         val estado = ArrayList<TipoDocumento>()
         estado.add(TipoDocumento(1, "Pendiente"))
-        estado.add(TipoDocumento(2, "Terminado"))
-        estado.add(TipoDocumento(3, "Anulado"))
 
         val tipoDocumentoAdapter = TipoDocumentoAdapter(estado, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
