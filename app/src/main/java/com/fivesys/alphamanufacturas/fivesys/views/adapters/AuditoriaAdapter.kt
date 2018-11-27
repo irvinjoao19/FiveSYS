@@ -136,7 +136,8 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                     for (auditoria: Auditoria in auditorias) {
                         ok = true
                         if (keyword.Codigo!!.trim().isNotEmpty()) {
-                            ok = auditoria.Codigo!!.toLowerCase().contains(keyword.Codigo!!)
+                            if(auditoria.Codigo != null)
+                                ok = auditoria.Codigo!!.toLowerCase().contains(keyword.Codigo!!)
                         }
 
                         if (keyword.Estado!! > 0 && ok) {
