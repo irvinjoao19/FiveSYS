@@ -42,10 +42,10 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.buttonAceptar -> {
-                if (estadoId == 0) {
-                    if (areaId == 0) {
-                        if (sectorId == 0) {
-                            if (responsableId == 0) {
+                if (estadoId != 0) {
+                    if (areaId != 0) {
+                        if (sectorId != 0) {
+                            if (responsableId != 0) {
                                 if (!editTextNombre.text.toString().isEmpty()) {
                                     val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                                     val json = Gson().toJson(f)
