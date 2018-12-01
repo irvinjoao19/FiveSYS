@@ -2,7 +2,7 @@ package com.fivesys.alphamanufacturas.fivesys.context.realm
 
 import android.app.Application
 import android.os.Build
-import android.support.annotation.RequiresApi
+import androidx.annotation.RequiresApi
 import io.realm.Realm
 import io.realm.RealmConfiguration
 

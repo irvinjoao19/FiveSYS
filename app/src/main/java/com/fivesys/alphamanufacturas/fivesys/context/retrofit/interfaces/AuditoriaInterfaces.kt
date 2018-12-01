@@ -2,7 +2,9 @@ package com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces
 
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
+import com.fivesys.alphamanufacturas.fivesys.entities.Lista
 import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -31,4 +33,10 @@ interface AuditoriaInterfaces {
     @Headers("Cache-Control: no-cache")
     @POST("/Control/Auditoria/APISave")
     fun sendRegister(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("/Control/Auditoria/GetAllLikePagin")
+    fun pagination(@Query("pageIndex") pageIndex: Int, @Query("pageSize") pageSize: Int): Flowable<Lista>
+
+
 }

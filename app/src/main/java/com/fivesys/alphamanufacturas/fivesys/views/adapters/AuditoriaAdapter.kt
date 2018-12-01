@@ -21,7 +21,11 @@ import java.util.*
 
 class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
 
-    private var auditoriasList: ArrayList<Auditoria> = ArrayList(auditorias)
+    internal var auditoriasList: ArrayList<Auditoria> = ArrayList(auditorias)
+
+    internal fun addItems(items: List<Auditoria>) {
+        this.auditoriasList.addAll(items)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = layout?.let { LayoutInflater.from(parent.context).inflate(it, parent, false) }

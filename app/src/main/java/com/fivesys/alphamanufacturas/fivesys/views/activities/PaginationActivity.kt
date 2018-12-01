@@ -7,21 +7,27 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
-import com.fivesys.alphamanufacturas.fivesys.views.adapters.PaginationAdapter
+import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
+import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
+import com.fivesys.alphamanufacturas.fivesys.entities.DataList
+import com.fivesys.alphamanufacturas.fivesys.entities.Lista
+import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.PaginationAdapter2
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function
 import io.reactivex.processors.PublishProcessor
+import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Publisher
-import java.util.ArrayList
 import java.util.concurrent.TimeUnit
 
 class PaginationActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
     private val paginator = PublishProcessor.create<Int>()
-    private var paginationAdapter: PaginationAdapter? = null
+    private var paginationAdapter: PaginationAdapter2? = null
     private var recyclerView: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private var loading = false
@@ -40,7 +46,12 @@ class PaginationActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         layoutManager!!.setOrientation(RecyclerView.VERTICAL)
         recyclerView!!.setLayoutManager(layoutManager)
-        paginationAdapter = PaginationAdapter()
+        paginationAdapter = PaginationAdapter2(object : ItemClickListener {
+            override fun onClick(data: DataList, position: Int) {
+                Util.snackBarMensaje(window.decorView, data.Nombre!!)
+            }
+
+        })
         recyclerView!!.setAdapter(paginationAdapter)
         setUpLoadMoreListener()
         subscribeForData()
@@ -59,7 +70,6 @@ class PaginationActivity : AppCompatActivity() {
             override fun onScrolled(recyclerView: RecyclerView,
                                     dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
                 totalItemCount = layoutManager!!.getItemCount()
                 lastVisibleItem = layoutManager!!.findLastVisibleItemPosition()
                 if (!loading && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD) {
@@ -78,8 +88,8 @@ class PaginationActivity : AppCompatActivity() {
 
         val disposable = paginator
                 .onBackpressureDrop()
-                .concatMap(object : Function<Int, Publisher<List<String>>> {
-                    override fun apply(page: Int): Publisher<List<String>> {
+                .concatMap(object : Function<Int, Publisher<List<DataList>>> {
+                    override fun apply(page: Int): Publisher<List<DataList>> {
                         loading = true
                         progressBar!!.visibility = View.VISIBLE
                         return dataFromNetwork(page)
@@ -103,16 +113,15 @@ class PaginationActivity : AppCompatActivity() {
     /**
      * Simulation of network data
      */
-    private fun dataFromNetwork(page: Int): Flowable<List<String>> {
-        return Flowable.just(true)
-                .delay(2, TimeUnit.SECONDS)
-                .map(object : Function<Boolean, List<String>> {
-                    override fun apply(value: Boolean): List<String> {
-                        val items = ArrayList<String>()
-                        for (i in 1..10) {
-                            items.add("Item " + (page * 10 + i))
-                        }
-                        return items
+    private fun dataFromNetwork(page: Int): Flowable<List<DataList>> {
+        val auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
+        return auditoriaInterfaces.pagination(page, 10)
+                .delay(600, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(object : Function<Lista, List<DataList>> {
+                    override fun apply(t: Lista): List<DataList>? {
+                        return t.lista
                     }
                 })
     }

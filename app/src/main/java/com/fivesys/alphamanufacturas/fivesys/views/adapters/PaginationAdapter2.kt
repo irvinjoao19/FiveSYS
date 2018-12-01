@@ -6,16 +6,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
+import com.fivesys.alphamanufacturas.fivesys.entities.DataList
 import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import java.util.ArrayList
 
 
-class PaginationAdapter(var listener: ItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PaginationAdapter2(var listener: ItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    internal var items: MutableList<String> = ArrayList()
+    internal var items: MutableList<DataList> = ArrayList()
 
-
-    internal fun addItems(items: List<String>) {
+    internal fun addItems(items: List<DataList>) {
         this.items.addAll(items)
     }
 
@@ -34,10 +34,10 @@ class PaginationAdapter(var listener: ItemClickListener) : RecyclerView.Adapter<
 
     private class ItemViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        internal fun bind(content: String, listener: ItemClickListener) {
-            (itemView as TextView).text = content
+        internal fun bind(content: DataList, listener: ItemClickListener) {
+            (itemView as TextView).text = content.AuditoriaId.toString() + " " + content.Nombre
             itemView.setOnClickListener { v ->
-//                listener.onClick(content, adapterPosition)
+                listener.onClick(content, adapterPosition)
             }
         }
 
