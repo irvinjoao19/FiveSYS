@@ -14,7 +14,6 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -24,20 +23,28 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
+import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
+import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.NuevaAuditoriaDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
-import io.realm.RealmResults
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import org.reactivestreams.Publisher
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroDialogFragment.InterfaceCommunicator, NuevaAuditoriaDialogFragment.InterfaceCommunicator {
 
@@ -72,14 +79,26 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
     }
 
+
+    private val compositeDisposable = CompositeDisposable()
+    private val paginator = PublishProcessor.create<Int>()
+    private var auditoriaAdapter: AuditoriaAdapter? = null
+    private var loading = false
+    private var pageNumber = 1
+    private val VISIBLE_THRESHOLD = 1
+    private var lastVisibleItem: Int = 0
+    private var totalItemCount: Int = 0
+    lateinit var layoutManager: LinearLayoutManager
+
+
     lateinit var progressBar: ProgressBar
+    lateinit var progressBarPage: ProgressBar
     lateinit var fab: FloatingActionButton
     lateinit var recyclerView: RecyclerView
     lateinit var toolbar: Toolbar
-    lateinit var layoutManager: RecyclerView.LayoutManager
+//    lateinit var layoutManager: RecyclerView.LayoutManager
 
     lateinit var auditoriaImp: AuditoriaImplementation
-    private var auditoriaAdapter: AuditoriaAdapter? = null
     lateinit var realm: Realm
 
     lateinit var builder: AlertDialog.Builder
@@ -95,7 +114,8 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         auditoriaImp = AuditoriaOver(realm)
         bindToolbar()
         bindUI()
-        getListAuditoriaCall()
+        getListAuditoria()
+//        getListAuditoriaCall()
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -112,6 +132,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
     private fun bindUI() {
         progressBar = findViewById(R.id.progressBar)
+        progressBarPage = findViewById(R.id.progressBarPage)
         fab = findViewById(R.id.fab)
         fab.setOnClickListener(this)
         recyclerView = findViewById(R.id.recyclerView)
@@ -143,22 +164,37 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     }
 
     private fun getListAuditoria() {
-        progressBar.visibility = View.GONE
-        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
-        auditorias.addChangeListener { _ ->
-            auditoriaAdapter?.notifyDataSetChanged()
-        }
-        auditoriaAdapter = AuditoriaAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
+        layoutManager.orientation = RecyclerView.VERTICAL
+        recyclerView.layoutManager = layoutManager
+        auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : ItemClickListener {
             override fun onItemClick(a: Auditoria, position: Int) {
                 val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
                 intent.putExtra("auditoriaId", a.AuditoriaId)
                 intent.putExtra("tipo", 0)
                 startActivity(intent)
             }
+
         })
-        recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = auditoriaAdapter
+
+
+////        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
+////        auditorias.addChangeListener { _ ->
+////            auditoriaAdapter?.notifyDataSetChanged()
+////        }
+//        auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : ItemClickListener {
+//            override fun onItemClick(a: Auditoria, position: Int) {
+//                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+//                intent.putExtra("auditoriaId", a.AuditoriaId)
+//                intent.putExtra("tipo", 0)
+//                startActivity(intent)
+//            }
+//        })
+//        recyclerView.itemAnimator = DefaultItemAnimator()
+//        recyclerView.layoutManager = layoutManager
+//        recyclerView.adapter = auditoriaAdapter
+        setUpLoadMoreListener()
+        subscribeForData()
     }
 
 
@@ -267,6 +303,76 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             finish()
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    // nuevo paginacion
+
+    /**
+     * setting listener to get callback for load more
+     */
+    private fun setUpLoadMoreListener() {
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView,
+                                    dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                totalItemCount = layoutManager.getItemCount()
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                if (!loading && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD) {
+                    pageNumber++
+                    paginator.onNext(pageNumber)
+                    loading = true
+                }
+            }
+        })
+    }
+
+    /**
+     * subscribing for data
+     */
+    private fun subscribeForData() {
+
+        val disposable = paginator
+                .onBackpressureDrop()
+                .concatMap(object : Function<Int, Publisher<List<Auditoria>>> {
+                    override fun apply(page: Int): Publisher<List<Auditoria>> {
+                        loading = true
+                        progressBarPage.visibility = View.VISIBLE
+                        return dataFromNetwork(page)
+                    }
+
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { items ->
+                    auditoriaAdapter!!.addItems(items)
+                    auditoriaAdapter!!.notifyDataSetChanged()
+                    loading = false
+                    progressBarPage.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                }
+
+        compositeDisposable.add(disposable)
+
+        paginator.onNext(pageNumber)
+
+    }
+
+    /**
+     * Simulation of network data
+     */
+    private fun dataFromNetwork(page: Int): Flowable<List<Auditoria>> {
+        val envio = Filtro(page, 10)
+        val sendPage = Gson().toJson(envio)
+        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
+        return auditoriaInterfaces.pagination(requestBody)
+                .delay(600, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(object : Function<List<Auditoria>, List<Auditoria>> {
+                    override fun apply(t: List<Auditoria>): List<Auditoria> {
+                        return t
+                    }
+                })
+
     }
 
 

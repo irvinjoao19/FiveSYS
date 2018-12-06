@@ -10,6 +10,10 @@ open class Filtro {
     var Nombre: String? = ""
     var NResponsable: String? = ""
 
+
+    var pageIndex: Int? = 0
+    var pageSize: Int? = 0
+
     constructor()
 
     constructor(Codigo: String?, Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
@@ -29,5 +33,10 @@ open class Filtro {
         this.ResponsableId = ResponsableId
         this.Nombre = Nombre
         this.NResponsable = NResponsable
+    }
+
+    constructor(pageIndex: Int?, pageSize: Int?) {
+        this.pageIndex = pageIndex
+        this.pageSize = pageSize
     }
 }

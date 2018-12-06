@@ -1,7 +1,7 @@
 package com.fivesys.alphamanufacturas.fivesys.helper
 
-import com.fivesys.alphamanufacturas.fivesys.entities.DataList
+import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 
 interface ItemClickListener {
-    fun onClick(data: DataList, position: Int)
+    fun onItemClick(a: Auditoria, position: Int)
 }

@@ -8,22 +8,23 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
+import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
-import io.realm.RealmResults
 import java.util.*
 
-class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private var layout: Int?, private var listener: OnItemClickListener?) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
+class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
 
-    internal var auditoriasList: ArrayList<Auditoria> = ArrayList(auditorias)
+    var auditorias: List<Auditoria>? = null
+    internal var auditoriasList: ArrayList<Auditoria> = ArrayList()
 
     internal fun addItems(items: List<Auditoria>) {
+        this.auditorias = ArrayList(items)
         this.auditoriasList.addAll(items)
     }
 
@@ -33,7 +34,7 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        listener?.let { holder.bind(auditoriasList[position], position, it) }
+        listener.let { holder.bind(auditoriasList[position], position, it) }
     }
 
     override fun getItemCount(): Int {
@@ -60,7 +61,7 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
         private val imageViewLugar: ImageView = itemView.findViewById(R.id.imageViewLugar)
 
         @SuppressLint("SetTextI18n")
-        internal fun bind(a: Auditoria, position: Int, listener: OnItemClickListener) {
+        internal fun bind(a: Auditoria, position: Int, listener: ItemClickListener) {
 
             if (position % 2 == 1) {
                 cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
@@ -137,10 +138,10 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                 if (keyword != null) {
                     val filteredList = ArrayList<Auditoria>()
                     var ok: Boolean
-                    for (auditoria: Auditoria in auditorias) {
+                    for (auditoria: Auditoria in auditorias!!) {
                         ok = true
                         if (keyword.Codigo!!.trim().isNotEmpty()) {
-                            if(auditoria.Codigo != null)
+                            if (auditoria.Codigo != null)
                                 ok = auditoria.Codigo!!.toLowerCase().contains(keyword.Codigo!!)
                         }
 
@@ -174,14 +175,14 @@ class AuditoriaAdapter(private var auditorias: RealmResults<Auditoria>, private 
                     }
                     auditoriasList = filteredList
                 } else {
-                    auditoriasList.addAll(auditorias)
+                    auditoriasList.addAll(auditorias!!)
                 }
                 notifyDataSetChanged()
             }
         }
     }
 
-    interface OnItemClickListener {
-        fun onItemClick(a: Auditoria, position: Int)
-    }
+//    interface OnItemClickListener {
+//        fun onItemClick(a: Auditoria, position: Int)
+//    }
 }

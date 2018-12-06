@@ -35,8 +35,8 @@ interface AuditoriaInterfaces {
     fun sendRegister(@Body query: RequestBody): Observable<Mensaje>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/GetAllLikePagin")
-    fun pagination(@Query("pageIndex") pageIndex: Int, @Query("pageSize") pageSize: Int): Flowable<Lista>
+    @POST("/Control/Auditoria/APIGetAllLikePagin")
+    fun pagination(@Body query: RequestBody): Flowable<List<Auditoria>>
 
 
 }

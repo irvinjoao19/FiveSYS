@@ -9,17 +9,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
-import com.fivesys.alphamanufacturas.fivesys.entities.DataList
-import com.fivesys.alphamanufacturas.fivesys.entities.Lista
+import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
+import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
 import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.PaginationAdapter2
+import com.google.gson.Gson
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import org.reactivestreams.Publisher
 import java.util.concurrent.TimeUnit
 
@@ -27,7 +31,7 @@ class PaginationActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
     private val paginator = PublishProcessor.create<Int>()
-    private var paginationAdapter: PaginationAdapter2? = null
+    private var paginationAdapter: AuditoriaAdapter? = null
     private var recyclerView: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private var loading = false
@@ -46,9 +50,9 @@ class PaginationActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(this)
         layoutManager!!.setOrientation(RecyclerView.VERTICAL)
         recyclerView!!.setLayoutManager(layoutManager)
-        paginationAdapter = PaginationAdapter2(object : ItemClickListener {
-            override fun onClick(data: DataList, position: Int) {
-                Util.snackBarMensaje(window.decorView, data.Nombre!!)
+        paginationAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria,object : ItemClickListener {
+            override fun onItemClick(a: Auditoria, position: Int) {
+                Util.snackBarMensaje(window.decorView, a.Nombre!!)
             }
 
         })
@@ -88,8 +92,8 @@ class PaginationActivity : AppCompatActivity() {
 
         val disposable = paginator
                 .onBackpressureDrop()
-                .concatMap(object : Function<Int, Publisher<List<DataList>>> {
-                    override fun apply(page: Int): Publisher<List<DataList>> {
+                .concatMap(object : Function<Int, Publisher<List<Auditoria>>> {
+                    override fun apply(page: Int): Publisher<List<Auditoria>> {
                         loading = true
                         progressBar!!.visibility = View.VISIBLE
                         return dataFromNetwork(page)
@@ -113,16 +117,21 @@ class PaginationActivity : AppCompatActivity() {
     /**
      * Simulation of network data
      */
-    private fun dataFromNetwork(page: Int): Flowable<List<DataList>> {
+    private fun dataFromNetwork(page: Int): Flowable<List<Auditoria>> {
         val auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
-        return auditoriaInterfaces.pagination(page, 10)
+
+        val envio = Filtro(page, 10)
+        val sendPage = Gson().toJson(envio)
+        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
+        return auditoriaInterfaces.pagination(requestBody)
                 .delay(600, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(object : Function<Lista, List<DataList>> {
-                    override fun apply(t: Lista): List<DataList>? {
-                        return t.lista
+                .map(object : Function<List<Auditoria>, List<Auditoria>> {
+                    override fun apply(t: List<Auditoria>): List<Auditoria> {
+                        return t
                     }
                 })
+
     }
 }

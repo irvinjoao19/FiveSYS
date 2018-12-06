@@ -1,21 +1,22 @@
 package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
-import com.fivesys.alphamanufacturas.fivesys.entities.DataList
+import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import java.util.ArrayList
 
 
 class PaginationAdapter2(var listener: ItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    internal var items: MutableList<DataList> = ArrayList()
+    internal var items: MutableList<Auditoria> = ArrayList()
 
-    internal fun addItems(items: List<DataList>) {
+    internal fun addItems(items: List<Auditoria>) {
         this.items.addAll(items)
     }
 
@@ -34,10 +35,11 @@ class PaginationAdapter2(var listener: ItemClickListener) : RecyclerView.Adapter
 
     private class ItemViewHolder internal constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        internal fun bind(content: DataList, listener: ItemClickListener) {
+        @SuppressLint("SetTextI18n")
+        internal fun bind(content: Auditoria, listener: ItemClickListener) {
             (itemView as TextView).text = content.AuditoriaId.toString() + " " + content.Nombre
             itemView.setOnClickListener { v ->
-                listener.onClick(content, adapterPosition)
+                listener.onItemClick(content, adapterPosition)
             }
         }
 
