@@ -39,4 +39,8 @@ interface AuditoriaInterfaces {
     fun pagination(@Body query: RequestBody): Flowable<List<Auditoria>>
 
 
+    @Headers("Cache-Control: no-cache")
+    @POST("/Home/APIGetData")
+    fun getConfiguration(): Observable<List<Auditoria>>
+
 }

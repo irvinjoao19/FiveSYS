@@ -63,4 +63,5 @@
     <string name="clave_actual">Clave Actual</string>
     <string name="confirmar_nueva_clave">Confirmar Nueva Clave</string>
     <string name="guardar">Guardar</string>
+    <string name="modo_off_line">Modo Off-line</string>
 </resources>
