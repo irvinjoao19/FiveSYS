@@ -47,11 +47,17 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                         if (sectorId != 0) {
                             if (responsableId != 0) {
                                 if (!editTextNombre.text.toString().isEmpty()) {
-                                    val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
-                                    val json = Gson().toJson(f)
-                                    Log.i("TAG", json)
-                                    listener?.sendRequest(json)
-                                    dismiss()
+                                    if (modo) {
+                                        auditoriaImp.saveAuditoriaOffLine(estadoId, editTextNombre.text.toString())
+                                        Util.snackBarMensaje(v, "Modo Off-line")
+//                                        dismiss()
+                                    } else {
+                                        val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
+                                        val json = Gson().toJson(f)
+                                        Log.i("TAG", json)
+                                        listener?.sendRequest(json)
+                                        dismiss()
+                                    }
                                 } else {
                                     Util.snackBarMensaje(v, "Ingrese Nombre")
                                 }
@@ -103,7 +109,8 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     lateinit var auditoriaImp: AuditoriaImplementation
 
     var sectores: RealmList<Sector>? = null
-    var responsable: RealmList<Responsable>? = null
+    var responsables: RealmList<Responsable>? = null
+
 
     var areaId: Int = 0
     var sectorId: Int = 0
@@ -115,11 +122,14 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     private var titulo: String? = null
     var listener: InterfaceCommunicator? = null
 
+    var modo: Boolean = false
+
     companion object {
-        fun newInstance(titulo: String): NuevaAuditoriaDialogFragment {
+        fun newInstance(titulo: String, modo: Boolean): NuevaAuditoriaDialogFragment {
             val f = NuevaAuditoriaDialogFragment()
             val args = Bundle()
             args.putString("titulo", titulo)
+            args.putBoolean("modo", modo)
             f.arguments = args
             return f
         }
@@ -128,6 +138,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         titulo = arguments!!.getString("titulo")
+        modo = arguments!!.getBoolean("modo")
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
     }
@@ -191,7 +202,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                 editTextSector.setText(area.Sectores!![0]!!.Nombre)
                 sectorId = area.Sectores!![0]!!.AreaId
 
-                responsable = area.Sectores!![0]!!.Responsables!!
+                responsables = area.Sectores!![0]!!.Responsables!!
 
                 editTextResponsable.setText(area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto)
                 responsableId = area.Sectores!![0]!!.Responsables!![0]!!.ResponsableId
@@ -225,7 +236,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                 override fun onItemClick(sector: Sector, position: Int) {
                     sectorId = sector.SectorId
                     editTextSector.setText(sector.Nombre)
-                    responsable = sector.Responsables!!
+                    responsables = sector.Responsables!!
                     editTextResponsable.setText(sector.Responsables!![0]!!.NombreCompleto)
                     responsableId = sector.Responsables!![0]!!.ResponsableId
                     dialogSector.dismiss()
@@ -245,7 +256,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun responsableDialog(view: View) {
-        if (responsable != null) {
+        if (responsables != null) {
             builderResponsable = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
@@ -254,7 +265,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
             textViewTitulo.text = "Responsable"
 
-            val areaAdapter = ResponsableAdapter(responsable!!, R.layout.cardview_combo, object : ResponsableAdapter.OnItemClickListener {
+            val areaAdapter = ResponsableAdapter(responsables!!, R.layout.cardview_combo, object : ResponsableAdapter.OnItemClickListener {
                 override fun onItemClick(responsable: Responsable, position: Int) {
                     responsableId = responsable.ResponsableId
                     nresponsable = responsable.NombreCompleto

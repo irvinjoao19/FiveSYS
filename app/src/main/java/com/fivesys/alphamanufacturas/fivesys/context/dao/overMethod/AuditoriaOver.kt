@@ -11,6 +11,31 @@ import java.io.File
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
+    override fun saveAuditor(auditor: Auditor) {
+        realm.executeTransaction { realm ->
+            realm.copyToRealmOrUpdate(auditor)
+        }
+    }
+
+    override val getAuditor: Auditor?
+        get() = realm.where(Auditor::class.java).findFirst()
+
+    override fun deleteAuditor() {
+        realm.executeTransaction {
+            val auditor = realm.where(Auditor::class.java).findAll()
+            auditor.deleteAllFromRealm()
+        }
+    }
+
+    override fun updateOffLine(check: Boolean) {
+        realm.executeTransaction {
+            val auditor = realm.where(Auditor::class.java).findFirst()
+            if (auditor != null) {
+                auditor.modo = check
+            }
+        }
+    }
+
     override fun saveAuditoria(auditoria: List<Auditoria>) {
         realm.executeTransaction { realm ->
             realm.copyToRealmOrUpdate(auditoria)
@@ -158,6 +183,24 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                 a.Nombre = nombre
                 a.envio = envio
             }
+        }
+    }
+
+    override fun getAuditoriaIdentity(): Int {
+        val auditoria = realm.where(Auditoria::class.java).max("AuditoriaId")
+        val result: Int
+        result = if (auditoria == null) 1 else auditoria.toInt() + 1
+        return result
+    }
+
+
+    override fun saveAuditoriaOffLine(estado: Int, nombre: String) {
+        realm.executeTransaction { realm ->
+            val a = Auditoria()
+            a.AuditoriaId = getAuditoriaIdentity()
+            a.Estado = estado
+            a.Nombre = nombre
+            realm.copyToRealmOrUpdate(a)
         }
     }
 }

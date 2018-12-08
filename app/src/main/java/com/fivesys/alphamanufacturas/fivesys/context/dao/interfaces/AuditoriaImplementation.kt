@@ -5,6 +5,16 @@ import io.realm.RealmResults
 
 interface AuditoriaImplementation {
 
+    //TODO AUDITOR
+
+    fun saveAuditor(auditor: Auditor)
+
+    val getAuditor: Auditor?
+
+    fun deleteAuditor()
+
+    fun updateOffLine(check: Boolean)
+
     fun saveAuditoria(auditoria: List<Auditoria>)
 
     val getAllAuditoria: RealmResults<Auditoria>
@@ -47,6 +57,10 @@ interface AuditoriaImplementation {
 
     fun updateAuditoriaByEstado(a: Auditoria?, estado: Int, nombre: String, envio: Int)
 
+    // TODO AUDITORIA OFF-LINE
 
+    fun getAuditoriaIdentity():Int
+
+    fun saveAuditoriaOffLine(estado:Int,nombre:String)
 
 }

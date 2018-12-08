@@ -13,8 +13,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.Toolbar
 import com.fivesys.alphamanufacturas.fivesys.R
-import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AccesoImplementation
-import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
+import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
+import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
@@ -47,7 +47,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     lateinit var realm: Realm
-    lateinit var accesoImp: AccesoImplementation
+    lateinit var auditoriaImp: AuditoriaImplementation
     lateinit var loginInterfaces: LoginInterfaces
 
     lateinit var builder: AlertDialog.Builder
@@ -84,9 +84,9 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_perfil)
 
         realm = Realm.getDefaultInstance()
-        accesoImp = AccesoOver(realm)
+        auditoriaImp = AuditoriaOver(realm)
         bindToolbar()
-        bindUI(accesoImp.getAuditor)
+        bindUI(auditoriaImp.getAuditor)
     }
 
     private fun bindToolbar() {

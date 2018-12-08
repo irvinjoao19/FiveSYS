@@ -6,12 +6,13 @@ import android.content.pm.PackageManager
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import com.fivesys.alphamanufacturas.fivesys.R
 import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
+import android.widget.LinearLayout
+import android.widget.TextView
+import com.fivesys.alphamanufacturas.fivesys.R
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
@@ -19,9 +20,9 @@ import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
+import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
-import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AccesoImplementation
-import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
@@ -29,6 +30,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
@@ -88,7 +90,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var editTextPass: TextInputEditText
     private lateinit var editTextPassError: TextInputLayout
     private lateinit var editTextUserError: TextInputLayout
-    private lateinit var buttonEnviar: Button
+    private lateinit var buttonEnviar: MaterialButton
     private lateinit var linearLayoutTipoDocumento: LinearLayout
     private lateinit var loginInterfaces: LoginInterfaces
     private lateinit var textViewTipoDocumento: TextView
@@ -172,7 +174,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         var result: String?
         val auditor: Auditor?
 
-        val accesoImp: AccesoImplementation = AccesoOver(realm)
+        val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
         val envio = Auditor(tipoDocumentoId, user, password)
         val sendLogin = Gson().toJson(envio)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendLogin)
@@ -186,7 +188,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     auditor = response.body() as Auditor
                     result = when {
                         auditor.NombreCompleto!!.isNotEmpty() -> {
-                            accesoImp.saveAuditor(auditor)
+                            auditoriaImp.saveAuditor(auditor)
                             "enter"
                         }
                         else -> "users"
@@ -218,7 +220,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             super.onPreExecute()
             builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
             @SuppressLint("InflateParams") val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_alert, null)
-
             val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
             textViewTitle.text = "Iniciando Sesión"
             builder.setView(view)

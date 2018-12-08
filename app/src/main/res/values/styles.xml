@@ -23,7 +23,7 @@
         <item name="actionMenuTextColor">@color/colorPlomo</item>
     </style>
 
-    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="LoginTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorWhite</item>
         <item name="colorPrimaryDark">@color/colorLogin</item>
         <item name="colorAccent">@color/colorWhite</item>

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
-import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
@@ -13,10 +12,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AccesoImplementation
-import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AccesoOver
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
 import com.fivesys.alphamanufacturas.fivesys.R
+import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
+import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.MenuAdapter
 import io.realm.Realm
 import java.util.*
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout -> {
-                accesoImp.deleteAuditor()
+                auditoriaImp.deleteAuditor()
                 logOut()
                 System.exit(0)
                 return true
@@ -49,15 +48,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var image: IntArray
 
     private lateinit var realm: Realm
-    private lateinit var accesoImp: AccesoImplementation
+    private lateinit var auditoriaImp: AuditoriaImplementation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         realm = Realm.getDefaultInstance()
-        accesoImp = AccesoOver(realm)
-        existsUser(accesoImp.getAuditor)
+        auditoriaImp = AuditoriaOver(realm)
+        existsUser(auditoriaImp.getAuditor)
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -40,6 +41,7 @@ import io.reactivex.functions.Function
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import io.realm.RealmResults
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import org.reactivestreams.Publisher
@@ -74,7 +76,11 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                showFiltro("Nueva Auditoria", 0)
+                if (modo) {
+                    showCreateHeaderDialog("Nueva Auditoria", 0, true)
+                } else {
+                    showFiltro("Nueva Auditoria", 0)
+                }
             }
         }
     }
@@ -106,16 +112,43 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
     lateinit var auditoriaInterfaces: AuditoriaInterfaces
 
+    var modo: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_auditoria)
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
+
         bindToolbar()
         bindUI()
-        getListAuditoria()
-//        getListAuditoriaCall()
+
+        modo = auditoriaImp.getAuditor?.modo!!
+
+        if (modo) {
+            progressBar.visibility = View.GONE
+            val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
+            auditorias.addChangeListener { _ ->
+                auditoriaAdapter?.notifyDataSetChanged()
+            }
+            auditoriaAdapter?.addItems(auditorias)
+            layoutManager.orientation = RecyclerView.VERTICAL
+            recyclerView.layoutManager = layoutManager
+            auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : ItemClickListener {
+                override fun onItemClick(a: Auditoria, position: Int) {
+                    val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                    intent.putExtra("auditoriaId", a.AuditoriaId)
+                    intent.putExtra("tipo", 0)
+                    startActivity(intent)
+                }
+            })
+//            recyclerView.itemAnimator = DefaultItemAnimator()
+//            recyclerView.layoutManager = layoutManager
+            recyclerView.adapter = auditoriaAdapter
+        } else {
+            getListAuditoria()
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -177,22 +210,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         })
         recyclerView.adapter = auditoriaAdapter
 
-
-////        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
-////        auditorias.addChangeListener { _ ->
-////            auditoriaAdapter?.notifyDataSetChanged()
-////        }
-//        auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : ItemClickListener {
-//            override fun onItemClick(a: Auditoria, position: Int) {
-//                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
-//                intent.putExtra("auditoriaId", a.AuditoriaId)
-//                intent.putExtra("tipo", 0)
-//                startActivity(intent)
-//            }
-//        })
-//        recyclerView.itemAnimator = DefaultItemAnimator()
-//        recyclerView.layoutManager = layoutManager
-//        recyclerView.adapter = auditoriaAdapter
         setUpLoadMoreListener()
         subscribeForData()
     }
@@ -212,7 +229,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                 .subscribe(object : Observer<List<Area>> {
 
                     override fun onComplete() {
-                        showCreateHeaderDialog(titulo, tipo)
+                        showCreateHeaderDialog(titulo, tipo, false)
                         dialog.dismiss()
                     }
 
@@ -235,7 +252,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         dialog.show()
     }
 
-    private fun showCreateHeaderDialog(titulo: String, tipo: Int) {
+    private fun showCreateHeaderDialog(titulo: String, tipo: Int, modo: Boolean) {
         if (tipo == 1) {
             val fragmentManager = supportFragmentManager
             val filtroFragment = FiltroDialogFragment.newInstance(titulo)
@@ -245,7 +262,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     .addToBackStack(null).commit()
         } else {
             val fragmentManager = supportFragmentManager
-            val nuevaAuditoriaFragment = NuevaAuditoriaDialogFragment.newInstance(titulo)
+            val nuevaAuditoriaFragment = NuevaAuditoriaDialogFragment.newInstance(titulo, modo)
             val transaction = fragmentManager!!.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             transaction.add(android.R.id.content, nuevaAuditoriaFragment)

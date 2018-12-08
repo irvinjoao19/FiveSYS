@@ -2,7 +2,6 @@ package com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces
 
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
-import com.fivesys.alphamanufacturas.fivesys.entities.Lista
 import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
 import io.reactivex.Flowable
 import io.reactivex.Observable
@@ -26,6 +25,10 @@ interface AuditoriaInterfaces {
     @POST("/Control/Auditoria/APISaveHeader")
     fun saveHeader(@Body model: RequestBody): Observable<Auditoria>
 
+    /**
+     * Este interfaz se utiliza tanto para online y off line
+     */
+
     @Headers("Cache-Control: no-cache")
     @POST("/General/Organizacion/APIGetAll")
     fun getFiltroGetAll(): Observable<List<Area>>
@@ -37,10 +40,4 @@ interface AuditoriaInterfaces {
     @Headers("Cache-Control: no-cache")
     @POST("/Control/Auditoria/APIGetAllLikePagin")
     fun pagination(@Body query: RequestBody): Flowable<List<Auditoria>>
-
-
-    @Headers("Cache-Control: no-cache")
-    @POST("/Home/APIGetData")
-    fun getConfiguration(): Observable<List<Auditoria>>
-
 }

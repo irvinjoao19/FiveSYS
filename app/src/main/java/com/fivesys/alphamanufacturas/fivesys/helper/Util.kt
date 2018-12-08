@@ -396,7 +396,7 @@ object Util {
 
     fun snackBarMensaje(view: View, mensaje: String) {
         val mSnackbar = Snackbar.make(view, mensaje, Snackbar.LENGTH_SHORT)
-        mSnackbar.setAction("Cerrar") { mSnackbar.dismiss() }
+        mSnackbar.setAction("Ok") { mSnackbar.dismiss() }
         mSnackbar.show()
     }
 
