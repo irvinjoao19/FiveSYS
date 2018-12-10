@@ -223,12 +223,18 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             for (p: PuntosFijos in sector?.PuntosFijos!!) {
                 val pheader = PuntosFijosHeader(getPuntosFijosIdentity(), p.PuntoFijoId, a.AuditoriaId, p.Nombre, null, "")
                 realm.copyToRealmOrUpdate(pheader)
-//                a.PuntosFijos?.add(pheader)
                 puntosFijosHeaders.add(pheader)
             }
             a.PuntosFijos = puntosFijosHeaders
-
             a.Sector = realm.copyToRealmOrUpdate(sector)
+
+            val offLine = realm.where(OffLine::class.java).findFirst()
+            val listCategorias = RealmList<Categoria>()
+            for (c: Categoria in offLine?.categorias!!) {
+                listCategorias.add(c)
+            }
+
+            a.Categorias = listCategorias
 
             realm.copyToRealmOrUpdate(a)
         }
@@ -242,8 +248,8 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                         val a = realm.where(Auditoria::class.java).findAll()
                         a.deleteAllFromRealm()
 
-                        val area = realm.where(Area::class.java).findAll()
-                        area.deleteAllFromRealm()
+                        val offLine = realm.where(OffLine::class.java).findAll()
+                        offLine.deleteAllFromRealm()
                     }
                 }
                 emitter.onNext(true)
@@ -261,7 +267,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }
     }
 
-    override fun getConfiguracion(area: List<Area>, check: Boolean) {
+    override fun getConfiguracion(offLine: List<OffLine>, check: Boolean) {
         realm.executeTransaction { r ->
             val a = r.where(Auditoria::class.java).findAll()
             a.deleteAllFromRealm()
@@ -271,7 +277,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                 auditor.modo = check
             }
 
-            r.copyToRealmOrUpdate(area)
+            r.copyToRealmOrUpdate(offLine)
         }
     }
 }

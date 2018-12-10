@@ -72,5 +72,5 @@ interface AuditoriaImplementation {
 
     fun deleteOffLine()
 
-    fun getConfiguracion(area: List<Area>, check: Boolean)
+    fun getConfiguracion(offLine: List<OffLine>, check: Boolean)
 }

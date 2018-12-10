@@ -15,7 +15,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImp
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
-import com.fivesys.alphamanufacturas.fivesys.entities.Area
+import com.fivesys.alphamanufacturas.fivesys.entities.OffLine
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.google.android.material.switchmaterial.SwitchMaterial
 import io.reactivex.Observable
@@ -147,10 +147,10 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         textViewTitle.text = "Sincronizando...."
         builder.setView(view)
 
-        val listAreaCall: Observable<List<Area>> = auditoriaInterfaces.getFiltroGetAll()
+        val listAreaCall: Observable<List<OffLine>> = auditoriaInterfaces.getOffLine()
         listAreaCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<Area>> {
+                .subscribe(object : Observer<List<OffLine>> {
 
                     override fun onComplete() {
                         Util.snackBarMensaje(window.decorView, "Modo Off-line")
@@ -161,7 +161,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
 
                     }
 
-                    override fun onNext(t: List<Area>) {
+                    override fun onNext(t: List<OffLine>) {
                         switchOffLine.text = "Modo Off-line"
                         auditoriaImp.getConfiguracion(t, true)
                     }
