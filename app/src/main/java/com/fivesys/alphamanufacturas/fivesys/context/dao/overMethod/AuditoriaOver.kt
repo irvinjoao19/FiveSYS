@@ -267,7 +267,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }
     }
 
-    override fun getConfiguracion(offLine: List<OffLine>, check: Boolean) {
+    override fun getConfiguracion(offLine: OffLine, check: Boolean) {
         realm.executeTransaction { r ->
             val a = r.where(Auditoria::class.java).findAll()
             a.deleteAllFromRealm()

@@ -42,6 +42,6 @@ interface AuditoriaInterfaces {
 
     @Headers("Cache-Control: no-cache")
     @POST("/Home/APIGetData")
-    fun getOffLine(): Observable<List<OffLine>>
+    fun getOffLine(): Observable<OffLine>
 
 }

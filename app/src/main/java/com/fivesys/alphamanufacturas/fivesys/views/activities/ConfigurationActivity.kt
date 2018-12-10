@@ -147,10 +147,10 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         textViewTitle.text = "Sincronizando...."
         builder.setView(view)
 
-        val listAreaCall: Observable<List<OffLine>> = auditoriaInterfaces.getOffLine()
+        val listAreaCall: Observable<OffLine> = auditoriaInterfaces.getOffLine()
         listAreaCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<OffLine>> {
+                .subscribe(object : Observer<OffLine> {
 
                     override fun onComplete() {
                         Util.snackBarMensaje(window.decorView, "Modo Off-line")
@@ -161,7 +161,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
 
                     }
 
-                    override fun onNext(t: List<OffLine>) {
+                    override fun onNext(t: OffLine) {
                         switchOffLine.text = "Modo Off-line"
                         auditoriaImp.getConfiguracion(t, true)
                     }
