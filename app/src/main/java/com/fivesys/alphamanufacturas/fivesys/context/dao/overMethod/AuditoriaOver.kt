@@ -218,11 +218,15 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
             val sector: Sector? = realm.where(Sector::class.java).equalTo("SectorId", sectorId).findFirst()
 
+            val puntosFijosHeaders = RealmList<PuntosFijosHeader>()
+
             for (p: PuntosFijos in sector?.PuntosFijos!!) {
                 val pheader = PuntosFijosHeader(getPuntosFijosIdentity(), p.PuntoFijoId, a.AuditoriaId, p.Nombre, null, "")
                 realm.copyToRealmOrUpdate(pheader)
-                a.PuntosFijos?.add(pheader)
+//                a.PuntosFijos?.add(pheader)
+                puntosFijosHeaders.add(pheader)
             }
+            a.PuntosFijos = puntosFijosHeaders
 
             a.Sector = realm.copyToRealmOrUpdate(sector)
 
