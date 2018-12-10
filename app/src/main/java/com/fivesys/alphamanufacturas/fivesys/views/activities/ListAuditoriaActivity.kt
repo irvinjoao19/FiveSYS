@@ -27,6 +27,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
 import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
+import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaOffLineAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.NuevaAuditoriaDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -85,24 +86,26 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
     }
 
-
     private val compositeDisposable = CompositeDisposable()
     private val paginator = PublishProcessor.create<Int>()
     private var auditoriaAdapter: AuditoriaAdapter? = null
+    private var auditoriaOffLineAdapter: AuditoriaOffLineAdapter? = null
     private var loading = false
     private var pageNumber = 1
     private val VISIBLE_THRESHOLD = 1
     private var lastVisibleItem: Int = 0
     private var totalItemCount: Int = 0
-    lateinit var layoutManager: LinearLayoutManager
 
 
     lateinit var progressBar: ProgressBar
     lateinit var progressBarPage: ProgressBar
     lateinit var fab: FloatingActionButton
-    lateinit var recyclerView: RecyclerView
+
     lateinit var toolbar: Toolbar
-//    lateinit var layoutManager: RecyclerView.LayoutManager
+
+    lateinit var recyclerView: RecyclerView
+    lateinit var layoutManager: LinearLayoutManager
+    lateinit var layoutManagerOff: RecyclerView.LayoutManager
 
     lateinit var auditoriaImp: AuditoriaImplementation
     lateinit var realm: Realm
@@ -130,12 +133,11 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             progressBar.visibility = View.GONE
             val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
             auditorias.addChangeListener { _ ->
-                auditoriaAdapter?.notifyDataSetChanged()
+                auditoriaOffLineAdapter?.notifyDataSetChanged()
             }
-            auditoriaAdapter?.addItems(auditorias)
-            layoutManager.orientation = RecyclerView.VERTICAL
-            recyclerView.layoutManager = layoutManager
-            auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : ItemClickListener {
+            recyclerView.itemAnimator = DefaultItemAnimator()
+            recyclerView.layoutManager = layoutManagerOff
+            auditoriaOffLineAdapter = AuditoriaOffLineAdapter(auditorias, R.layout.cardview_list_auditoria, object : ItemClickListener {
                 override fun onItemClick(a: Auditoria, position: Int) {
                     val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
                     intent.putExtra("auditoriaId", a.AuditoriaId)
@@ -143,9 +145,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     startActivity(intent)
                 }
             })
-//            recyclerView.itemAnimator = DefaultItemAnimator()
-//            recyclerView.layoutManager = layoutManager
-            recyclerView.adapter = auditoriaAdapter
+            recyclerView.adapter = auditoriaOffLineAdapter
         } else {
             getListAuditoria()
         }
@@ -170,6 +170,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         fab.setOnClickListener(this)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
+        layoutManagerOff = LinearLayoutManager(this@ListAuditoriaActivity)
     }
 
     @SuppressLint("CheckResult")
@@ -209,7 +210,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
         })
         recyclerView.adapter = auditoriaAdapter
-
         setUpLoadMoreListener()
         subscribeForData()
     }
@@ -368,14 +368,13 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                 }
 
         compositeDisposable.add(disposable)
-
         paginator.onNext(pageNumber)
-
     }
 
     /**
      * Simulation of network data
      */
+
     private fun dataFromNetwork(page: Int): Flowable<List<Auditoria>> {
         val envio = Filtro(page, 10)
         val sendPage = Gson().toJson(envio)
@@ -389,7 +388,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                         return t
                     }
                 })
-
     }
 
 

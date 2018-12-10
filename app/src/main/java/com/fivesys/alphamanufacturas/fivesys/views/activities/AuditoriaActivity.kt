@@ -84,6 +84,8 @@ class AuditoriaActivity : AppCompatActivity() {
     var envioId: Int? = 0
     var tipo: Int? = 0
 
+    var modo: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auditoria)
@@ -94,7 +96,17 @@ class AuditoriaActivity : AppCompatActivity() {
         if (bundle != null) {
             auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
             tipo = bundle.getInt("tipo")
-            getAuditoriaByOne(bundle.getInt("auditoriaId"))
+            modo = auditoriaImp.getAuditor?.modo!!
+
+            if (modo) {
+                progressBar.visibility = View.GONE
+                bindToolbar()
+                bindTabLayout(bundle.getInt("auditoriaId"))
+            }else{
+                getAuditoriaByOne(bundle.getInt("auditoriaId"))
+            }
+
+
             Log.i("TAG", bundle.getInt("auditoriaId").toString())
         }
     }

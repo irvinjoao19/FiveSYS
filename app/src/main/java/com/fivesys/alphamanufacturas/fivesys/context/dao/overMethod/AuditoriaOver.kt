@@ -4,7 +4,9 @@ import android.os.Environment
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import io.reactivex.Observable
 import io.realm.Realm
+import io.realm.RealmList
 import io.realm.RealmResults
 import io.realm.Sort
 import java.io.File
@@ -186,6 +188,13 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }
     }
 
+    override fun getPuntosFijosIdentity(): Int {
+        val identity = realm.where(PuntosFijosHeader::class.java).max("AuditoriaPuntoFijoId")
+        val result: Int
+        result = if (identity == null) 1 else identity.toInt() + 1
+        return result
+    }
+
     override fun getAuditoriaIdentity(): Int {
         val auditoria = realm.where(Auditoria::class.java).max("AuditoriaId")
         val result: Int
@@ -193,14 +202,72 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         return result
     }
 
-
-    override fun saveAuditoriaOffLine(estado: Int, nombre: String) {
+    override fun saveAuditoriaOffLine(estado: Int, nombre: String, responsableId: Int, areaId: Int, sectorId: Int) {
         realm.executeTransaction { realm ->
             val a = Auditoria()
             a.AuditoriaId = getAuditoriaIdentity()
             a.Estado = estado
             a.Nombre = nombre
+            a.ResponsableId = responsableId
+
+            val responsable: Responsable? = realm.where(Responsable::class.java).equalTo("ResponsableId", responsableId).findFirst()
+            a.Responsable = realm.copyToRealmOrUpdate(responsable!!)
+
+            val area: Area? = realm.where(Area::class.java).equalTo("AreaId", areaId).findFirst()
+            a.Area = realm.copyToRealmOrUpdate(area!!)
+
+            val sector: Sector? = realm.where(Sector::class.java).equalTo("SectorId", sectorId).findFirst()
+
+            for (p: PuntosFijos in sector?.PuntosFijos!!) {
+                val pheader = PuntosFijosHeader(getPuntosFijosIdentity(), p.PuntoFijoId, a.AuditoriaId, p.Nombre, null, "")
+                realm.copyToRealmOrUpdate(pheader)
+                a.PuntosFijos?.add(pheader)
+            }
+
+            a.Sector = realm.copyToRealmOrUpdate(sector)
+
             realm.copyToRealmOrUpdate(a)
+        }
+    }
+
+    override fun deleteOffLineRx(): Observable<Boolean> {
+        return Observable.create { emitter ->
+            try {
+                Realm.getDefaultInstance().use { realm ->
+                    realm.executeTransaction {
+                        val a = realm.where(Auditoria::class.java).findAll()
+                        a.deleteAllFromRealm()
+
+                        val area = realm.where(Area::class.java).findAll()
+                        area.deleteAllFromRealm()
+                    }
+                }
+                emitter.onNext(true)
+                emitter.onComplete()
+            } catch (e: Throwable) {
+                emitter.onError(e)
+            }
+        }
+    }
+
+    override fun deleteOffLine() {
+        realm.executeTransaction {
+            val a = realm.where(Auditoria::class.java).findAll()
+            a.deleteAllFromRealm()
+        }
+    }
+
+    override fun getConfiguracion(area: List<Area>, check: Boolean) {
+        realm.executeTransaction { r ->
+            val a = r.where(Auditoria::class.java).findAll()
+            a.deleteAllFromRealm()
+
+            val auditor = r.where(Auditor::class.java).findFirst()
+            if (auditor != null) {
+                auditor.modo = check
+            }
+
+            r.copyToRealmOrUpdate(area)
         }
     }
 }

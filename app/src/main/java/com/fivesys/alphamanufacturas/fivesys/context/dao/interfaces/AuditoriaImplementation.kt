@@ -1,6 +1,7 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces
 
 import com.fivesys.alphamanufacturas.fivesys.entities.*
+import io.reactivex.Observable
 import io.realm.RealmResults
 
 interface AuditoriaImplementation {
@@ -57,10 +58,19 @@ interface AuditoriaImplementation {
 
     fun updateAuditoriaByEstado(a: Auditoria?, estado: Int, nombre: String, envio: Int)
 
+    // TODO PUNTOS FIJOS HEADER
+
+    fun getPuntosFijosIdentity(): Int
+
     // TODO AUDITORIA OFF-LINE
 
-    fun getAuditoriaIdentity():Int
+    fun getAuditoriaIdentity(): Int
 
-    fun saveAuditoriaOffLine(estado:Int,nombre:String)
+    fun saveAuditoriaOffLine(estado: Int, nombre: String, responsableId: Int, areaId: Int, sectorId: Int)
 
+    fun deleteOffLineRx(): Observable<Boolean>
+
+    fun deleteOffLine()
+
+    fun getConfiguracion(area: List<Area>, check: Boolean)
 }

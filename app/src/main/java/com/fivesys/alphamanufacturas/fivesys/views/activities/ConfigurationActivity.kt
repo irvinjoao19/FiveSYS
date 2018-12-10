@@ -31,10 +31,12 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
         when (buttonView.id) {
             R.id.switchOffLine -> {
-                if (isChecked) {
-                    confirmRegister()
-                } else {
-                    Util.snackBarMensaje(buttonView, "OFF")
+                if (buttonView.isPressed) {
+                    if (isChecked) {
+                        confirmOffline()
+                    } else {
+                        confirmOnline()
+                    }
                 }
             }
         }
@@ -69,19 +71,30 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindUI() {
         switchOffLine = findViewById(R.id.switchOffLine)
         val auditor = auditoriaImp.getAuditor
-        switchOffLine.isChecked = auditor?.modo!!
+        val modo = auditor?.modo!!
+        if (modo) {
+            switchOffLine.text = "Modo Off-line"
+            switchOffLine.isChecked = modo
+        } else {
+            switchOffLine.text = "Modo Online"
+            switchOffLine.isChecked = modo
+        }
+
         switchOffLine.setOnCheckedChangeListener(this)
     }
 
 
-    private fun confirmRegister() {
+    @SuppressLint("SetTextI18n")
+    private fun confirmOffline() {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this@ConfigurationActivity, R.style.AppTheme))
         val dialog: AlertDialog
 
-        builder.setTitle("Mensaje")
+        builder.setTitle("Modo Off-line")
+
         builder.setMessage("Estas Seguro de Sincronizar ?")
         builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
             getOffline()
@@ -89,7 +102,33 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, _ ->
             switchOffLine.isChecked = false
+            switchOffLine.text = "Modo Online"
             auditoriaImp.updateOffLine(false)
+            dialogInterface.dismiss()
+
+        }
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+    }
+
+
+    @SuppressLint("SetTextI18n")
+    private fun confirmOnline() {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this@ConfigurationActivity, R.style.AppTheme))
+        val dialog: AlertDialog
+
+        builder.setTitle("Modo Online")
+
+        builder.setMessage("Si cuentas con auditorias off-line se eliminaran estas seguro ?")
+        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
+            clearOffLine()
+            dialogInterface.dismiss()
+        }
+        builder.setNegativeButton("Cancelar") { dialogInterface, _ ->
+            switchOffLine.isChecked = true
+            switchOffLine.text = "Modo Off-line"
+            auditoriaImp.updateOffLine(true)
             dialogInterface.dismiss()
 
         }
@@ -114,7 +153,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                 .subscribe(object : Observer<List<Area>> {
 
                     override fun onComplete() {
-                        Util.snackBarMensaje(window.decorView, "Sincronización completada")
+                        Util.snackBarMensaje(window.decorView, "Modo Off-line")
                         dialog.dismiss()
                     }
 
@@ -123,8 +162,8 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                     }
 
                     override fun onNext(t: List<Area>) {
-                        auditoriaImp.updateOffLine(true)
-                        auditoriaImp.saveFiltroAuditoria(t)
+                        switchOffLine.text = "Modo Off-line"
+                        auditoriaImp.getConfiguracion(t, true)
                     }
 
                     override fun onError(e: Throwable) {
@@ -137,5 +176,30 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
+    }
+
+    private fun clearOffLine() {
+        val observable: Observable<Boolean> = auditoriaImp.deleteOffLineRx()
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Boolean> {
+                    override fun onComplete() {
+                        Util.snackBarMensaje(window.decorView, "Modo Online")
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    @SuppressLint("SetTextI18n")
+                    override fun onNext(t: Boolean) {
+                        switchOffLine.text = "Modo Online"
+                        auditoriaImp.updateOffLine(false)
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Util.snackBarMensaje(window.decorView, e.toString())
+                    }
+                })
     }
 }

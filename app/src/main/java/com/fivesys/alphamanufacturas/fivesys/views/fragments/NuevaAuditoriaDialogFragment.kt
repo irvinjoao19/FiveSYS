@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
@@ -48,9 +47,9 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                             if (responsableId != 0) {
                                 if (!editTextNombre.text.toString().isEmpty()) {
                                     if (modo) {
-                                        auditoriaImp.saveAuditoriaOffLine(estadoId, editTextNombre.text.toString())
-                                        Util.snackBarMensaje(v, "Modo Off-line")
-//                                        dismiss()
+                                        auditoriaImp.saveAuditoriaOffLine(estadoId, editTextNombre.text.toString(), responsableId, areaId, sectorId)
+                                        Util.hideKeyboardFrom(context!!, v)
+                                        dismiss()
                                     } else {
                                         val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                                         val json = Gson().toJson(f)
@@ -82,14 +81,12 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-
     lateinit var textViewTitulo: TextView
 
     lateinit var editTextEstado: TextInputEditText
     lateinit var editTextArea: TextInputEditText
     lateinit var editTextSector: TextInputEditText
     lateinit var editTextResponsable: TextInputEditText
-
     lateinit var editTextNombre: TextInputEditText
 
     lateinit var buttonAceptar: MaterialButton
@@ -111,17 +108,14 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     var sectores: RealmList<Sector>? = null
     var responsables: RealmList<Responsable>? = null
 
-
     var areaId: Int = 0
     var sectorId: Int = 0
     var responsableId: Int = 0
     var nresponsable: String? = ""
     var estadoId: Int = 1
 
-
     private var titulo: String? = null
     var listener: InterfaceCommunicator? = null
-
     var modo: Boolean = false
 
     companion object {
@@ -157,7 +151,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun bindUI(view: View) {
-
         textViewTitulo = view.findViewById(R.id.textViewTitulo)
         textViewTitulo.text = titulo
 
@@ -176,12 +169,10 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         editTextResponsable.setOnClickListener(this)
         buttonAceptar.setOnClickListener(this)
         buttonCancelar.setOnClickListener(this)
-
     }
 
     @SuppressLint("SetTextI18n")
     private fun areaDialog() {
-
         builderArea = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
@@ -288,7 +279,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun estadoDialog() {
-
         builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
@@ -314,7 +304,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         builderEstado.setView(v)
         dialogEstado = builderEstado.create()
         dialogEstado.show()
-
     }
 
     interface InterfaceCommunicator {

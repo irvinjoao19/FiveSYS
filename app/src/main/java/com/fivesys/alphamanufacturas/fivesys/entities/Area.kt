@@ -12,6 +12,7 @@ open class Area : RealmObject {
     var Sectores: RealmList<Sector>? = null
 
     constructor() : super()
+
     constructor(AreaId: Int, Nombre: String?) : super() {
         this.AreaId = AreaId
         this.Nombre = Nombre
