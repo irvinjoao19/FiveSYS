@@ -49,6 +49,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                                     if (modo) {
                                         auditoriaImp.saveAuditoriaOffLine(estadoId, editTextNombre.text.toString(), responsableId, areaId, sectorId)
                                         Util.hideKeyboardFrom(context!!, v)
+                                        listener?.sendOffRequest()
                                         dismiss()
                                     } else {
                                         val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
@@ -308,5 +309,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
     interface InterfaceCommunicator {
         fun sendRequest(value: String)
+
+        fun sendOffRequest()
     }
 }

@@ -26,6 +26,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
 import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaOffLineAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
@@ -50,6 +51,11 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroDialogFragment.InterfaceCommunicator, NuevaAuditoriaDialogFragment.InterfaceCommunicator {
+
+    override fun sendOffRequest() {
+        Util.snackBarMensaje(window.decorView, "Nueva Auditoria")
+        getListOffAuditoria()
+    }
 
     override fun filtroRequest(value: String) {
         auditoriaAdapter?.getFilter()?.filter(value)
@@ -123,29 +129,12 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
-
         bindToolbar()
         bindUI()
-
         modo = auditoriaImp.getAuditor?.modo!!
-
         if (modo) {
             progressBar.visibility = View.GONE
-            val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
-            auditorias.addChangeListener { _ ->
-                auditoriaOffLineAdapter?.notifyDataSetChanged()
-            }
-            recyclerView.itemAnimator = DefaultItemAnimator()
-            recyclerView.layoutManager = layoutManagerOff
-            auditoriaOffLineAdapter = AuditoriaOffLineAdapter(auditorias, R.layout.cardview_list_auditoria, object : ItemClickListener {
-                override fun onItemClick(a: Auditoria, position: Int) {
-                    val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
-                    intent.putExtra("auditoriaId", a.AuditoriaId)
-                    intent.putExtra("tipo", 0)
-                    startActivity(intent)
-                }
-            })
-            recyclerView.adapter = auditoriaOffLineAdapter
+            getListOffAuditoria()
         } else {
             getListAuditoria()
         }
@@ -195,6 +184,24 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                         Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
                     }
                 })
+    }
+
+    private fun getListOffAuditoria() {
+        val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
+        auditorias.addChangeListener { _ ->
+            auditoriaOffLineAdapter?.notifyDataSetChanged()
+        }
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.layoutManager = layoutManagerOff
+        auditoriaOffLineAdapter = AuditoriaOffLineAdapter(auditorias, R.layout.cardview_list_auditoria, object : ItemClickListener {
+            override fun onItemClick(a: Auditoria, position: Int) {
+                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                intent.putExtra("auditoriaId", a.AuditoriaId)
+                intent.putExtra("tipo", 0)
+                startActivity(intent)
+            }
+        })
+        recyclerView.adapter = auditoriaOffLineAdapter
     }
 
     private fun getListAuditoria() {

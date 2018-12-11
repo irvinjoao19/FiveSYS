@@ -40,14 +40,17 @@ import java.util.*
 
 class AuditoriaActivity : AppCompatActivity() {
 
-    override fun onDestroy() {
-        super.onDestroy()
-        realm.close()
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.save, menu)
         return true
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu): Boolean {
+        if (modo) {
+            menu.findItem(R.id.save).isVisible = false
+        }
+        return super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -68,6 +71,12 @@ class AuditoriaActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
 
     lateinit var toolbar: Toolbar
     lateinit var tabLayout: TabLayout
@@ -102,7 +111,7 @@ class AuditoriaActivity : AppCompatActivity() {
                 progressBar.visibility = View.GONE
                 bindToolbar()
                 bindTabLayout(bundle.getInt("auditoriaId"))
-            }else{
+            } else {
                 getAuditoriaByOne(bundle.getInt("auditoriaId"))
             }
 
