@@ -376,7 +376,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
      */
 
     private fun dataFromNetwork(page: Int): Flowable<List<Auditoria>> {
-        val envio = Filtro(page, 10)
+        val envio = Filtro(page, 20)
         val sendPage = Gson().toJson(envio)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
         return auditoriaInterfaces.pagination(requestBody)
