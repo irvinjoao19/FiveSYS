@@ -202,10 +202,21 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         return result
     }
 
+
+    override fun getAuditoriaCodigoCorrelativo(): String {
+        val auditoria = realm.where(Auditoria::class.java).max("AuditoriaId")
+        val result = if (auditoria == null) 1 else auditoria.toInt() + 1
+        val codigo = "OFF-0000"
+        val total = result.toString().length
+        return codigo.substring(0, codigo.length - total) + result
+    }
+
+
     override fun saveAuditoriaOffLine(estado: Int, nombre: String, responsableId: Int, areaId: Int, sectorId: Int) {
         realm.executeTransaction { realm ->
             val a = Auditoria()
             a.AuditoriaId = getAuditoriaIdentity()
+            a.Codigo = getAuditoriaCodigoCorrelativo()
             a.Estado = estado
             a.Nombre = nombre
             a.ResponsableId = responsableId

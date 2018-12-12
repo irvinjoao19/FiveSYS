@@ -66,6 +66,8 @@ interface AuditoriaImplementation {
 
     fun getAuditoriaIdentity(): Int
 
+    fun getAuditoriaCodigoCorrelativo():String
+
     fun saveAuditoriaOffLine(estado: Int, nombre: String, responsableId: Int, areaId: Int, sectorId: Int)
 
     fun deleteOffLineRx(): Observable<Boolean>
