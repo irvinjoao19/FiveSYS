@@ -57,8 +57,12 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         getListOffAuditoria()
     }
 
-    override fun filtroRequest(value: String) {
-        auditoriaAdapter?.getFilter()?.filter(value)
+    override fun filtroRequest(value: String, modo: Boolean) {
+        if (modo) {
+            auditoriaOffLineAdapter?.getFilter()?.filter(value)
+        } else {
+            auditoriaAdapter?.getFilter()?.filter(value)
+        }
     }
 
     override fun sendRequest(value: String) {
@@ -73,7 +77,11 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.filter -> {
-                showFiltro("Filtro", 1)
+                if (modo) {
+                    showCreateHeaderDialog("Nueva Auditoria", 1, true)
+                } else {
+                    showFiltro("Filtro", 1)
+                }
                 return true
             }
         }
@@ -262,7 +270,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     private fun showCreateHeaderDialog(titulo: String, tipo: Int, modo: Boolean) {
         if (tipo == 1) {
             val fragmentManager = supportFragmentManager
-            val filtroFragment = FiltroDialogFragment.newInstance(titulo)
+            val filtroFragment = FiltroDialogFragment.newInstance(titulo, modo)
             val transaction = fragmentManager!!.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             transaction.add(android.R.id.content, filtroFragment)

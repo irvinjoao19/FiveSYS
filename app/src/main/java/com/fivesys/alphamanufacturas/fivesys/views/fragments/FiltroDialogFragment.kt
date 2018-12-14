@@ -42,7 +42,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.buttonAceptar -> {
                 val f = Filtro(editTextCodigo.text.toString(), estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                 val json = Gson().toJson(f)
-                listener?.filtroRequest(json)
+                listener?.filtroRequest(json,modo)
                 dismiss()
             }
             R.id.buttonCancelar -> dismiss()
@@ -90,12 +90,14 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
     var titulo: String? = null
     var listener: InterfaceCommunicator? = null
+    var modo :Boolean = false
 
     companion object {
-        fun newInstance(titulo: String): FiltroDialogFragment {
+        fun newInstance(titulo: String, modo: Boolean): FiltroDialogFragment {
             val f = FiltroDialogFragment()
             val args = Bundle()
             args.putString("titulo", titulo)
+            args.putBoolean("modo", modo)
             f.arguments = args
             return f
         }
@@ -104,6 +106,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         titulo = arguments!!.getString("titulo")
+        modo = arguments!!.getBoolean("modo")
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
     }
@@ -278,6 +281,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     interface InterfaceCommunicator {
-        fun filtroRequest(value: String)
+        fun filtroRequest(value: String, modo: Boolean)
     }
 }

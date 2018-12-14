@@ -40,7 +40,6 @@ import java.util.*
 
 class AuditoriaActivity : AppCompatActivity() {
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.save, menu)
         return true
