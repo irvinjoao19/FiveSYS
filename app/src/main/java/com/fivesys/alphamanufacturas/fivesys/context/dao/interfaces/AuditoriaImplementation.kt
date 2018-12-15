@@ -20,6 +20,8 @@ interface AuditoriaImplementation {
 
     val getAllAuditoria: RealmResults<Auditoria>
 
+    fun getAllAuditoriaRx() : Observable<RealmResults<Auditoria>>
+
     fun saveAuditoriaByOne(auditoria: Auditoria)
 
     fun getAuditoriaByOne(id: Int): Auditoria?

@@ -7,6 +7,7 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
@@ -44,4 +45,7 @@ interface AuditoriaInterfaces {
     @POST("/Home/APIGetData")
     fun getOffLine(): Observable<OffLine>
 
+    @Headers("Cache-Control: no-cache")
+    @POST("/Control/Auditoria/APISaveOff")
+    fun sendRegisterOffLine(@Body query: RequestBody): Observable<ResponseBody>
 }

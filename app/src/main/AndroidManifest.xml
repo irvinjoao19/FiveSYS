@@ -52,5 +52,6 @@
         <activity android:name=".views.activities.PaginationActivity">
 
         </activity>
+
     </application>
 </manifest>
