@@ -39,4 +39,17 @@ open class Filtro {
         this.pageIndex = pageIndex
         this.pageSize = pageSize
     }
+
+    // TODO PAGINATION
+
+    constructor(Codigo: String?, Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, pageIndex: Int?, pageSize: Int?) {
+        this.Codigo = Codigo
+        this.Estado = Estado
+        this.AreaId = AreaId
+        this.SectorId = SectorId
+        this.ResponsableId = ResponsableId
+        this.Nombre = Nombre
+        this.pageIndex = pageIndex
+        this.pageSize = pageSize
+    }
 }

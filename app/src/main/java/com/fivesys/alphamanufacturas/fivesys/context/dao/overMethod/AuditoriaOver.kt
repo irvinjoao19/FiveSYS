@@ -5,9 +5,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImp
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import io.reactivex.Observable
-import io.reactivex.Observer
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmResults
@@ -57,6 +54,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                     val a = realm.where(Auditoria::class.java).findAll()
                     emitter.onNext(a)
                     emitter.onComplete()
+
                 }
             } catch (e: Throwable) {
                 emitter.onError(e)

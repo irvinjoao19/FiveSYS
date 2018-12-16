@@ -17,4 +17,12 @@
         android:checked="false"
         android:padding="20sp"
         android:text="@string/modo_off_line" />
+
+
+     <!--<ProgressBar-->
+         <!--android:id="@+id/progressBar"-->
+         <!--style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"-->
+         <!--android:max="100"-->
+         <!--android:layout_width="match_parent"-->
+         <!--android:layout_height="wrap_content" />-->
 </LinearLayout>

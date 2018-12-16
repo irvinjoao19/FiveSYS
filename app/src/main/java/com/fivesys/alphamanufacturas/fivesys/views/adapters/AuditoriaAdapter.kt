@@ -20,12 +20,16 @@ import java.util.*
 
 class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
 
-    var auditorias: List<Auditoria>? = null
     internal var auditoriasList: ArrayList<Auditoria> = ArrayList()
 
     internal fun addItems(items: List<Auditoria>) {
-        this.auditorias = ArrayList(items)
         this.auditoriasList.addAll(items)
+    }
+
+    internal fun clear() {
+        val size = auditoriasList.size
+        auditoriasList.clear()
+        notifyItemRangeRemoved(0, size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -122,63 +126,6 @@ class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener
             textviewSector.text = a.Sector?.Nombre
 
             itemView.setOnClickListener { listener.onItemClick(a, adapterPosition) }
-        }
-    }
-
-    fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(charSequence: CharSequence): Filter.FilterResults {
-                return Filter.FilterResults()
-            }
-
-            override fun publishResults(charSequence: CharSequence, filterResults: Filter.FilterResults) {
-
-                auditoriasList.clear()
-                val keyword: Filtro? = Gson().fromJson(charSequence.toString(), Filtro::class.java)
-                if (keyword != null) {
-                    val filteredList = ArrayList<Auditoria>()
-                    var ok: Boolean
-                    for (auditoria: Auditoria in auditorias!!) {
-                        ok = true
-                        if (keyword.Codigo!!.trim().isNotEmpty()) {
-                            if (auditoria.Codigo != null)
-                                ok = auditoria.Codigo!!.toLowerCase().contains(keyword.Codigo!!)
-                        }
-
-                        if (keyword.Estado!! > 0 && ok) {
-                            ok = auditoria.Estado == keyword.Estado
-                        }
-
-                        if (keyword.AreaId!! > 0 && ok) {
-                            if (auditoria.Area != null) {
-                                ok = auditoria.Area!!.AreaId == keyword.AreaId
-                            }
-                        }
-                        if (keyword.SectorId!! > 0 && ok) {
-                            if (auditoria.Area != null) {
-                                ok = auditoria.Sector!!.SectorId == keyword.SectorId
-                            }
-                        }
-                        if (keyword.ResponsableId!! > 0 && ok) {
-                            if (auditoria.Responsable != null) {
-                                ok = auditoria.Responsable!!.ResponsableId == keyword.ResponsableId
-                            }
-                        }
-
-                        if (keyword.Nombre!!.trim().isNotEmpty() && ok) {
-                            if (auditoria.Nombre != null) {
-                                ok = auditoria.Nombre!!.toLowerCase().contains(keyword.Nombre!!)
-                            }
-                        }
-
-                        if (ok) filteredList.add(auditoria)
-                    }
-                    auditoriasList = filteredList
-                } else {
-                    auditoriasList.addAll(auditorias!!)
-                }
-                notifyDataSetChanged()
-            }
         }
     }
 

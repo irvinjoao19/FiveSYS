@@ -72,6 +72,20 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         bindToolbar()
         bindUI()
+
+//        val progress: ProgressBar = findViewById(R.id.progressBar)
+//        progress.max = 100
+//
+//        val t = Thread{
+//            kotlin.run {
+//                for (i in 1..10) {
+//                    sleep(200)
+//                    progress.progress = i * 10
+//                }
+//            }
+//        }
+//        t.start()
+
     }
 
     private fun bindToolbar() {
@@ -100,7 +114,6 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         switchOffLine.setOnCheckedChangeListener(this)
     }
 
-
     @SuppressLint("SetTextI18n")
     private fun confirmOffline() {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this@ConfigurationActivity, R.style.AppTheme))
@@ -124,7 +137,6 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun confirmOnline() {
@@ -180,6 +192,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                     }
 
                     override fun onError(e: Throwable) {
+                        switchOffLine.isChecked = false
                         Util.snackBarMensaje(window.decorView, e.message.toString())
                         dialog.dismiss()
                     }
@@ -203,17 +216,17 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
 
         val auditorias = auditoriaImp.getAllAuditoriaRx()
         var mensaje = ""
-        auditorias.flatMap { auditorias ->
-            Observable.fromIterable(auditorias).flatMap { auditoria ->
+        auditorias.flatMap { observable ->
+            Observable.fromIterable(observable).flatMap { a ->
                 val realm = Realm.getDefaultInstance()
                 val b = MultipartBody.Builder()
                 val filePaths: ArrayList<String> = ArrayList()
-                val json = Gson().toJson(realm.copyFromRealm(auditoria))
+                val json = Gson().toJson(realm.copyFromRealm(a))
                 Log.i("TAG", json)
                 b.setType(MultipartBody.FORM)
                 b.addFormDataPart("model", json)
 
-                for (f: PuntosFijosHeader in auditoria.PuntosFijos!!) {
+                for (f: PuntosFijosHeader in a.PuntosFijos!!) {
                     if (!f.Url.isNullOrEmpty()) {
                         val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url)
                         if (file.exists()) {
@@ -222,7 +235,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                     }
                 }
 
-                for (d: Detalle in auditoria.Detalles!!) {
+                for (d: Detalle in a.Detalles!!) {
                     if (!d.Url.isNullOrEmpty()) {
                         val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url)
                         if (file.exists()) {
@@ -237,7 +250,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                 }
 
                 val requestBody = b.build()
-                Observable.zip(Observable.just(auditoria), auditoriaInterfaces.sendRegisterOffLine(requestBody), BiFunction<Auditoria, ResponseBody, ResponseBody> { auditoria, responseBody ->
+                Observable.zip(Observable.just(a), auditoriaInterfaces.sendRegisterOffLine(requestBody), BiFunction<Auditoria, ResponseBody, ResponseBody> { _, responseBody ->
                     responseBody
                 })
             }
@@ -255,14 +268,15 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                     }
 
                     override fun onError(e: Throwable) {
-                        Log.i("TAG", e.message)
+                        switchOffLine.isChecked = true
+                        Util.snackBarMensaje(window.decorView, e.toString())
+                        dialog.dismiss()
                     }
 
                     @SuppressLint("SetTextI18n")
                     override fun onComplete() {
                         deleteOffLine(mensaje)
                         dialog.dismiss()
-
                     }
                 })
         dialog = builder.create()
@@ -271,14 +285,17 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
 
     }
 
-
     private fun deleteOffLine(message: String) {
         val observable: Observable<Boolean> = auditoriaImp.deleteOffLineRx()
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Boolean> {
                     override fun onComplete() {
-                        Util.snackBarMensaje(window.decorView, message)
+                        if (message.isEmpty()) {
+                            Util.snackBarMensaje(window.decorView, "Modo Online")
+                        } else {
+                            Util.snackBarMensaje(window.decorView, message)
+                        }
                     }
 
                     override fun onSubscribe(d: Disposable) {

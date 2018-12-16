@@ -61,7 +61,16 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         if (modo) {
             auditoriaOffLineAdapter?.getFilter()?.filter(value)
         } else {
-            auditoriaAdapter?.getFilter()?.filter(value)
+            auditoriaAdapter?.clear()
+            val filtro: Filtro? = Gson().fromJson(value, Filtro::class.java)
+            Codigo = filtro?.Codigo
+            Estado = filtro?.Estado
+            AreaId = filtro?.AreaId
+            SectorId = filtro?.SectorId
+            ResponsableId = filtro?.ResponsableId
+            Nombre = filtro?.Nombre
+            setUpLoadMoreListener()
+            subscribeForData()
         }
     }
 
@@ -110,7 +119,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     private var lastVisibleItem: Int = 0
     private var totalItemCount: Int = 0
 
-
     lateinit var progressBar: ProgressBar
     lateinit var progressBarPage: ProgressBar
     lateinit var fab: FloatingActionButton
@@ -130,6 +138,13 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     lateinit var auditoriaInterfaces: AuditoriaInterfaces
 
     var modo: Boolean = false
+    var Codigo: String? = ""
+    var Estado: Int? = 0
+    var AreaId: Int? = 0
+    var SectorId: Int? = 0
+    var ResponsableId: Int? = 0
+    var Nombre: String? = ""
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,30 +183,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
         layoutManagerOff = LinearLayoutManager(this@ListAuditoriaActivity)
-    }
-
-    @SuppressLint("CheckResult")
-    private fun getListAuditoriaCall() {
-        val listCall: Observable<List<Auditoria>> = auditoriaInterfaces.getAuditorias()
-        listCall.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<List<Auditoria>> {
-                    override fun onComplete() {
-                        getListAuditoria()
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-
-                    }
-
-                    override fun onNext(t: List<Auditoria>) {
-                        auditoriaImp.saveAuditoria(t)
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
-                    }
-                })
     }
 
     private fun getListOffAuditoria() {
@@ -258,7 +249,8 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
 
                     override fun onError(e: Throwable) {
-                        Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
+                        Util.snackBarMensaje(window.decorView, e.message.toString())
+                        dialog.dismiss()
                     }
                 })
 
@@ -319,7 +311,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     }
 
                     override fun onError(e: Throwable) {
-                        Toast.makeText(this@ListAuditoriaActivity, "Volver a ingresar", Toast.LENGTH_LONG).show()
+                        Util.snackBarMensaje(window.decorView, e.message.toString())
                         dialog.dismiss()
                     }
                 })
@@ -337,8 +329,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         return super.onKeyDown(keyCode, event)
     }
 
-    // nuevo paginacion
-
     /**
      * setting listener to get callback for load more
      */
@@ -347,7 +337,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             override fun onScrolled(recyclerView: RecyclerView,
                                     dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                totalItemCount = layoutManager.getItemCount()
+                totalItemCount = layoutManager.itemCount
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition()
                 if (!loading && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD) {
                     pageNumber++
@@ -374,16 +364,21 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { items ->
+                .subscribe({ items ->
                     auditoriaAdapter!!.addItems(items)
                     auditoriaAdapter!!.notifyDataSetChanged()
                     loading = false
                     progressBarPage.visibility = View.GONE
                     progressBar.visibility = View.GONE
-                }
+                }, { throwable ->
+                    progressBarPage.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    Util.snackBarMensaje(window.decorView, throwable.toString())
+                })
 
         compositeDisposable.add(disposable)
         paginator.onNext(pageNumber)
+
     }
 
     /**
@@ -391,7 +386,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
      */
 
     private fun dataFromNetwork(page: Int): Flowable<List<Auditoria>> {
-        val envio = Filtro(page, 20)
+        val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20)
         val sendPage = Gson().toJson(envio)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
         return auditoriaInterfaces.pagination(requestBody)

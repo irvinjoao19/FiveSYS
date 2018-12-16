@@ -125,11 +125,10 @@ class AuditoriaActivity : AppCompatActivity() {
         Objects.requireNonNull<ActionBar>(supportActionBar).title = "Nueva Auditoria"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
-            if (tipo == 1) {
-                startActivity(Intent(this, ListAuditoriaActivity::class.java))
-                finish()
+            if (modo) {
+                confirmExit(tipo!!, "Se guardaran los cambios al salir ?")
             } else {
-                finish()
+                confirmExit(tipo!!, "Se eliminaran los cambios al salir ?")
             }
         }
     }
@@ -287,14 +286,36 @@ class AuditoriaActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (tipo == 1) {
+            if (modo) {
+                confirmExit(tipo!!, "Se guardaran los cambios al salir ?")
+            } else {
+                confirmExit(tipo!!, "Se eliminaran los cambios al salir ?")
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+
+    private fun confirmExit(valor: Int, mensaje: String) {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
+        val dialog: AlertDialog
+
+        builder.setTitle("Mensaje")
+        builder.setMessage(mensaje)
+        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
+            if (valor == 1) {
                 startActivity(Intent(this@AuditoriaActivity, ListAuditoriaActivity::class.java))
                 finish()
             } else {
                 finish()
             }
+            dialogInterface.dismiss()
         }
-        return super.onKeyDown(keyCode, event)
+        builder.setNegativeButton("Cancelar") { dialogInterface, _ -> dialogInterface.dismiss() }
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
     }
+
 
 }

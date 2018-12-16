@@ -157,7 +157,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
                         if (!ClaveNueva.isEmpty()) {
                             if (!ConfirmClaveNueva.isEmpty()) {
                                 if (ClaveNueva == ConfirmClaveNueva) {
-
+                                    Util.hideKeyboard(this)
                                     val alertDialog = AlertDialog.Builder(ContextThemeWrapper(this@PerfilActivity, R.style.AppTheme))
                                     alertDialog.setTitle("Mensaje")
                                     alertDialog.setMessage("Desear Guardar ?")
@@ -237,7 +237,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
                             val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
                             Util.snackBarMensaje(view, message.Error!!)
                         } else {
-                            Util.snackBarMensaje(view, "Por favor volver a intentarlo")
+                            Util.snackBarMensaje(view, e.message.toString())
                         }
                         dialog.dismiss()
                     }

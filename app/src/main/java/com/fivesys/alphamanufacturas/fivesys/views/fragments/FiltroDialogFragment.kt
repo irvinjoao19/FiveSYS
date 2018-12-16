@@ -20,6 +20,7 @@ import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.*
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AreaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
@@ -42,7 +43,8 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.buttonAceptar -> {
                 val f = Filtro(editTextCodigo.text.toString(), estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                 val json = Gson().toJson(f)
-                listener?.filtroRequest(json,modo)
+                listener?.filtroRequest(json, modo)
+                Util.hideKeyboardFrom(context!!, v)
                 dismiss()
             }
             R.id.buttonCancelar -> dismiss()
@@ -90,7 +92,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
     var titulo: String? = null
     var listener: InterfaceCommunicator? = null
-    var modo :Boolean = false
+    var modo: Boolean = false
 
     companion object {
         fun newInstance(titulo: String, modo: Boolean): FiltroDialogFragment {
@@ -147,8 +149,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
         buttonAceptar.setOnClickListener(this)
         buttonCancelar.setOnClickListener(this)
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -276,8 +276,6 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         builderEstado.setView(v)
         dialogEstado = builderEstado.create()
         dialogEstado.show()
-
-
     }
 
     interface InterfaceCommunicator {
