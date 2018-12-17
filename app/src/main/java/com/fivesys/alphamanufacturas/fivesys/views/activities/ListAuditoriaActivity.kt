@@ -8,7 +8,6 @@ import androidx.annotation.RequiresApi
 import android.view.*
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -69,8 +68,12 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             SectorId = filtro?.SectorId
             ResponsableId = filtro?.ResponsableId
             Nombre = filtro?.Nombre
-            setUpLoadMoreListener()
-            subscribeForData()
+            loading = false
+            pageNumber = 1
+            VISIBLE_THRESHOLD = 1
+            lastVisibleItem = 0
+            totalItemCount = 0
+//            subscribeForData()
         }
     }
 
@@ -115,7 +118,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     private var auditoriaOffLineAdapter: AuditoriaOffLineAdapter? = null
     private var loading = false
     private var pageNumber = 1
-    private val VISIBLE_THRESHOLD = 1
+    private var VISIBLE_THRESHOLD = 1
     private var lastVisibleItem: Int = 0
     private var totalItemCount: Int = 0
 
@@ -216,7 +219,19 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
         })
         recyclerView.adapter = auditoriaAdapter
-        setUpLoadMoreListener()
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView,
+                                    dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                totalItemCount = layoutManager.itemCount
+                lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                if (!loading && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD) {
+                    pageNumber++
+                    paginator.onNext(pageNumber)
+                    loading = true
+                }
+            }
+        })
         subscribeForData()
     }
 
@@ -329,24 +344,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         return super.onKeyDown(keyCode, event)
     }
 
-    /**
-     * setting listener to get callback for load more
-     */
-    private fun setUpLoadMoreListener() {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView,
-                                    dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                totalItemCount = layoutManager.itemCount
-                lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                if (!loading && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD) {
-                    pageNumber++
-                    paginator.onNext(pageNumber)
-                    loading = true
-                }
-            }
-        })
-    }
 
     /**
      * subscribing for data
