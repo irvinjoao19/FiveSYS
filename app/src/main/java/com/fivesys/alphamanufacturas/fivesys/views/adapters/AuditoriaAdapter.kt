@@ -5,22 +5,19 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
-import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
 import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.google.android.material.card.MaterialCardView
-import com.google.gson.Gson
 import java.util.*
 
 class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
 
-    internal var auditoriasList: ArrayList<Auditoria> = ArrayList()
+    private var auditoriasList: ArrayList<Auditoria> = ArrayList()
 
     internal fun addItems(items: List<Auditoria>) {
         this.auditoriasList.addAll(items)
@@ -30,6 +27,7 @@ class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener
         val size = auditoriasList.size
         auditoriasList.clear()
         notifyItemRangeRemoved(0, size)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

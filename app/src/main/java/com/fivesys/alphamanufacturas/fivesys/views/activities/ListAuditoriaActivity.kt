@@ -32,20 +32,17 @@ import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragmen
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.NuevaAuditoriaDialogFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmResults
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import org.reactivestreams.Publisher
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -59,21 +56,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun filtroRequest(value: String, modo: Boolean) {
         if (modo) {
             auditoriaOffLineAdapter?.getFilter()?.filter(value)
-        } else {
-            auditoriaAdapter?.clear()
-            val filtro: Filtro? = Gson().fromJson(value, Filtro::class.java)
-            Codigo = filtro?.Codigo
-            Estado = filtro?.Estado
-            AreaId = filtro?.AreaId
-            SectorId = filtro?.SectorId
-            ResponsableId = filtro?.ResponsableId
-            Nombre = filtro?.Nombre
-            loading = false
-            pageNumber = 1
-            VISIBLE_THRESHOLD = 1
-            lastVisibleItem = 0
-            totalItemCount = 0
-//            subscribeForData()
         }
     }
 
@@ -118,9 +100,9 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     private var auditoriaOffLineAdapter: AuditoriaOffLineAdapter? = null
     private var loading = false
     private var pageNumber = 1
-    private var VISIBLE_THRESHOLD = 1
     private var lastVisibleItem: Int = 0
     private var totalItemCount: Int = 0
+    private var visibleItemCount: Int = 0
 
     lateinit var progressBar: ProgressBar
     lateinit var progressBarPage: ProgressBar
@@ -147,6 +129,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     var SectorId: Int? = 0
     var ResponsableId: Int? = 0
     var Nombre: String? = ""
+    var filtro: Int? = 1
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,6 +138,18 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
+
+        val bundle = intent.extras
+        if (bundle != null) {
+            val filtro: Filtro? = Gson().fromJson(bundle.getString("json"), Filtro::class.java)
+            Codigo = filtro?.Codigo
+            Estado = filtro?.Estado
+            AreaId = filtro?.AreaId
+            SectorId = filtro?.SectorId
+            ResponsableId = filtro?.ResponsableId
+            Nombre = filtro?.Nombre
+        }
+
         bindToolbar()
         bindUI()
         modo = auditoriaImp.getAuditor?.modo!!
@@ -223,18 +218,101 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             override fun onScrolled(recyclerView: RecyclerView,
                                     dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                totalItemCount = layoutManager.itemCount
-                lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                if (!loading && totalItemCount <= lastVisibleItem + VISIBLE_THRESHOLD) {
-                    pageNumber++
-                    paginator.onNext(pageNumber)
-                    loading = true
+                if (!loading) {
+                    if (dy > 0) {
+                        visibleItemCount = layoutManager.childCount
+                        totalItemCount = layoutManager.itemCount
+                        lastVisibleItem = layoutManager.findFirstVisibleItemPosition()
+
+                        if ((visibleItemCount + lastVisibleItem) >= totalItemCount) {
+                            loading = true
+                            pageNumber++
+                            paginator.onNext(pageNumber)
+                        }
+                    }
                 }
             }
         })
         subscribeForData()
     }
 
+    private fun subscribeForData() {
+        val disposable = paginator
+                .onBackpressureDrop()
+                .concatMap { page ->
+                    loading = true
+                    progressBarPage.visibility = View.VISIBLE
+                    val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20)
+                    val sendPage = Gson().toJson(envio)
+                    val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
+                    auditoriaInterfaces.pagination(requestBody)
+                            .delay(600, TimeUnit.MILLISECONDS)
+                            .subscribeOn(Schedulers.computation())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .map { t ->
+                                t
+                            }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ items ->
+                    auditoriaAdapter!!.addItems(items)
+                    auditoriaAdapter!!.notifyDataSetChanged()
+                    loading = false
+                    progressBarPage.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                }, { throwable ->
+                    progressBarPage.visibility = View.GONE
+                    progressBar.visibility = View.GONE
+                    Util.snackBarMensaje(window.decorView, throwable.toString())
+                })
+
+
+        compositeDisposable.add(disposable)
+        paginator.onNext(pageNumber)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun sendAuditoria(value: String) {
+        builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
+
+        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
+        textViewTitle.text = "Enviando ...."
+        var auditoriaId: Int? = 0
+
+        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)
+        val headerCall: Observable<Auditoria> = auditoriaInterfaces.saveHeader(requestBody)
+
+        headerCall.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Auditoria> {
+                    override fun onComplete() {
+                        val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                        intent.putExtra("auditoriaId", auditoriaId)
+                        intent.putExtra("tipo", 1)
+                        startActivity(intent)
+                        finish()
+                        dialog.dismiss()
+                    }
+
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onNext(t: Auditoria) {
+                        auditoriaId = t.AuditoriaId
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Util.snackBarMensaje(window.decorView, e.message.toString())
+                        dialog.dismiss()
+                    }
+                })
+
+        builder.setView(v)
+        dialog = builder.create()
+        dialog.show()
+    }
 
     @SuppressLint("SetTextI18n")
     private fun showFiltro(titulo: String, tipo: Int) {
@@ -292,50 +370,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun sendAuditoria(value: String) {
-
-        builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
-
-        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = "Enviando ...."
-        var auditoriaId: Int? = 0
-
-        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)
-        val headerCall: Observable<Auditoria> = auditoriaInterfaces.saveHeader(requestBody)
-
-        headerCall.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Auditoria> {
-                    override fun onComplete() {
-                        val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
-                        intent.putExtra("auditoriaId", auditoriaId)
-                        intent.putExtra("tipo", 1)
-                        startActivity(intent)
-                        finish()
-                        dialog.dismiss()
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-
-                    }
-
-                    override fun onNext(t: Auditoria) {
-                        auditoriaId = t.AuditoriaId
-                    }
-
-                    override fun onError(e: Throwable) {
-                        Util.snackBarMensaje(window.decorView, e.message.toString())
-                        dialog.dismiss()
-                    }
-                })
-
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
-    }
-
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             startActivity(Intent(this@ListAuditoriaActivity, MainActivity::class.java))
@@ -343,59 +377,4 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
         return super.onKeyDown(keyCode, event)
     }
-
-
-    /**
-     * subscribing for data
-     */
-    private fun subscribeForData() {
-
-        val disposable = paginator
-                .onBackpressureDrop()
-                .concatMap(object : Function<Int, Publisher<List<Auditoria>>> {
-                    override fun apply(page: Int): Publisher<List<Auditoria>> {
-                        loading = true
-                        progressBarPage.visibility = View.VISIBLE
-                        return dataFromNetwork(page)
-                    }
-
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ items ->
-                    auditoriaAdapter!!.addItems(items)
-                    auditoriaAdapter!!.notifyDataSetChanged()
-                    loading = false
-                    progressBarPage.visibility = View.GONE
-                    progressBar.visibility = View.GONE
-                }, { throwable ->
-                    progressBarPage.visibility = View.GONE
-                    progressBar.visibility = View.GONE
-                    Util.snackBarMensaje(window.decorView, throwable.toString())
-                })
-
-        compositeDisposable.add(disposable)
-        paginator.onNext(pageNumber)
-
-    }
-
-    /**
-     * Simulation of network data
-     */
-
-    private fun dataFromNetwork(page: Int): Flowable<List<Auditoria>> {
-        val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20)
-        val sendPage = Gson().toJson(envio)
-        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
-        return auditoriaInterfaces.pagination(requestBody)
-                .delay(600, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(object : Function<List<Auditoria>, List<Auditoria>> {
-                    override fun apply(t: List<Auditoria>): List<Auditoria> {
-                        return t
-                    }
-                })
-    }
-
-
 }

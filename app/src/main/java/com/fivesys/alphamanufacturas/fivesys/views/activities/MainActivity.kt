@@ -87,7 +87,10 @@ class MainActivity : AppCompatActivity() {
         menuAdapter = MenuAdapter(title, image, object : MenuAdapter.OnItemClickListener {
             override fun onItemClick(strings: String, position: Int) {
                 when (strings) {
-                    "Auditoria" -> startActivity(Intent(this@MainActivity, ListAuditoriaActivity::class.java))
+                    "Auditoria" -> {
+                        startActivity(Intent(this@MainActivity, ListAuditoriaActivity::class.java))
+                        finish()
+                    }
                     "Perfil" -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
                     "Configuración" -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
                 }

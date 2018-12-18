@@ -3,6 +3,7 @@ package com.fivesys.alphamanufacturas.fivesys.views.fragments
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImp
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import com.fivesys.alphamanufacturas.fivesys.views.activities.ListAuditoriaActivity
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AreaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
@@ -43,9 +45,18 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             R.id.buttonAceptar -> {
                 val f = Filtro(editTextCodigo.text.toString(), estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
                 val json = Gson().toJson(f)
-                listener?.filtroRequest(json, modo)
-                Util.hideKeyboardFrom(context!!, v)
+                if (modo) {
+                    listener?.filtroRequest(json, modo)
+                    Util.hideKeyboardFrom(context!!, v)
+
+                } else {
+                    val intent = Intent(context, ListAuditoriaActivity::class.java)
+                    intent.putExtra("json", json)
+                    startActivity(intent)
+                    activity?.finish()
+                }
                 dismiss()
+
             }
             R.id.buttonCancelar -> dismiss()
             R.id.editTextEstado -> estadoDialog()
