@@ -32,7 +32,7 @@ class TipoDocumentoAdapter(private var tipoDocumento: ArrayList<TipoDocumento>, 
         @SuppressLint("SetTextI18n")
         internal fun bind(t: TipoDocumento, listener: OnItemClickListener) {
 
-            textViewNombre.text = t.nombre
+            textViewNombre.text = t.descripcion
             textViewId.text = t.id.toString()
 
             itemView.setOnClickListener { listener.onItemClick(t, adapterPosition) }

@@ -177,11 +177,11 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         buttonCancelar.setOnClickListener(this)
         buttonAceptar.setOnClickListener(this)
 
-        tipoDocumento.add(TipoDocumento(1, "-20"))
-        tipoDocumento.add(TipoDocumento(2, "-15"))
-        tipoDocumento.add(TipoDocumento(3, "-10"))
-        tipoDocumento.add(TipoDocumento(4, "-5"))
-        tipoDocumento.add(TipoDocumento(5, "5"))
+        tipoDocumento.add(TipoDocumento(1, "-20", "-20 SSOMA "))
+        tipoDocumento.add(TipoDocumento(2, "-15", "-15 Calidad"))
+        tipoDocumento.add(TipoDocumento(3, "-10", "-10 Oper."))
+        tipoDocumento.add(TipoDocumento(4, "-5", "-5 No Oper."))
+        tipoDocumento.add(TipoDocumento(5, "5", "5 Destacable"))
 
         if (d != null) {
 
