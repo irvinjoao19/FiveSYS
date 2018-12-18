@@ -27,14 +27,15 @@ class TipoDocumentoAdapter(private var tipoDocumento: ArrayList<TipoDocumento>, 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
-        private var textViewId: TextView = itemView.findViewById(R.id.textViewId)
+        private var textViewDescripcion: TextView = itemView.findViewById(R.id.textViewDescripcion)
 
         @SuppressLint("SetTextI18n")
         internal fun bind(t: TipoDocumento, listener: OnItemClickListener) {
+            textViewNombre.text = t.nombre
 
-            textViewNombre.text = t.descripcion
-            textViewId.text = t.id.toString()
-
+            if (!t.descripcion.isEmpty()) {
+                textViewDescripcion.text = t.descripcion
+            }
             itemView.setOnClickListener { listener.onItemClick(t, adapterPosition) }
         }
     }

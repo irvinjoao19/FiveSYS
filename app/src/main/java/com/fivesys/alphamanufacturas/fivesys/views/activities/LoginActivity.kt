@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -80,7 +81,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
             }
-            R.id.linearLayoutTipoDocumento -> {
+            R.id.editTextTipoDocumento -> {
                 tipoDocumento()
             }
         }
@@ -88,12 +89,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var editTextUser: TextInputEditText
     private lateinit var editTextPass: TextInputEditText
+    private lateinit var editTextTipoDocumento: TextInputEditText
     private lateinit var editTextPassError: TextInputLayout
     private lateinit var editTextUserError: TextInputLayout
     private lateinit var buttonEnviar: MaterialButton
-    private lateinit var linearLayoutTipoDocumento: LinearLayout
     private lateinit var loginInterfaces: LoginInterfaces
-    private lateinit var textViewTipoDocumento: TextView
 
     private lateinit var builder: AlertDialog.Builder
     private lateinit var dialog: AlertDialog
@@ -122,21 +122,20 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         loginInterfaces = ConexionRetrofit.api.create(LoginInterfaces::class.java)
         editTextUser = findViewById(R.id.editTextUser)
         editTextPass = findViewById(R.id.editTextPass)
+        editTextTipoDocumento = findViewById(R.id.editTextTipoDocumento)
         editTextUserError = findViewById(R.id.editTextUserError)
         editTextPassError = findViewById(R.id.editTextPassError)
-        linearLayoutTipoDocumento = findViewById(R.id.linearLayoutTipoDocumento)
-        textViewTipoDocumento = findViewById(R.id.textViewTipoDocumento)
+
         buttonEnviar = findViewById(R.id.buttonEnviar)
         buttonEnviar.setOnClickListener(this)
-        linearLayoutTipoDocumento.setOnClickListener(this)
+        editTextTipoDocumento.setOnClickListener(this)
 
         tipoDocumento.add(TipoDocumento(3, "L.E / DNI"))
         tipoDocumento.add(TipoDocumento(4, "CARNET EXT."))
         tipoDocumento.add(TipoDocumento(5, "RUC"))
         tipoDocumento.add(TipoDocumento(6, "PASAPORTE"))
         tipoDocumento.add(TipoDocumento(7, "P. NAC."))
-        textViewTipoDocumento.text = nombre
-
+        editTextTipoDocumento.setText(nombre)
     }
 
     @SuppressLint("SetTextI18n")
@@ -152,14 +151,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipoDocumento, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
                 tipoDocumentoId = t.id
-                textViewTipoDocumento.text = t.nombre
+                editTextTipoDocumento.setText(t.nombre)
                 dialog.dismiss()
             }
-
-
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
         builder.setView(v)

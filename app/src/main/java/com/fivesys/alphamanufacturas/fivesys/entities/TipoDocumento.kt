@@ -13,4 +13,9 @@ open class TipoDocumento {
         this.nombre = nombre
         this.descripcion = descripcion
     }
+
+    constructor(id: Int, nombre: String) {
+        this.id = id
+        this.nombre = nombre
+    }
 }

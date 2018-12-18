@@ -48,35 +48,20 @@
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="@string/tipo_de_documento"
-                android:textColor="@color/colorWhite"
-                android:textColorHint="@color/colorWhite" />
-
-            <LinearLayout
-                android:id="@+id/linearLayoutTipoDocumento"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
                 android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:layout_margin="5dp"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
+                android:layout_height="wrap_content"
+                android:hint="@string/tipo_de_documento">
 
-                <TextView
-                    android:id="@+id/textViewTipoDocumento"
-                    android:layout_width="0dp"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editTextTipoDocumento"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="@color/colorWhite" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/img"
-                    android:src="@drawable/ic_down"
-                    android:textColor="@color/colorWhite" />
-            </LinearLayout>
+                    android:drawableEnd="@drawable/ic_down"
+                    android:textColor="@color/colorWhite"
+                    android:focusable="false" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/editTextUserError"

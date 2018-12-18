@@ -18,6 +18,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -177,11 +178,11 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         buttonCancelar.setOnClickListener(this)
         buttonAceptar.setOnClickListener(this)
 
-        tipoDocumento.add(TipoDocumento(1, "-20", "-20 SSOMA "))
-        tipoDocumento.add(TipoDocumento(2, "-15", "-15 Calidad"))
-        tipoDocumento.add(TipoDocumento(3, "-10", "-10 Oper."))
-        tipoDocumento.add(TipoDocumento(4, "-5", "-5 No Oper."))
-        tipoDocumento.add(TipoDocumento(5, "5", "5 Destacable"))
+        tipoDocumento.add(TipoDocumento(1, "-20", "SSOMA "))
+        tipoDocumento.add(TipoDocumento(2, "-15", "Calidad"))
+        tipoDocumento.add(TipoDocumento(3, "-10", "Oper."))
+        tipoDocumento.add(TipoDocumento(4, "-5", "No Oper."))
+        tipoDocumento.add(TipoDocumento(5, "5", "Destacable"))
 
         if (d != null) {
 
@@ -263,7 +264,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
                     1 -> {
                         s1 = t.nombre.toInt()
                         editTextS1.setText(t.nombre)
-
                         s2 = 0
                         s3 = 0
                         s4 = 0
@@ -333,6 +333,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManager
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.adapter = tipoDocumentoAdapter
         builder.setView(v)
         dialog = builder.create()
