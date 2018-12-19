@@ -42,7 +42,13 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.editTextFecha -> getFecha()
             R.id.buttonCancelar -> finish()
-            R.id.buttonAceptar -> sendPerfil(v)
+            R.id.buttonAceptar -> {
+                if (modo) {
+                    Util.snackBarMensaje(v,"Habilitar modo On-line")
+                } else {
+                    sendPerfil(v)
+                }
+            }
         }
     }
 
@@ -77,6 +83,8 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
     var ClaveAnterior: String = ""
     var ClaveNueva: String = ""
     var ConfirmClaveNueva: String = ""
+
+    var modo: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -123,6 +131,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
             editTextApellido.setText(a.Apellido)
             editTextFecha.setText(a.FechaNacimiento)
             editTextCorreo.setText(a.Correo)
+            modo = a.modo!!
         }
     }
 
