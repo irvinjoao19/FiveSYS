@@ -28,14 +28,10 @@ class SectorAdapter(private var sectores: RealmList<Sector>, private var layout:
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
-        private var textViewId: TextView = itemView.findViewById(R.id.textViewId)
 
         @SuppressLint("SetTextI18n")
         internal fun bind(s: Sector, listener: OnItemClickListener) {
-
             textViewNombre.text = s.Nombre
-            textViewId.text = s.SectorId.toString()
-
             itemView.setOnClickListener { listener.onItemClick(s, adapterPosition) }
         }
     }

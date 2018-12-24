@@ -28,11 +28,9 @@ class CategoriaAdapter(private var categorias: RealmList<Categoria>, private var
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         private var textViewNombre: TextView = v.findViewById(R.id.textViewNombre)
-        private var textViewId: TextView = v.findViewById(R.id.textViewId)
 
         @SuppressLint("SetTextI18n")
         internal fun bind(c: Categoria, listener: OnItemClickListener) {
-            textViewId.text = c.CategoriaId.toString()
             textViewNombre.text = c.Nombre
             itemView.setOnClickListener { v -> listener.onItemClick(c, v, adapterPosition) }
         }

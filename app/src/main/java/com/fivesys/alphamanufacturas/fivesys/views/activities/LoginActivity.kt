@@ -140,7 +140,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     @SuppressLint("SetTextI18n")
     private fun tipoDocumento() {
-
         builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_combo, null)
 
@@ -163,8 +162,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         builder.setView(v)
         dialog = builder.create()
         dialog.show()
-
-
     }
 
     private fun goToMainActivity(realm: Realm, tipoDocumentoId: Int, user: String, password: String): String? {
@@ -177,7 +174,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val sendLogin = Gson().toJson(envio)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendLogin)
         val loginCall = loginInterfaces.getLogin(requestBody)
-
 
         try {
             val response = loginCall.execute()!!
@@ -204,12 +200,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         return result
-
     }
 
     @SuppressLint("StaticFieldLeak")
     private inner class EnterMain : AsyncTask<String, Void, String>() {
-
         private lateinit var builder: AlertDialog.Builder
         private lateinit var dialog: AlertDialog
 
@@ -262,7 +256,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-
 
     private fun messagePermission() {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))

@@ -29,11 +29,9 @@ class ComponenteAdapter(private var componentes: RealmList<Componente>, private 
     inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
 
         private var textViewNombre: TextView = v.findViewById(R.id.textViewNombre)
-        private var textViewId: TextView = v.findViewById(R.id.textViewId)
 
         @SuppressLint("SetTextI18n")
         internal fun bind(c: Componente, listener: OnItemClickListener) {
-            textViewId.text = c.ComponenteId.toString()
             textViewNombre.text = c.Nombre
             itemView.setOnClickListener { listener.onItemClick(c, adapterPosition) }
         }

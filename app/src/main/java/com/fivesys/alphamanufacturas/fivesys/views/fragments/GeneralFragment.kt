@@ -74,7 +74,6 @@ class GeneralFragment : Fragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
         val view = inflater.inflate(R.layout.fragment_general, container, false)
 
         realm = Realm.getDefaultInstance()
@@ -130,10 +129,8 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         })
     }
 
-
     @SuppressLint("SetTextI18n")
     private fun estadoDialog() {
-
         builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
@@ -164,9 +161,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         dialogEstado.show()
     }
 
-
     private fun update(a: Auditoria, nombre: String, tipo: Int) {
         auditoriaImp.updateAuditoriaByEstado(a, estado!!, nombre, tipo)
     }
-
 }

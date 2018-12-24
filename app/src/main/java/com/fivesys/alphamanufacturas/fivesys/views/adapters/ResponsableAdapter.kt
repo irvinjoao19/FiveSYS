@@ -28,14 +28,10 @@ class ResponsableAdapter(private var responsables: RealmList<Responsable>, priva
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         private var textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
-        private var textViewId: TextView = itemView.findViewById(R.id.textViewId)
 
         @SuppressLint("SetTextI18n")
         internal fun bind(r: Responsable, listener: OnItemClickListener) {
-
             textViewNombre.text = r.NombreCompleto
-            textViewId.text = r.ResponsableId.toString()
-
             itemView.setOnClickListener { listener.onItemClick(r, adapterPosition) }
         }
     }

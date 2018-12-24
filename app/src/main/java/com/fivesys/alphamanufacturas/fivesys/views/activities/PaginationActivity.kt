@@ -84,7 +84,6 @@ class PaginationActivity : AppCompatActivity() {
             }
         })
     }
-
     /**
      * subscribing for data
      */
@@ -105,13 +104,11 @@ class PaginationActivity : AppCompatActivity() {
                     paginationAdapter!!.addItems(items)
                     paginationAdapter!!.notifyDataSetChanged()
                     loading = false
-                    progressBar!!.setVisibility(View.INVISIBLE)
+                    progressBar!!.visibility = View.INVISIBLE
                 }
 
         compositeDisposable.add(disposable)
-
         paginator.onNext(pageNumber)
-
     }
 
     /**
@@ -132,6 +129,5 @@ class PaginationActivity : AppCompatActivity() {
                         return t
                     }
                 })
-
     }
 }

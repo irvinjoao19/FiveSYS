@@ -27,7 +27,6 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         listener?.let { holder.bind(puntosFijos[position]!!, it) }
-
     }
 
     override fun getItemCount(): Int {

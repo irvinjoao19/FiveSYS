@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -140,16 +141,12 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     private fun bindUI(view: View) {
         textViewTitulo = view.findViewById(R.id.textViewTitulo)
         textViewTitulo.text = titulo
-
         editTextCodigo = view.findViewById(R.id.editTextCodigo)
-
         editTextEstado = view.findViewById(R.id.editTextEstado)
         editTextArea = view.findViewById(R.id.editTextArea)
         editTextSector = view.findViewById(R.id.editTextSector)
         editTextResponsable = view.findViewById(R.id.editTextResponsable)
-
         editTextNombre = view.findViewById(R.id.editTextNombre)
-
         buttonAceptar = view.findViewById(R.id.buttonAceptar)
         buttonCancelar = view.findViewById(R.id.buttonCancelar)
 
@@ -187,6 +184,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = areaAdapter
         builderArea.setView(v)
@@ -215,6 +213,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             })
 
             recyclerView.itemAnimator = DefaultItemAnimator()
+            recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = areaAdapter
             builderSector.setView(v)
@@ -246,6 +245,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
             })
 
             recyclerView.itemAnimator = DefaultItemAnimator()
+            recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = areaAdapter
             builderResponsable.setView(v)
@@ -282,6 +282,7 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
         builderEstado.setView(v)

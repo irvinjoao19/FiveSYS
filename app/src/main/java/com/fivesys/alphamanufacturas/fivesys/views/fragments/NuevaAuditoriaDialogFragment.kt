@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -206,6 +207,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = areaAdapter
         builderArea.setView(v)
@@ -236,6 +238,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             })
 
             recyclerView.itemAnimator = DefaultItemAnimator()
+            recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = areaAdapter
             builderSector.setView(v)
@@ -267,6 +270,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             })
 
             recyclerView.itemAnimator = DefaultItemAnimator()
+            recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = areaAdapter
             builderResponsable.setView(v)
@@ -276,7 +280,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             Util.snackBarMensaje(view, "Primero elige un Sector")
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun estadoDialog() {
@@ -300,6 +303,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
         builderEstado.setView(v)
@@ -309,7 +313,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
     interface InterfaceCommunicator {
         fun sendRequest(value: String)
-
         fun sendOffRequest()
     }
 }

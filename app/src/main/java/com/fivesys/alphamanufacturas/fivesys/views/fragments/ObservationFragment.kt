@@ -11,6 +11,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -119,7 +120,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
     private fun showPhoto(nombre: String?) {
         builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_photo, null)
@@ -151,7 +151,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                                 })
                     }
                 })
-
         builder.setView(v)
         dialog = builder.create()
         dialog.show()
@@ -183,7 +182,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         }
         popupMenu.show()
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun deletePhoto(d: Detalle, v: View) {

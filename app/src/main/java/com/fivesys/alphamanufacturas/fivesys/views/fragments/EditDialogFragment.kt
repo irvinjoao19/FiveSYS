@@ -332,8 +332,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
+        recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
         builder.setView(v)
         dialog = builder.create()
@@ -371,6 +371,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         })
 
         recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = categoriaAdapter
         builderCategoria.setView(v)
@@ -399,6 +400,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             })
 
             recyclerView.itemAnimator = DefaultItemAnimator()
+            recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = componenteAdapter
             builderComponente.setView(v)
