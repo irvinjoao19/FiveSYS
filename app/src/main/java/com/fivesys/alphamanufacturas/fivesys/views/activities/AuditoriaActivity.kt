@@ -147,6 +147,7 @@ class AuditoriaActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 val position = tab.position
                 viewPager.currentItem = position
+                Util.hideKeyboard(this@AuditoriaActivity)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {

@@ -75,7 +75,10 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                     Util.snackBarMensaje(v, "Ingrese Estado")
                 }
             }
-            R.id.buttonCancelar -> dismiss()
+            R.id.buttonCancelar -> {
+                Util.hideKeyboardFrom(context!!, v)
+                dismiss()
+            }
             R.id.editTextEstado -> estadoDialog()
             R.id.editTextArea -> areaDialog()
             R.id.editTextSector -> sectorDialog(v)
