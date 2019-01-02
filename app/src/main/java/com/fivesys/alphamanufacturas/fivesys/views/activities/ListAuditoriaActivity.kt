@@ -227,10 +227,33 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
         alertDialog.setPositiveButton("Aceptar"
         ) { dialog, _ ->
-            auditoriaImp.deleteAuditoria(a)
-            getListOffAuditoria()
-            Util.snackBarMensaje(v, "Auditoria eliminada")
-            dialog.dismiss()
+            var delete = false
+            val deleteObservable = auditoriaImp.deleteAuditoriaRx(a)
+            deleteObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(object : Observer<Boolean> {
+                        override fun onComplete() {
+                            if (delete) {
+                                Util.snackBarMensaje(window.decorView, "Auditoria eliminada")
+                            } else {
+                                Util.snackBarMensaje(window.decorView, "No se pudo eliminar")
+                            }
+                            getListOffAuditoria()
+                            dialog.dismiss()
+                        }
+
+                        override fun onSubscribe(d: Disposable) {
+
+                        }
+
+                        override fun onNext(t: Boolean) {
+                            delete = t
+                        }
+
+                        override fun onError(e: Throwable) {
+                            Util.snackBarMensaje(window.decorView, e.toString())
+                        }
+                    })
         }
 
         alertDialog.setNegativeButton("Cancelar"
