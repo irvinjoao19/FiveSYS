@@ -11,11 +11,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
-import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.google.android.material.card.MaterialCardView
 import java.util.*
 
-class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
+class AuditoriaAdapter(private var layout: Int?, var listener: OnItemClickListener) : RecyclerView.Adapter<AuditoriaAdapter.ViewHolder>() {
 
     private var auditoriasList: ArrayList<Auditoria> = ArrayList()
 
@@ -63,7 +62,7 @@ class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener
         private val imageViewLugar: ImageView = itemView.findViewById(R.id.imageViewLugar)
 
         @SuppressLint("SetTextI18n")
-        internal fun bind(a: Auditoria, position: Int, listener: ItemClickListener) {
+        internal fun bind(a: Auditoria, position: Int, listener: OnItemClickListener) {
 
             if (position % 2 == 1) {
                 cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
@@ -127,7 +126,7 @@ class AuditoriaAdapter(private var layout: Int?, var listener: ItemClickListener
         }
     }
 
-//    interface OnItemClickListener {
-//        fun onItemClick(a: Auditoria, position: Int)
-//    }
+    interface OnItemClickListener {
+        fun onItemClick(a: Auditoria, position: Int)
+    }
 }

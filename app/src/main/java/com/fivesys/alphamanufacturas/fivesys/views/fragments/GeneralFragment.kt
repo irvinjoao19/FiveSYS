@@ -31,10 +31,14 @@ class GeneralFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.editTextEstado -> {
-                if (estado == 1) {
+                if (modo) {
                     estadoDialog()
                 } else {
-                    Util.snackBarMensaje(v, "Inhabilitado para editar")
+                    if (estado == 1) {
+                        estadoDialog()
+                    } else {
+                        Util.snackBarMensaje(v, "Inhabilitado para editar")
+                    }
                 }
             }
         }
@@ -54,7 +58,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
     lateinit var dialogEstado: AlertDialog
 
     var estado: Int? = null
-
+    var modo: Boolean = false
     var a: Auditoria? = null
 
     companion object {
@@ -80,6 +84,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         val args = arguments
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
+            modo = auditoriaImp.getAuditor?.modo!!
             val id = args.getInt("id")
             a = auditoriaImp.getAuditoriaByOne(id)
             bindUI(view)
@@ -111,7 +116,9 @@ class GeneralFragment : Fragment(), View.OnClickListener {
             })
 
             estado = a!!.Estado
-            editTextNombre.isEnabled = estado == 1
+            if (!modo) {
+                editTextNombre.isEnabled = estado == 1
+            }
         }
 
         editTextNombre.addTextChangedListener(object : TextWatcher {

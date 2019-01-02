@@ -48,15 +48,14 @@ class PaginationActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         progressBar = findViewById(R.id.progressBar)
         layoutManager = LinearLayoutManager(this)
-        layoutManager!!.setOrientation(RecyclerView.VERTICAL)
-        recyclerView!!.setLayoutManager(layoutManager)
-        paginationAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria,object : ItemClickListener {
+        layoutManager!!.orientation = RecyclerView.VERTICAL
+        recyclerView!!.layoutManager = layoutManager
+        paginationAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
             override fun onItemClick(a: Auditoria, position: Int) {
                 Util.snackBarMensaje(window.decorView, a.Nombre!!)
             }
-
         })
-        recyclerView!!.setAdapter(paginationAdapter)
+        recyclerView!!.adapter = paginationAdapter
         setUpLoadMoreListener()
         subscribeForData()
     }
@@ -84,6 +83,7 @@ class PaginationActivity : AppCompatActivity() {
             }
         })
     }
+
     /**
      * subscribing for data
      */

@@ -37,6 +37,7 @@ import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import java.io.File
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChangeListener {
 
@@ -72,20 +73,6 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         bindToolbar()
         bindUI()
-
-//        val progress: ProgressBar = findViewById(R.id.progressBar)
-//        progress.max = 100
-//
-//        val t = Thread{
-//            kotlin.run {
-//                for (i in 1..10) {
-//                    sleep(200)
-//                    progress.progress = i * 10
-//                }
-//            }
-//        }
-//        t.start()
-
     }
 
     private fun bindToolbar() {
@@ -131,7 +118,6 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
             switchOffLine.text = "Modo Online"
             auditoriaImp.updateOffLine(false)
             dialogInterface.dismiss()
-
         }
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
@@ -155,7 +141,6 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
             switchOffLine.text = "Modo Off-line"
             auditoriaImp.updateOffLine(true)
             dialogInterface.dismiss()
-
         }
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
@@ -198,7 +183,6 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                     }
                 })
 
-
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
@@ -211,12 +195,14 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         @SuppressLint("InflateParams") val view = LayoutInflater.from(this@ConfigurationActivity).inflate(R.layout.dialog_alert, null)
 
         val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
-        textViewTitle.text = "Enviando...."
         builder.setView(view)
-
         val auditorias = auditoriaImp.getAllAuditoriaRx()
-        var mensaje = ""
+        var cantidad = 0
+        var suma = 0
+        val mensaje = "Las auditorias fueron registradas"
         auditorias.flatMap { observable ->
+            cantidad = observable.size
+            textViewTitle.text = "Enviando " + suma.toString() + "/" + cantidad
             Observable.fromIterable(observable).flatMap { a ->
                 val realm = Realm.getDefaultInstance()
                 val b = MultipartBody.Builder()
@@ -255,6 +241,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                 })
             }
         }.subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<ResponseBody> {
 
@@ -263,8 +250,9 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                     }
 
                     override fun onNext(t: ResponseBody) {
+                        suma += 1
+                        textViewTitle.text = "Enviando " + suma.toString() + "/" + cantidad
                         Log.i("TAG", t.source().toString())
-                        mensaje = t.source().toString().replace("text=", "")
                     }
 
                     override fun onError(e: Throwable) {
@@ -282,7 +270,6 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
-
     }
 
     private fun deleteOffLine(message: String) {

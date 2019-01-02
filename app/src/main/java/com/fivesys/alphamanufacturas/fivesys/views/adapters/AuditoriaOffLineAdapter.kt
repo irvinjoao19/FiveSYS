@@ -13,13 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
-import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.google.android.material.card.MaterialCardView
 import com.google.gson.Gson
 import io.realm.RealmResults
 import java.util.*
 
-class AuditoriaOffLineAdapter(private var auditorias: RealmResults<Auditoria>, private var layout: Int?, var listener: ItemClickListener) : RecyclerView.Adapter<AuditoriaOffLineAdapter.ViewHolder>() {
+class AuditoriaOffLineAdapter(private var auditorias: RealmResults<Auditoria>, private var layout: Int?, var listener: OnItemClickListener) : RecyclerView.Adapter<AuditoriaOffLineAdapter.ViewHolder>() {
 
     private var auditoriasList: ArrayList<Auditoria> = ArrayList(auditorias)
 
@@ -56,67 +55,68 @@ class AuditoriaOffLineAdapter(private var auditorias: RealmResults<Auditoria>, p
         private val imageViewLugar: ImageView = itemView.findViewById(R.id.imageViewLugar)
 
         @SuppressLint("SetTextI18n")
-        internal fun bind(a: Auditoria, position: Int, listener: ItemClickListener) {
+        internal fun bind(a: Auditoria, position: Int, listener: OnItemClickListener) {
+            if (a.isValid) {
+                if (position % 2 == 1) {
+                    cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    imageViewResponsable.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewGrupo.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewFechaRegistro.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewFechaProgramado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewLugar.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
 
-            if (position % 2 == 1) {
-                cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                imageViewResponsable.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewGrupo.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewFechaRegistro.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewFechaProgramado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewLugar.setColorFilter(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo), android.graphics.PorterDuff.Mode.SRC_IN)
+                    textViewCodigo.setTextColor(Color.WHITE)
+                    textViewNombre.setTextColor(ContextCompat.getColor(itemView.context, R.color.textColorCeleste))
+                    textViewResponsable.setTextColor(Color.WHITE)
+                    textViewGrupo.setTextColor(Color.WHITE)
+                    textViewFechaRegistro.setTextColor(Color.WHITE)
+                    textViewFechaProgramado.setTextColor(Color.WHITE)
+                    textViewArea.setTextColor(ContextCompat.getColor(itemView.context, R.color.textColorCeleste))
+                    textviewSector.setTextColor(Color.WHITE)
 
-                textViewCodigo.setTextColor(Color.WHITE)
-                textViewNombre.setTextColor(ContextCompat.getColor(itemView.context, R.color.textColorCeleste))
-                textViewResponsable.setTextColor(Color.WHITE)
-                textViewGrupo.setTextColor(Color.WHITE)
-                textViewFechaRegistro.setTextColor(Color.WHITE)
-                textViewFechaProgramado.setTextColor(Color.WHITE)
-                textViewArea.setTextColor(ContextCompat.getColor(itemView.context, R.color.textColorCeleste))
-                textviewSector.setTextColor(Color.WHITE)
+                } else {
+                    cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorWhite))
+                    imageViewResponsable.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewGrupo.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewFechaRegistro.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewFechaProgramado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                    imageViewLugar.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
 
-            } else {
-                cardViewPrincipal.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorWhite))
-                imageViewResponsable.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewGrupo.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewFechaRegistro.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewFechaProgramado.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
-                imageViewLugar.setColorFilter(ContextCompat.getColor(itemView.context, R.color.textColorCeleste), android.graphics.PorterDuff.Mode.SRC_IN)
+                    textViewCodigo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    textViewNombre.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    textViewResponsable.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    textViewGrupo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    textViewFechaRegistro.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    textViewFechaProgramado.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    textViewArea.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                    textviewSector.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                }
 
-                textViewCodigo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                textViewNombre.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                textViewResponsable.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                textViewGrupo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                textViewFechaRegistro.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                textViewFechaProgramado.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                textViewArea.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
-                textviewSector.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                textViewCodigo.text = a.Codigo
+                textViewNombre.text = a.Nombre
+                textViewEstado.text = when (a.Estado) {
+                    1 -> "Pendiente"
+                    2 -> "Terminado"
+                    3 -> "Anulado"
+                    else -> "Vacio"
+                }
+
+                textViewEstado.setTextColor(when (a.Estado) {
+                    1 -> ContextCompat.getColor(itemView.context, R.color.colorPendiente)
+                    2 -> ContextCompat.getColor(itemView.context, R.color.colorRealizada)
+                    3 -> if (position % 2 == 1) ContextCompat.getColor(itemView.context, R.color.colorWhite) else ContextCompat.getColor(itemView.context, R.color.colorAzul)
+                    else -> ContextCompat.getColor(itemView.context, R.color.colorWhite)
+                })
+
+                textViewResponsable.text = a.Responsable?.NombreCompleto
+                textViewGrupo.text = a.Grupo?.Nombre
+                textViewFechaRegistro.text = a.FechaRegistro
+                textViewFechaProgramado.text = a.FechaProgramado
+                textViewArea.text = a.Area?.Nombre
+                textviewSector.text = a.Sector?.Nombre
+
+                itemView.setOnClickListener { v -> listener.onItemClick(a, v, adapterPosition) }
             }
-
-            textViewCodigo.text = a.Codigo
-            textViewNombre.text = a.Nombre
-            textViewEstado.text = when (a.Estado) {
-                1 -> "Pendiente"
-                2 -> "Terminado"
-                3 -> "Anulado"
-                else -> "Vacio"
-            }
-
-            textViewEstado.setTextColor(when (a.Estado) {
-                1 -> ContextCompat.getColor(itemView.context, R.color.colorPendiente)
-                2 -> ContextCompat.getColor(itemView.context, R.color.colorRealizada)
-                3 -> if (position % 2 == 1) ContextCompat.getColor(itemView.context, R.color.colorWhite) else ContextCompat.getColor(itemView.context, R.color.colorAzul)
-                else -> ContextCompat.getColor(itemView.context, R.color.colorWhite)
-            })
-
-            textViewResponsable.text = a.Responsable?.NombreCompleto
-            textViewGrupo.text = a.Grupo?.Nombre
-            textViewFechaRegistro.text = a.FechaRegistro
-            textViewFechaProgramado.text = a.FechaProgramado
-            textViewArea.text = a.Area?.Nombre
-            textviewSector.text = a.Sector?.Nombre
-
-            itemView.setOnClickListener { listener.onItemClick(a, adapterPosition) }
         }
     }
 
@@ -177,7 +177,7 @@ class AuditoriaOffLineAdapter(private var auditorias: RealmResults<Auditoria>, p
         }
     }
 
-//    interface OnItemClickListener {
-//        fun onItemClick(a: Auditoria, position: Int)
-//    }
+    interface OnItemClickListener {
+        fun onItemClick(a: Auditoria, v: View, position: Int)
+    }
 }

@@ -1,11 +1,13 @@
 package com.fivesys.alphamanufacturas.fivesys.views.activities
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.annotation.RequiresApi
 import android.view.*
+import android.widget.PopupMenu
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
@@ -24,7 +26,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.Auditor
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
-import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaOffLineAdapter
@@ -190,28 +191,66 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManagerOff
-        auditoriaOffLineAdapter = AuditoriaOffLineAdapter(auditorias, R.layout.cardview_list_auditoria, object : ItemClickListener {
-            override fun onItemClick(a: Auditoria, position: Int) {
-                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
-                intent.putExtra("auditoriaId", a.AuditoriaId)
-                intent.putExtra("tipo", 0)
-                startActivity(intent)
+        auditoriaOffLineAdapter = AuditoriaOffLineAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaOffLineAdapter.OnItemClickListener {
+            override fun onItemClick(a: Auditoria, v: View, position: Int) {
+                showPopupMenu(a, v, this@ListAuditoriaActivity)
             }
         })
         recyclerView.adapter = auditoriaOffLineAdapter
     }
 
+    private fun showPopupMenu(a: Auditoria, v: View, context: Context) {
+        val popupMenu = PopupMenu(context, v, Gravity.BOTTOM)
+        popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.edit))
+        popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.eliminar))
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> {
+                    val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                    intent.putExtra("auditoriaId", a.AuditoriaId)
+                    intent.putExtra("tipo", 0)
+                    startActivity(intent)
+                }
+                2 -> {
+                    deleteAuditoria(a, v)
+                }
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
+    private fun deleteAuditoria(a: Auditoria, v: View) {
+        val alertDialog = AlertDialog.Builder(ContextThemeWrapper(this@ListAuditoriaActivity, R.style.AppTheme))
+        alertDialog.setTitle("Eliminar")
+        alertDialog.setMessage("Deseas eliminar esta auditoria ?")
+
+        alertDialog.setPositiveButton("Aceptar"
+        ) { dialog, _ ->
+            auditoriaImp.deleteAuditoria(a)
+            getListOffAuditoria()
+            Util.snackBarMensaje(v, "Auditoria eliminada")
+            dialog.dismiss()
+        }
+
+        alertDialog.setNegativeButton("Cancelar"
+        ) { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = alertDialog.create()
+        dialog.show()
+    }
+
     private fun getListAuditoria() {
         layoutManager.orientation = RecyclerView.VERTICAL
         recyclerView.layoutManager = layoutManager
-        auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : ItemClickListener {
+        auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
             override fun onItemClick(a: Auditoria, position: Int) {
                 val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
                 intent.putExtra("auditoriaId", a.AuditoriaId)
                 intent.putExtra("tipo", 0)
                 startActivity(intent)
             }
-
         })
         recyclerView.adapter = auditoriaAdapter
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {

@@ -55,10 +55,10 @@ class PuntosFijosFragment : Fragment() {
 
     var receive: Int? = 0
     var estado: Int? = 0
+    var modo: Boolean = false
 
     lateinit var nameImg: String
     lateinit var Direccion: String
-
 
     companion object {
         fun newInstance(id: Int): PuntosFijosFragment {
@@ -84,6 +84,7 @@ class PuntosFijosFragment : Fragment() {
         val args = arguments
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
+            modo = auditoriaImp.getAuditor?.modo!!
             val id = args.getInt("id")
             bindUI(view, auditoriaImp.getAuditoriaByOne(id))
         }
@@ -91,10 +92,8 @@ class PuntosFijosFragment : Fragment() {
     }
 
     private fun bindUI(view: View, a: Auditoria?) {
-
         recyclerView = view.findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(context)
-
         if (a != null) {
             estado = a.Estado
             a.PuntosFijos!!.addChangeListener { _ ->
@@ -105,10 +104,14 @@ class PuntosFijosFragment : Fragment() {
                     when (v.id) {
                         R.id.imageViewPhoto -> showPhoto(p.Url)
                         R.id.imageViewOption -> {
-                            if (estado == 1) {
+                            if (modo) {
                                 showPopupMenu(p, v, context!!)
                             } else {
-                                Util.snackBarMensaje(v, " Inhabilitado para editar")
+                                if (estado == 1) {
+                                    showPopupMenu(p, v, context!!)
+                                } else {
+                                    Util.snackBarMensaje(v, " Inhabilitado para editar")
+                                }
                             }
                         }
                     }

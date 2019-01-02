@@ -218,7 +218,6 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         return result
     }
 
-
     override fun getAuditoriaCodigoCorrelativo(): String {
         val auditoria = realm.where(Auditoria::class.java).max("AuditoriaId")
         val result = if (auditoria == null) 1 else auditoria.toInt() + 1
@@ -226,7 +225,6 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         val total = result.toString().length
         return codigo.substring(0, codigo.length - total) + result
     }
-
 
     override fun saveAuditoriaOffLine(estado: Int, nombre: String, responsableId: Int, areaId: Int, sectorId: Int) {
         realm.executeTransaction { realm ->
@@ -236,6 +234,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             a.Estado = estado
             a.Nombre = nombre
             a.ResponsableId = responsableId
+            a.FechaRegistro = Util.getFecha()
 
             val responsable: Responsable? = realm.where(Responsable::class.java).equalTo("ResponsableId", responsableId).findFirst()
             a.Responsable = realm.copyToRealmOrUpdate(responsable!!)
@@ -275,6 +274,12 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
                         val a = realm.where(Auditoria::class.java).findAll()
                         a.deleteAllFromRealm()
 
+                        val b = realm.where(Detalle::class.java).findAll()
+                        b.deleteAllFromRealm()
+
+                        val c = realm.where(PuntosFijosHeader::class.java).findAll()
+                        c.deleteAllFromRealm()
+
                         val offLine = realm.where(OffLine::class.java).findAll()
                         offLine.deleteAllFromRealm()
                     }
@@ -305,8 +310,41 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             if (auditor != null) {
                 auditor.modo = check
             }
-
             r.copyToRealmOrUpdate(offLine)
+        }
+    }
+
+    override fun deleteAuditoria(a: Auditoria) {
+        realm.executeTransaction {
+            if (a.Detalles?.size!! > 0) {
+                val detalles = a.Detalles?.createSnapshot()
+                for (d: Detalle in detalles!!) {
+                    d.deleteFromRealm()
+                }
+            }
+            a.deleteFromRealm()
+        }
+    }
+
+    override fun deleteAuditoriaRx(a: Auditoria): Observable<Boolean> {
+        return Observable.create { emitter ->
+            try {
+                Realm.getDefaultInstance().use { r ->
+                    r.executeTransaction {
+                        if (a.Detalles?.size!! > 0) {
+                            val detalles = a.Detalles?.createSnapshot()
+                            for (d: Detalle in detalles!!) {
+                                d.deleteFromRealm()
+                            }
+                        }
+                        a.deleteFromRealm()
+                        emitter.onNext(true)
+                        emitter.onComplete()
+                    }
+                }
+            } catch (e: Throwable) {
+                emitter.onError(e)
+            }
         }
     }
 }

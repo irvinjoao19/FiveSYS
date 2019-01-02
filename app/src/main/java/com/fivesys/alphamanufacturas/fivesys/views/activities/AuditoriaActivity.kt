@@ -76,7 +76,6 @@ class AuditoriaActivity : AppCompatActivity() {
         realm.close()
     }
 
-
     lateinit var toolbar: Toolbar
     lateinit var tabLayout: TabLayout
 
@@ -91,7 +90,6 @@ class AuditoriaActivity : AppCompatActivity() {
 
     var envioId: Int? = 0
     var tipo: Int? = 0
-
     var modo: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,7 +103,6 @@ class AuditoriaActivity : AppCompatActivity() {
             auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
             tipo = bundle.getInt("tipo")
             modo = auditoriaImp.getAuditor?.modo!!
-
             if (modo) {
                 progressBar.visibility = View.GONE
                 bindToolbar()
@@ -113,8 +110,6 @@ class AuditoriaActivity : AppCompatActivity() {
             } else {
                 getAuditoriaByOne(bundle.getInt("auditoriaId"))
             }
-
-
             Log.i("TAG", bundle.getInt("auditoriaId").toString())
         }
     }
@@ -158,9 +153,7 @@ class AuditoriaActivity : AppCompatActivity() {
         })
     }
 
-
     private fun getAuditoriaByOne(id: Int) {
-
         val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
         val auditoriaCall: Observable<Auditoria> = auditoriaInterfaces.getAuditoriasByOne(id)
 
@@ -206,7 +199,6 @@ class AuditoriaActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     private fun sendRegister(id: Int) {
-
         builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@AuditoriaActivity).inflate(R.layout.dialog_alert, null)
 
@@ -317,6 +309,4 @@ class AuditoriaActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
-
-
 }

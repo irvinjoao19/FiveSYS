@@ -34,10 +34,14 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                if (estado == 1) {
+                if (modo) {
                     showCreateHeaderDialog("Nueva Observación", id!!, 0)
                 } else {
-                    Util.snackBarMensaje(v, "Inhabilitado para editar")
+                    if (estado == 1) {
+                        showCreateHeaderDialog("Nueva Observación", id!!, 0)
+                    } else {
+                        Util.snackBarMensaje(v, "Inhabilitado para editar")
+                    }
                 }
             }
         }
@@ -56,6 +60,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
     var id: Int? = 0
     var estado: Int? = 0
+    var modo: Boolean = false
 
     companion object {
         fun newInstance(id: Int): ObservationFragment {
@@ -81,6 +86,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         val args = arguments
         if (args != null) {
             auditoriaImp = AuditoriaOver(realm)
+            modo = auditoriaImp.getAuditor?.modo!!
             id = args.getInt("id")
             estado = auditoriaImp.getAuditoriaByOne(id!!)!!.Estado
             bindUI(view, auditoriaImp.getDetalleByAuditoria(id!!, false))
@@ -88,9 +94,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         return view
     }
 
-
     private fun bindUI(view: View, a: RealmResults<Detalle>?) {
-
         fab = view.findViewById(R.id.fab)
         fab.setOnClickListener(this)
         recyclerView = view.findViewById(R.id.recyclerView)
@@ -105,10 +109,14 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                     when (v.id) {
                         R.id.imageViewPhoto -> showPhoto(d.Url)
                         R.id.imageViewOption -> {
-                            if (estado == 1) {
+                            if (modo) {
                                 showPopupMenu(d, v, context!!)
                             } else {
-                                Util.snackBarMensaje(v, "Inhabilitado para editar")
+                                if (estado == 1) {
+                                    showPopupMenu(d, v, context!!)
+                                } else {
+                                    Util.snackBarMensaje(v, "Inhabilitado para editar")
+                                }
                             }
                         }
                     }

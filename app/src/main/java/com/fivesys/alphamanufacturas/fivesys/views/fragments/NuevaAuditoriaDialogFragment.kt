@@ -196,7 +196,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                 sectores = area.Sectores!!
 
                 editTextSector.setText(area.Sectores!![0]!!.Nombre)
-                sectorId = area.Sectores!![0]!!.AreaId
+                sectorId = area.Sectores!![0]!!.SectorId
 
                 responsables = area.Sectores!![0]!!.Responsables!!
 

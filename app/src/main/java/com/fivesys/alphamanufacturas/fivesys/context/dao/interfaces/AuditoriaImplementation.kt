@@ -20,7 +20,7 @@ interface AuditoriaImplementation {
 
     val getAllAuditoria: RealmResults<Auditoria>
 
-    fun getAllAuditoriaRx() : Observable<RealmResults<Auditoria>>
+    fun getAllAuditoriaRx(): Observable<RealmResults<Auditoria>>
 
     fun saveAuditoriaByOne(auditoria: Auditoria)
 
@@ -68,7 +68,7 @@ interface AuditoriaImplementation {
 
     fun getAuditoriaIdentity(): Int
 
-    fun getAuditoriaCodigoCorrelativo():String
+    fun getAuditoriaCodigoCorrelativo(): String
 
     fun saveAuditoriaOffLine(estado: Int, nombre: String, responsableId: Int, areaId: Int, sectorId: Int)
 
@@ -77,4 +77,8 @@ interface AuditoriaImplementation {
     fun deleteOffLine()
 
     fun getConfiguracion(offLine: OffLine, check: Boolean)
+
+    fun deleteAuditoria(a: Auditoria)
+
+    fun deleteAuditoriaRx(a:Auditoria) : Observable<Boolean>
 }
