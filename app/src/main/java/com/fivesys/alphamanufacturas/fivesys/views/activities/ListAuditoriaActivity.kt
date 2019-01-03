@@ -186,9 +186,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
     private fun getListOffAuditoria() {
         val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
-        auditorias.addChangeListener { _ ->
-            auditoriaOffLineAdapter?.notifyDataSetChanged()
-        }
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManagerOff
         auditoriaOffLineAdapter = AuditoriaOffLineAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaOffLineAdapter.OnItemClickListener {
@@ -212,7 +209,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     startActivity(intent)
                 }
                 2 -> {
-                    deleteAuditoria(a, v)
+                    deleteAuditoria(a)
                 }
             }
             false
@@ -220,40 +217,43 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         popupMenu.show()
     }
 
-    private fun deleteAuditoria(a: Auditoria, v: View) {
+    private fun deleteAuditoria(a: Auditoria) {
         val alertDialog = AlertDialog.Builder(ContextThemeWrapper(this@ListAuditoriaActivity, R.style.AppTheme))
         alertDialog.setTitle("Eliminar")
         alertDialog.setMessage("Deseas eliminar esta auditoria ?")
-
         alertDialog.setPositiveButton("Aceptar"
         ) { dialog, _ ->
-            var delete = false
-            val deleteObservable = auditoriaImp.deleteAuditoriaRx(a)
-            deleteObservable.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<Boolean> {
-                        override fun onComplete() {
-                            if (delete) {
-                                Util.snackBarMensaje(window.decorView, "Auditoria eliminada")
-                            } else {
-                                Util.snackBarMensaje(window.decorView, "No se pudo eliminar")
-                            }
-                            getListOffAuditoria()
-                            dialog.dismiss()
-                        }
-
-                        override fun onSubscribe(d: Disposable) {
-
-                        }
-
-                        override fun onNext(t: Boolean) {
-                            delete = t
-                        }
-
-                        override fun onError(e: Throwable) {
-                            Util.snackBarMensaje(window.decorView, e.toString())
-                        }
-                    })
+            auditoriaImp.deleteAuditoria(a)
+            getListOffAuditoria()
+            Util.snackBarMensaje(window.decorView, "Auditoria eliminada")
+            dialog.dismiss()
+//            var delete = false
+//            val deleteObservable = auditoriaImp.deleteAuditoriaRx(a.AuditoriaId)
+//            deleteObservable.subscribeOn(Schedulers.io())
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(object : Observer<Boolean> {
+//                        override fun onComplete() {
+//                            if (delete) {
+//                                Util.snackBarMensaje(window.decorView, "Auditoria eliminada")
+//                            } else {
+//                                Util.snackBarMensaje(window.decorView, "No se pudo eliminar")
+//                            }
+//                            getListOffAuditoria()
+//                            dialog.dismiss()
+//                        }
+//
+//                        override fun onSubscribe(d: Disposable) {
+//
+//                        }
+//
+//                        override fun onNext(t: Boolean) {
+//                            delete = t
+//                        }
+//
+//                        override fun onError(e: Throwable) {
+//                            Util.snackBarMensaje(window.decorView, e.toString())
+//                        }
+//                    })
         }
 
         alertDialog.setNegativeButton("Cancelar"
@@ -327,8 +327,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     progressBar.visibility = View.GONE
                     Util.snackBarMensaje(window.decorView, throwable.toString())
                 })
-
-
         compositeDisposable.add(disposable)
         paginator.onNext(pageNumber)
     }

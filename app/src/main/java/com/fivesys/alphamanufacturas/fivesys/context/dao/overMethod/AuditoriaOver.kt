@@ -326,18 +326,21 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }
     }
 
-    override fun deleteAuditoriaRx(a: Auditoria): Observable<Boolean> {
+    override fun deleteAuditoriaRx(auditoriaId: Int?): Observable<Boolean> {
         return Observable.create { emitter ->
             try {
                 Realm.getDefaultInstance().use { r ->
-                    r.executeTransaction {
-                        if (a.Detalles?.size!! > 0) {
-                            val detalles = a.Detalles?.createSnapshot()
-                            for (d: Detalle in detalles!!) {
-                                d.deleteFromRealm()
+                    r.executeTransaction { realm ->
+                        val a: Auditoria? = realm.where(Auditoria::class.java).equalTo("AuditoriaId", auditoriaId).findFirst()
+                        if (a != null) {
+                            if (a.Detalles?.size!! > 0) {
+                                val detalles = a.Detalles?.createSnapshot()
+                                for (d: Detalle in detalles!!) {
+                                    d.deleteFromRealm()
+                                }
                             }
+                            a.deleteFromRealm()
                         }
-                        a.deleteFromRealm()
                         emitter.onNext(true)
                         emitter.onComplete()
                     }

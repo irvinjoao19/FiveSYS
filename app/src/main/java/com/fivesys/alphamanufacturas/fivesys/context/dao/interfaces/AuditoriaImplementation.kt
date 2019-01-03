@@ -80,5 +80,5 @@ interface AuditoriaImplementation {
 
     fun deleteAuditoria(a: Auditoria)
 
-    fun deleteAuditoriaRx(a:Auditoria) : Observable<Boolean>
+    fun deleteAuditoriaRx(auditoriaId:Int?) : Observable<Boolean>
 }
