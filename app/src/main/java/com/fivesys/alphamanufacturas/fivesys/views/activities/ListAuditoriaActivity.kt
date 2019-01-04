@@ -186,6 +186,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
     private fun getListOffAuditoria() {
         val auditorias: RealmResults<Auditoria> = auditoriaImp.getAllAuditoria
+        auditorias.addChangeListener { _ -> auditoriaOffLineAdapter?.notifyDataSetChanged() }
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManagerOff
         auditoriaOffLineAdapter = AuditoriaOffLineAdapter(auditorias, R.layout.cardview_list_auditoria, object : AuditoriaOffLineAdapter.OnItemClickListener {
