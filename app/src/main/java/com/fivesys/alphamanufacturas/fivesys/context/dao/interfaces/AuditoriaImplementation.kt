@@ -58,7 +58,9 @@ interface AuditoriaImplementation {
 
     fun updateAuditoriaByOne(id: Int, ids: List<Detalle>?)
 
-    fun updateAuditoriaByEstado(a: Auditoria?, estado: Int, nombre: String, envio: Int)
+    fun updateAuditoriaByEstado(a: Auditoria?, estado: Int, envio: Int)
+
+    fun updateAuditoriaByNombre(a: Auditoria?, nombre: String, envio: Int)
 
     // TODO PUNTOS FIJOS HEADER
 
@@ -80,5 +82,5 @@ interface AuditoriaImplementation {
 
     fun deleteAuditoria(a: Auditoria)
 
-    fun deleteAuditoriaRx(auditoriaId:Int?) : Observable<Boolean>
+    fun deleteAuditoriaRx(auditoriaId: Int?): Observable<Boolean>
 }

@@ -63,10 +63,11 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     var modo: Boolean = false
 
     companion object {
-        fun newInstance(id: Int): ObservationFragment {
+        fun newInstance(id: Int,estado:Int): ObservationFragment {
             val fragment = ObservationFragment()
             val args = Bundle()
             args.putInt("id", id)
+            args.putInt("estado", estado)
             fragment.arguments = args
             return fragment
         }
@@ -88,7 +89,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
             auditoriaImp = AuditoriaOver(realm)
             modo = auditoriaImp.getAuditor?.modo!!
             id = args.getInt("id")
-            estado = auditoriaImp.getAuditoriaByOne(id!!)!!.Estado
+            estado = args.getInt("estado")
             bindUI(view, auditoriaImp.getDetalleByAuditoria(id!!, false))
         }
         return view

@@ -106,9 +106,9 @@ class AuditoriaActivity : AppCompatActivity() {
             if (modo) {
                 progressBar.visibility = View.GONE
                 bindToolbar()
-                bindTabLayout(bundle.getInt("auditoriaId"))
+                bindTabLayout(bundle.getInt("auditoriaId"),bundle.getInt("estado"))
             } else {
-                getAuditoriaByOne(bundle.getInt("auditoriaId"))
+                getAuditoriaByOne(bundle.getInt("auditoriaId"),bundle.getInt("estado"))
             }
             Log.i("TAG", bundle.getInt("auditoriaId").toString())
         }
@@ -128,14 +128,14 @@ class AuditoriaActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindTabLayout(id: Int) {
+    private fun bindTabLayout(id: Int,estado:Int) {
         envioId = id
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab1))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab2))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab3))
         val viewPager = findViewById<ViewPager>(R.id.viewPager)
-        val tabLayoutAdapter = TabLayoutAdapter(supportFragmentManager, tabLayout.tabCount, id)
+        val tabLayoutAdapter = TabLayoutAdapter(supportFragmentManager, tabLayout.tabCount, id,estado)
         viewPager.adapter = tabLayoutAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -153,7 +153,7 @@ class AuditoriaActivity : AppCompatActivity() {
         })
     }
 
-    private fun getAuditoriaByOne(id: Int) {
+    private fun getAuditoriaByOne(id: Int,estado:Int) {
         val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
         val auditoriaCall: Observable<Auditoria> = auditoriaInterfaces.getAuditoriasByOne(id)
 
@@ -163,7 +163,7 @@ class AuditoriaActivity : AppCompatActivity() {
                     override fun onComplete() {
                         progressBar.visibility = View.GONE
                         bindToolbar()
-                        bindTabLayout(id)
+                        bindTabLayout(id,estado)
                     }
 
                     override fun onSubscribe(d: Disposable) {

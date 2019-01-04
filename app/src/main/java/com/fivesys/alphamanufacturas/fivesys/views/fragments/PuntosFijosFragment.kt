@@ -61,10 +61,11 @@ class PuntosFijosFragment : Fragment() {
     lateinit var Direccion: String
 
     companion object {
-        fun newInstance(id: Int): PuntosFijosFragment {
+        fun newInstance(id: Int,estado:Int): PuntosFijosFragment {
             val fragment = PuntosFijosFragment()
             val args = Bundle()
             args.putInt("id", id)
+            args.putInt("estado", estado)
             fragment.arguments = args
             return fragment
         }
@@ -86,6 +87,7 @@ class PuntosFijosFragment : Fragment() {
             auditoriaImp = AuditoriaOver(realm)
             modo = auditoriaImp.getAuditor?.modo!!
             val id = args.getInt("id")
+            estado = args.getInt("estado")
             bindUI(view, auditoriaImp.getAuditoriaByOne(id))
         }
         return view
@@ -95,7 +97,6 @@ class PuntosFijosFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(context)
         if (a != null) {
-            estado = a.Estado
             a.PuntosFijos!!.addChangeListener { _ ->
                 puntosFijosAdapter.notifyDataSetChanged()
             }

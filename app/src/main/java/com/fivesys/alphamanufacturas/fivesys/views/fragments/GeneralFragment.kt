@@ -62,10 +62,11 @@ class GeneralFragment : Fragment(), View.OnClickListener {
     var a: Auditoria? = null
 
     companion object {
-        fun newInstance(id: Int): GeneralFragment {
+        fun newInstance(id: Int,estado:Int): GeneralFragment {
             val fragment = GeneralFragment()
             val args = Bundle()
             args.putInt("id", id)
+            args.putInt("estado", estado)
             fragment.arguments = args
             return fragment
         }
@@ -86,6 +87,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
             auditoriaImp = AuditoriaOver(realm)
             modo = auditoriaImp.getAuditor?.modo!!
             val id = args.getInt("id")
+            estado = args.getInt("estado")
             a = auditoriaImp.getAuditoriaByOne(id)
             bindUI(view)
         }
@@ -114,8 +116,6 @@ class GeneralFragment : Fragment(), View.OnClickListener {
                 3 -> "Anulado"
                 else -> "Vacio"
             })
-
-            estado = a!!.Estado
             if (!modo) {
                 editTextNombre.isEnabled = estado == 1
             }
@@ -123,7 +123,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
 
         editTextNombre.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
-                update(a!!, p0.toString(), 1)
+                updateNombre(a!!, p0.toString(), 1)
             }
 
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -153,8 +153,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
 
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipo, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
-                estado = t.id
-                update(a!!, editTextNombre.text.toString(), 1)
+                update(a!!, t.id,  1)
                 editTextEstado.setText(t.nombre)
                 dialogEstado.dismiss()
             }
@@ -168,7 +167,11 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         dialogEstado.show()
     }
 
-    private fun update(a: Auditoria, nombre: String, tipo: Int) {
-        auditoriaImp.updateAuditoriaByEstado(a, estado!!, nombre, tipo)
+    private fun update(a: Auditoria, estado: Int, tipo: Int) {
+        auditoriaImp.updateAuditoriaByEstado(a, estado, tipo)
+    }
+
+    private fun updateNombre(a: Auditoria, nombre: String, tipo: Int) {
+        auditoriaImp.updateAuditoriaByNombre(a, nombre, tipo)
     }
 }

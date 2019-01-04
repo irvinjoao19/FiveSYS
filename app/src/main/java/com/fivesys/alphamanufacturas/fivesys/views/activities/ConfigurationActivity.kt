@@ -202,7 +202,11 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         val mensaje = "Las auditorias fueron registradas"
         auditorias.flatMap { observable ->
             cantidad = observable.size
-            textViewTitle.text = "Enviando " + suma.toString() + "/" + cantidad
+            if (cantidad == 0) {
+                textViewTitle.text = "No hay Auditorias a enviar"
+            } else {
+                textViewTitle.text = "Enviando " + suma.toString() + "/" + cantidad
+            }
             Observable.fromIterable(observable).flatMap { a ->
                 val realm = Realm.getDefaultInstance()
                 val b = MultipartBody.Builder()

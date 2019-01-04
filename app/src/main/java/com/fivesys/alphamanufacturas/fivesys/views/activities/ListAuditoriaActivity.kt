@@ -272,6 +272,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             override fun onItemClick(a: Auditoria, position: Int) {
                 val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
                 intent.putExtra("auditoriaId", a.AuditoriaId)
+                intent.putExtra("estado", a.Estado)
                 intent.putExtra("tipo", 0)
                 startActivity(intent)
             }
@@ -340,6 +341,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
         textViewTitle.text = "Enviando ...."
         var auditoriaId: Int? = 0
+        var estado: Int? = 0
 
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), value)
         val headerCall: Observable<Auditoria> = auditoriaInterfaces.saveHeader(requestBody)
@@ -350,6 +352,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     override fun onComplete() {
                         val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
                         intent.putExtra("auditoriaId", auditoriaId)
+                        intent.putExtra("estado", estado)
                         intent.putExtra("tipo", 1)
                         startActivity(intent)
                         finish()
@@ -362,6 +365,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
                     override fun onNext(t: Auditoria) {
                         auditoriaId = t.AuditoriaId
+                        estado = t.Estado
                     }
 
                     override fun onError(e: Throwable) {
