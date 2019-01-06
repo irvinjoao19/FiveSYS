@@ -89,6 +89,7 @@ class AuditoriaActivity : AppCompatActivity() {
     lateinit var dialog: AlertDialog
 
     var envioId: Int? = 0
+    var estado: Int? = 0
     var tipo: Int? = 0
     var modo: Boolean = false
 
@@ -103,12 +104,13 @@ class AuditoriaActivity : AppCompatActivity() {
             auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
             tipo = bundle.getInt("tipo")
             modo = auditoriaImp.getAuditor?.modo!!
+            estado = bundle.getInt("estado")
             if (modo) {
                 progressBar.visibility = View.GONE
                 bindToolbar()
-                bindTabLayout(bundle.getInt("auditoriaId"),bundle.getInt("estado"))
+                bindTabLayout(bundle.getInt("auditoriaId"), estado!!)
             } else {
-                getAuditoriaByOne(bundle.getInt("auditoriaId"),bundle.getInt("estado"))
+                getAuditoriaByOne(bundle.getInt("auditoriaId"), estado!!)
             }
             Log.i("TAG", bundle.getInt("auditoriaId").toString())
         }
@@ -128,14 +130,14 @@ class AuditoriaActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindTabLayout(id: Int,estado:Int) {
+    private fun bindTabLayout(id: Int, estado: Int) {
         envioId = id
         val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab1))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab2))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab3))
         val viewPager = findViewById<ViewPager>(R.id.viewPager)
-        val tabLayoutAdapter = TabLayoutAdapter(supportFragmentManager, tabLayout.tabCount, id,estado)
+        val tabLayoutAdapter = TabLayoutAdapter(supportFragmentManager, tabLayout.tabCount, id, estado)
         viewPager.adapter = tabLayoutAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
@@ -153,7 +155,7 @@ class AuditoriaActivity : AppCompatActivity() {
         })
     }
 
-    private fun getAuditoriaByOne(id: Int,estado:Int) {
+    private fun getAuditoriaByOne(id: Int, estado: Int) {
         val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
         val auditoriaCall: Observable<Auditoria> = auditoriaInterfaces.getAuditoriasByOne(id)
 
@@ -163,7 +165,7 @@ class AuditoriaActivity : AppCompatActivity() {
                     override fun onComplete() {
                         progressBar.visibility = View.GONE
                         bindToolbar()
-                        bindTabLayout(id,estado)
+                        bindTabLayout(id, estado)
                     }
 
                     override fun onSubscribe(d: Disposable) {
@@ -270,7 +272,6 @@ class AuditoriaActivity : AppCompatActivity() {
                         dialog.dismiss()
                     }
                 })
-
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
@@ -282,12 +283,15 @@ class AuditoriaActivity : AppCompatActivity() {
             if (modo) {
                 confirmExit(tipo!!, "Se guardaran los cambios al salir ?")
             } else {
-                confirmExit(tipo!!, "Se eliminaran los cambios al salir ?")
+                if (estado!! == 1){
+                    confirmExit(tipo!!, "Se eliminaran los cambios al salir ?")
+                }else{
+                    go(tipo!!)
+                }
             }
         }
         return super.onKeyDown(keyCode, event)
     }
-
 
     private fun confirmExit(valor: Int, mensaje: String) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
@@ -296,17 +300,21 @@ class AuditoriaActivity : AppCompatActivity() {
         builder.setTitle("Mensaje")
         builder.setMessage(mensaje)
         builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
-            if (valor == 1) {
-                startActivity(Intent(this@AuditoriaActivity, ListAuditoriaActivity::class.java))
-                finish()
-            } else {
-                finish()
-            }
+            go(valor)
             dialogInterface.dismiss()
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, _ -> dialogInterface.dismiss() }
         dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
+    }
+
+    private fun go(valor:Int){
+        if (valor == 1) {
+            startActivity(Intent(this@AuditoriaActivity, ListAuditoriaActivity::class.java))
+            finish()
+        } else {
+            finish()
+        }
     }
 }
