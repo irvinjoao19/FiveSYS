@@ -57,6 +57,17 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun filtroRequest(value: String, modo: Boolean) {
         if (modo) {
             auditoriaOffLineAdapter?.getFilter()?.filter(value)
+        } else {
+            val filtro: Filtro? = Gson().fromJson(value, Filtro::class.java)
+            Codigo = filtro?.Codigo
+            Estado = filtro?.Estado
+            AreaId = filtro?.AreaId
+            SectorId = filtro?.SectorId
+            ResponsableId = filtro?.ResponsableId
+            Nombre = filtro?.Nombre
+            compositeDisposable.clear()
+            auditoriaAdapter?.clear()
+            subscribeForData()
         }
     }
 
@@ -132,25 +143,12 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     var Nombre: String? = ""
     var filtro: Int? = 1
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_auditoria)
         auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
-
-        val bundle = intent.extras
-        if (bundle != null) {
-            val filtro: Filtro? = Gson().fromJson(bundle.getString("json"), Filtro::class.java)
-            Codigo = filtro?.Codigo
-            Estado = filtro?.Estado
-            AreaId = filtro?.AreaId
-            SectorId = filtro?.SectorId
-            ResponsableId = filtro?.ResponsableId
-            Nombre = filtro?.Nombre
-        }
-
         bindToolbar()
         bindUI()
         modo = auditoriaImp.getAuditor?.modo!!

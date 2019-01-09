@@ -44,20 +44,11 @@ class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.buttonAceptar -> {
-                val f = Filtro(editTextCodigo.text.toString(), estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
+                val f = Filtro(editTextCodigo.text.toString(), estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString().trim(), nresponsable)
                 val json = Gson().toJson(f)
-                if (modo) {
-                    listener?.filtroRequest(json, modo)
-                    Util.hideKeyboardFrom(context!!, v)
-
-                } else {
-                    val intent = Intent(context, ListAuditoriaActivity::class.java)
-                    intent.putExtra("json", json)
-                    startActivity(intent)
-                    activity?.finish()
-                }
+                listener?.filtroRequest(json, modo)
+                Util.hideKeyboardFrom(context!!, v)
                 dismiss()
-
             }
             R.id.buttonCancelar -> dismiss()
             R.id.editTextEstado -> estadoDialog()
