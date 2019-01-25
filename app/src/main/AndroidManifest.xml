@@ -47,11 +47,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity android:name=".views.activities.PaginationActivity">
 
         </activity>
-
+        <activity
+            android:name=".helper.rxJava"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

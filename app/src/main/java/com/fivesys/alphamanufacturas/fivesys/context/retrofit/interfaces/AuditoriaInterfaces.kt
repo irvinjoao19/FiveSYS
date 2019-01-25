@@ -48,4 +48,11 @@ interface AuditoriaInterfaces {
     @Headers("Cache-Control: no-cache")
     @POST("/Control/Auditoria/APISaveOff")
     fun sendRegisterOffLine(@Body query: RequestBody): Observable<ResponseBody>
+
+
+    // TODO PRUEBAAAAA
+
+    @Headers("Cache-Control: no-cache")
+    @POST("/Control/Auditoria/APISaveOff")
+    fun sendRegisterOffLineFl(@Body query: RequestBody): Flowable<ResponseBody>
 }

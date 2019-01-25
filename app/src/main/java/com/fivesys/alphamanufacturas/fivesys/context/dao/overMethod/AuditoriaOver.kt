@@ -4,6 +4,7 @@ import android.os.Environment
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.realm.Realm
 import io.realm.RealmList
@@ -47,21 +48,17 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
     override val getAllAuditoria: RealmResults<Auditoria>
         get() = realm.where(Auditoria::class.java).findAll().sort("AuditoriaId", Sort.DESCENDING)
 
+    override val getAll: RealmResults<Auditoria>
+        get() = realm.where(Auditoria::class.java).findAll()
+
     override fun getAllAuditoriaRx(): Observable<RealmResults<Auditoria>> {
         return Observable.create { emitter ->
-            try {
-                Realm.getDefaultInstance().use { realm ->
-                    val a = realm.where(Auditoria::class.java).findAll()
-                    emitter.onNext(a)
-                    emitter.onComplete()
-
-                }
-            } catch (e: Throwable) {
-                emitter.onError(e)
-            }
+            val r = Realm.getDefaultInstance()
+            val a = r.where(Auditoria::class.java).findAll()
+            emitter.onNext(a)
+            emitter.onComplete()
         }
     }
-
 
     override fun saveAuditoriaByOne(auditoria: Auditoria) {
         realm.executeTransaction { realm ->
@@ -364,5 +361,9 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             a.FechaRegistro = "01/01/0001"
         }
         return a
+    }
+
+    override fun flowableRx(): Flowable<RealmResults<Auditoria>> {
+        return realm.where(Auditoria::class.java).findAll().asFlowable()
     }
 }

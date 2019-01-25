@@ -1,6 +1,7 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces
 
 import com.fivesys.alphamanufacturas.fivesys.entities.*
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.realm.RealmResults
 
@@ -19,6 +20,8 @@ interface AuditoriaImplementation {
     fun saveAuditoria(auditoria: List<Auditoria>)
 
     val getAllAuditoria: RealmResults<Auditoria>
+
+    val getAll: RealmResults<Auditoria>
 
     fun getAllAuditoriaRx(): Observable<RealmResults<Auditoria>>
 
@@ -85,4 +88,8 @@ interface AuditoriaImplementation {
     fun deleteAuditoriaRx(auditoriaId: Int?): Observable<Boolean>
 
     fun updateFechaAuditoria(a: Auditoria): Auditoria
+
+    // TODO PRUEBAS
+
+    fun flowableRx(): Flowable<RealmResults<Auditoria>>
 }

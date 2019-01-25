@@ -24,17 +24,23 @@ import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.gson.Gson
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import io.realm.RealmResults
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import org.reactivestreams.Publisher
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -195,7 +201,9 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         var cantidad = 0
         var suma = 0
         val mensaje = "Las auditorias fueron registradas"
-        val auditorias = auditoriaImp.getAllAuditoriaRx()
+
+
+        val auditorias: Observable<RealmResults<Auditoria>> = auditoriaImp.getAllAuditoriaRx()
         auditorias.flatMap { observable ->
             cantidad = observable.size
             if (cantidad == 0) {
@@ -205,7 +213,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
             }
             Observable.fromIterable(observable).flatMap { a ->
                 val realm = Realm.getDefaultInstance()
-                val auditoriaImp : AuditoriaImplementation = AuditoriaOver(realm)
+                val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
                 val b = MultipartBody.Builder()
                 val filePaths: ArrayList<String> = ArrayList()
 
