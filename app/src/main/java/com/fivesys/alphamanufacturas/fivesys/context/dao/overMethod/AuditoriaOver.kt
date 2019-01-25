@@ -358,4 +358,11 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             }
         }
     }
+
+    override fun updateFechaAuditoria(a: Auditoria): Auditoria {
+        realm.executeTransaction {
+            a.FechaRegistro = "01/01/0001"
+        }
+        return a
+    }
 }

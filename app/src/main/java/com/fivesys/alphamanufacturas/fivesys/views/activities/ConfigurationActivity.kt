@@ -191,10 +191,11 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
 
         val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
         builder.setView(view)
-        val auditorias = auditoriaImp.getAllAuditoriaRx()
+
         var cantidad = 0
         var suma = 0
         val mensaje = "Las auditorias fueron registradas"
+        val auditorias = auditoriaImp.getAllAuditoriaRx()
         auditorias.flatMap { observable ->
             cantidad = observable.size
             if (cantidad == 0) {
@@ -204,12 +205,9 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
             }
             Observable.fromIterable(observable).flatMap { a ->
                 val realm = Realm.getDefaultInstance()
+                val auditoriaImp : AuditoriaImplementation = AuditoriaOver(realm)
                 val b = MultipartBody.Builder()
                 val filePaths: ArrayList<String> = ArrayList()
-                val json = Gson().toJson(realm.copyFromRealm(a))
-                Log.i("TAG", json)
-                b.setType(MultipartBody.FORM)
-                b.addFormDataPart("model", json)
 
                 for (f: PuntosFijosHeader in a.PuntosFijos!!) {
                     if (!f.Url.isNullOrEmpty()) {
@@ -233,6 +231,12 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                     val file = File(filePaths[i])
                     b.addFormDataPart("fotos", file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
                 }
+
+                val auditoria = auditoriaImp.updateFechaAuditoria(a)
+                val json = Gson().toJson(realm.copyFromRealm(auditoria))
+                Log.i("TAG", json)
+                b.setType(MultipartBody.FORM)
+                b.addFormDataPart("model", json)
 
                 val requestBody = b.build()
                 Observable.zip(Observable.just(a), auditoriaInterfaces.sendRegisterOffLine(requestBody), BiFunction<Auditoria, ResponseBody, ResponseBody> { _, responseBody ->
