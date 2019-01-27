@@ -44,7 +44,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
             R.id.buttonCancelar -> finish()
             R.id.buttonAceptar -> {
                 if (modo) {
-                    Util.snackBarMensaje(v,"Habilitar modo On-line")
+                    Util.snackBarMensaje(v, "Habilitar modo On-line")
                 } else {
                     sendPerfil(v)
                 }
@@ -86,11 +86,14 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
     var modo: Boolean = false
 
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_perfil)
-
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
         bindToolbar()

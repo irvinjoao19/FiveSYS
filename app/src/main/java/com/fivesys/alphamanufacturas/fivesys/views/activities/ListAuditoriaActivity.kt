@@ -143,6 +143,11 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     var Nombre: String? = ""
     var filtro: Int? = 1
 
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list_auditoria)

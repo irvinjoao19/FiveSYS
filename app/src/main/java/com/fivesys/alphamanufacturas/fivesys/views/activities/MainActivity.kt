@@ -50,6 +50,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var realm: Realm
     private lateinit var auditoriaImp: AuditoriaImplementation
 
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)

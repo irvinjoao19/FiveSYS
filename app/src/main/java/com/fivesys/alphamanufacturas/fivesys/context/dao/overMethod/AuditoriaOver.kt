@@ -57,6 +57,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             val a = r.where(Auditoria::class.java).findAll()
             emitter.onNext(a)
             emitter.onComplete()
+            r.close()
         }
     }
 

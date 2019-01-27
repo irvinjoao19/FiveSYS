@@ -24,13 +24,11 @@ import com.fivesys.alphamanufacturas.fivesys.entities.PuntosFijosHeader
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.gson.Gson
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.BiFunction
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmResults
@@ -38,9 +36,6 @@ import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
-import org.reactivestreams.Publisher
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
 import java.io.File
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -70,6 +65,11 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
 
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
