@@ -64,4 +64,8 @@
     <string name="confirmar_nueva_clave">Confirmar Nueva Clave</string>
     <string name="guardar">Guardar</string>
     <string name="modo_off_line">Modo Offline</string>
+    <string name="phone">Telefono</string>
+    <string name="sector_work">Sector de Trabajo</string>
+    <string name="confirmar_clave">Confirmar Clave</string>
+    <string name="registrar">REGISTRAR</string>
 </resources>

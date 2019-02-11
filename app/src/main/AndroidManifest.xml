@@ -20,6 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".views.activities.RegisterActivity"></activity>
         <activity
             android:name=".views.activities.MainActivity"
             android:screenOrientation="portrait" />
@@ -48,11 +49,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.activities.PaginationActivity">
-
-        </activity>
+        <activity android:name=".views.activities.PaginationActivity"></activity>
         <activity
             android:name=".helper.rxJava"
             android:screenOrientation="portrait" />
     </application>
+
 </manifest>
