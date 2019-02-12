@@ -2,6 +2,7 @@ package com.fivesys.alphamanufacturas.fivesys.helper
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.*
@@ -24,6 +25,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.io.*
 import java.nio.channels.FileChannel
@@ -460,5 +462,22 @@ object Util {
         // TODO FOR FRAGMENTS
         val imm = context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    // SET FECHA DIALOG
+    fun setFechaDialog(context: Context, editText: TextInputEditText) {
+
+        val c = Calendar.getInstance()
+        val mYear = c.get(Calendar.YEAR)
+        val mMonth = c.get(Calendar.MONTH)
+        val mDay = c.get(Calendar.DAY_OF_MONTH)
+        @SuppressLint("SetTextI18n") val datePickerDialog = DatePickerDialog(context,
+                { _, year, monthOfYear, dayOfMonth ->
+                    val month = if (monthOfYear < 9) "0" + (monthOfYear + 1).toString() else (monthOfYear + 1).toString()
+                    val day = if (dayOfMonth < 10) "0$dayOfMonth" else dayOfMonth.toString()
+                    editText.setText("$day/$month/$year")
+                }, mYear, mMonth, mDay)
+        datePickerDialog.show()
+
     }
 }

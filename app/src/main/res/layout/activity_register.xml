@@ -56,7 +56,7 @@ tools:context=".views.activities.RegisterActivity">
             android:hint="@string/phone">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextFecha"
+                android:id="@+id/editTextTelefono"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_calendar"

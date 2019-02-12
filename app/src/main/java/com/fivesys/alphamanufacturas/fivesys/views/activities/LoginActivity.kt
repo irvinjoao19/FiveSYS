@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.fivesys.alphamanufacturas.fivesys.R
 import androidx.appcompat.app.AlertDialog
@@ -84,6 +83,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             R.id.editTextTipoDocumento -> {
                 tipoDocumento()
             }
+            R.id.buttonRegistrar -> startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
@@ -93,6 +93,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var editTextPassError: TextInputLayout
     private lateinit var editTextUserError: TextInputLayout
     private lateinit var buttonEnviar: MaterialButton
+    private lateinit var buttonRegistrar: TextView
     private lateinit var loginInterfaces: LoginInterfaces
 
     private lateinit var builder: AlertDialog.Builder
@@ -127,7 +128,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         editTextPassError = findViewById(R.id.editTextPassError)
 
         buttonEnviar = findViewById(R.id.buttonEnviar)
+        buttonRegistrar = findViewById(R.id.buttonRegistrar)
         buttonEnviar.setOnClickListener(this)
+        buttonRegistrar.setOnClickListener(this)
         editTextTipoDocumento.setOnClickListener(this)
 
         tipoDocumento.add(TipoDocumento(3, "L.E / DNI"))

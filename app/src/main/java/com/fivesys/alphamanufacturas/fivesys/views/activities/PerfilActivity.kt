@@ -22,7 +22,6 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
 import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
@@ -60,7 +59,6 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var dialog: AlertDialog
 
     lateinit var toolbar: Toolbar
-    lateinit var tabLayout: TabLayout
 
     lateinit var editTextNombre: TextInputEditText
     lateinit var editTextApellido: TextInputEditText
@@ -75,14 +73,14 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
     // TODO AUDITOR
 
-    var AuditorId: Int? = 0
-    var Nombre: String = ""
-    var Apellido: String = ""
-    var FechaNacimiento: String? = null
-    var Correo: String = ""
-    var ClaveAnterior: String = ""
-    var ClaveNueva: String = ""
-    var ConfirmClaveNueva: String = ""
+    var auditorId: Int? = 0
+    var nombre: String = ""
+    var apellido: String = ""
+    var fechaNacimiento: String? = null
+    var correo: String = ""
+    var claveAnterior: String = ""
+    var claveNueva: String = ""
+    var confirmClaveNueva: String = ""
 
     var modo: Boolean = false
 
@@ -129,7 +127,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
 
         if (a != null) {
-            AuditorId = a.AuditorId
+            auditorId = a.AuditorId
             editTextNombre.setText(a.Nombre)
             editTextApellido.setText(a.Apellido)
             editTextFecha.setText(a.FechaNacimiento)
@@ -154,21 +152,21 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun sendPerfil(v: View) {
 
-        Nombre = editTextNombre.text.toString()
-        Apellido = editTextApellido.text.toString()
-        FechaNacimiento = if (editTextFecha.text.toString().isEmpty()) null else editTextFecha.text.toString()
-        Correo = editTextCorreo.text.toString()
-        ClaveAnterior = editTextClaveActual.text.toString()
-        ClaveNueva = editTextNuevaClave.text.toString()
-        ConfirmClaveNueva = editTextConfirmNuevaClave.text.toString()
+        nombre = editTextNombre.text.toString()
+        apellido = editTextApellido.text.toString()
+        fechaNacimiento = if (editTextFecha.text.toString().isEmpty()) null else editTextFecha.text.toString()
+        correo = editTextCorreo.text.toString()
+        claveAnterior = editTextClaveActual.text.toString()
+        claveNueva = editTextNuevaClave.text.toString()
+        confirmClaveNueva = editTextConfirmNuevaClave.text.toString()
 
-        if (!Nombre.isEmpty()) {
-            if (!Apellido.isEmpty()) {
-                if (Util.validarEmail(Correo)) {
-                    if (!ClaveAnterior.isEmpty()) {
-                        if (!ClaveNueva.isEmpty()) {
-                            if (!ConfirmClaveNueva.isEmpty()) {
-                                if (ClaveNueva == ConfirmClaveNueva) {
+        if (!nombre.isEmpty()) {
+            if (!apellido.isEmpty()) {
+                if (Util.validarEmail(correo)) {
+                    if (!claveAnterior.isEmpty()) {
+                        if (!claveNueva.isEmpty()) {
+                            if (!confirmClaveNueva.isEmpty()) {
+                                if (claveNueva == confirmClaveNueva) {
                                     Util.hideKeyboard(this)
                                     val alertDialog = AlertDialog.Builder(ContextThemeWrapper(this@PerfilActivity, R.style.AppTheme))
                                     alertDialog.setTitle("Mensaje")
@@ -176,7 +174,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
                                     alertDialog.setPositiveButton("Aceptar"
                                     ) { dialog, _ ->
-                                        val auditor = Auditor(AuditorId, Nombre, Apellido, FechaNacimiento, Correo, ClaveAnterior, ClaveNueva)
+                                        val auditor = Auditor(auditorId,nombre,apellido,fechaNacimiento,correo,claveAnterior,claveNueva)
                                         val jsonAuditor = Gson().toJson(auditor)
                                         sendPerfil(jsonAuditor, v)
                                         dialog.dismiss()
