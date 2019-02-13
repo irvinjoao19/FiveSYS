@@ -37,18 +37,17 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
-
         when (v.id) {
             R.id.buttonCancelar -> finish()
             R.id.buttonAceptar -> sendRegistro(v)
             R.id.editTextTipoDocumento -> tipoDocumento()
             R.id.editTextSector -> sectorDialog()
         }
-
     }
 
     lateinit var loginInterfaces: LoginInterfaces
@@ -205,8 +204,9 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                             alertDialog.setPositiveButton("Aceptar"
                             ) { dialog, _ ->
                                 val registro = Registro(apellido, nombre, correo, numeroDocumento, tipoDocumentoId, sectorNombre, telefono)
-                                val jsonAuditor = Gson().toJson(registro)
-                                sendPerfil(jsonAuditor, v)
+                                val jsonRegistro = Gson().toJson(registro)
+                                Log.i("TAG", jsonRegistro)
+                                sendPerfil(jsonRegistro, v)
                                 dialog.dismiss()
                             }
                             alertDialog.setNegativeButton("Cancelar"
@@ -219,7 +219,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                             Util.snackBarMensaje(v, "Ingrese Correo correctamente")
                         }
                     } else {
-                        Util.snackBarMensaje(v, "Ingrese Telefono")
+                        Util.snackBarMensaje(v, "Ingrese Numero de Documento")
                     }
                 } else {
                     Util.snackBarMensaje(v, "Ingrese Telefono")
@@ -234,7 +234,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
 
     @SuppressLint("SetTextI18n")
-    private fun sendPerfil(auditor: String, view: View) {
+    private fun sendPerfil(registro: String, view: View) {
 
         builder = AlertDialog.Builder(android.view.ContextThemeWrapper(this@RegisterActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@RegisterActivity).inflate(R.layout.dialog_alert, null)
@@ -244,12 +244,12 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
         builder.setView(v)
 
-        Log.i("TAG", auditor)
-        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), auditor)
+        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), registro)
         val observableEnvio: Observable<Mensaje> = loginInterfaces.sendRegistro(requestBody)
         var mensaje: String? = ""
 
         observableEnvio.subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Mensaje> {
                     override fun onComplete() {
