@@ -17,4 +17,8 @@ interface LoginInterfaces {
     @Headers("Cache-Control: no-cache")
     @POST("/Account/APIProfile")
     fun sendPerfil(@Body query: RequestBody): Observable<Mensaje>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("/Account/SaveRegistro")
+    fun sendRegistro(@Body query: RequestBody): Observable<Mensaje>
 }
