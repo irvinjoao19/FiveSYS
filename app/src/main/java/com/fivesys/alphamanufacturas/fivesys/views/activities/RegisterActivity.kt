@@ -18,7 +18,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Registro
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
-import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
 import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
@@ -240,65 +239,22 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), registro)
         val observableEnvio: Observable<Registro> = loginInterfaces.sendRegistro(requestBody)
-        var registro: Registro? = null
         observableEnvio.subscribeOn(Schedulers.io())
                 .delay(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Registro> {
                     override fun onComplete() {
-                        sendEmail(view, dialog, registro!!)
+                        Util.mensajeDialog(this@RegisterActivity, "Mensaje", "Enviado Verificar Su Correo")
                     }
 
                     override fun onSubscribe(d: Disposable) {
                     }
 
                     override fun onNext(t: Registro) {
-                        registro = t
                     }
 
                     override fun onError(e: Throwable) {
-                        Util.snackBarMensaje(view, e.toString())
-//                        if (e is HttpException) {
-//                            val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
-//                            Util.snackBarMensaje(view, message.Error!!)
-//                        } else {
-//                            Util.snackBarMensaje(view, e.message.toString())
-//                        }
-                        dialog.dismiss()
-                    }
-                })
-
-        dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
-    }
-
-    private fun sendEmail(view: View, dialog: AlertDialog, registro: Registro) {
-
-        val emailInterfaces = ConexionRetrofit.apiEmail.create(LoginInterfaces::class.java)
-        val jsonRegistro = Gson().toJson(registro)
-        Log.i("TAG", jsonRegistro)
-        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonRegistro)
-        val observableEnvio: Observable<Mensaje> = emailInterfaces.sendEmail(requestBody)
-        var mensaje: String? = ""
-        observableEnvio.subscribeOn(Schedulers.io())
-                .delay(1000, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Mensaje> {
-                    override fun onComplete() {
-                        Util.mensajeDialog(this@RegisterActivity, "Mensaje", mensaje)
-                        dialog.dismiss()
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onNext(t: Mensaje) {
-                        mensaje = t.mensaje
-                    }
-
-                    override fun onError(e: Throwable) {
+//                        Util.snackBarMensaje(view, e.toString())
                         if (e is HttpException) {
                             val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
                             Util.snackBarMensaje(view, message.Error!!)
@@ -308,5 +264,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                         dialog.dismiss()
                     }
                 })
+
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 }

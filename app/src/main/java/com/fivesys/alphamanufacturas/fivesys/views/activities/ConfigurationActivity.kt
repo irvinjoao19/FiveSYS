@@ -97,8 +97,10 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         val auditor = auditoriaImp.getAuditor
         val modo = auditor?.modo!!
         if (modo) {
+            switchOffLine.text = "Modo Off-line"
             switchOffLine.isChecked = modo
         } else {
+            switchOffLine.text = "Modo Online"
             switchOffLine.isChecked = modo
         }
 
@@ -119,6 +121,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, _ ->
             switchOffLine.isChecked = false
+            switchOffLine.text = "Modo Online"
             auditoriaImp.updateOffLine(false)
             dialogInterface.dismiss()
         }
@@ -141,6 +144,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, _ ->
             switchOffLine.isChecked = true
+            switchOffLine.text = "Modo Off-line"
             auditoriaImp.updateOffLine(true)
             dialogInterface.dismiss()
         }
@@ -165,6 +169,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
                 .subscribe(object : Observer<OffLine> {
 
                     override fun onComplete() {
+                        switchOffLine.text = "Modo Off-line"
                         Util.snackBarMensaje(window.decorView, "Modo Off-line")
                         dialog.dismiss()
                     }
