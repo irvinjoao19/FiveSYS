@@ -307,6 +307,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
 
                     @SuppressLint("SetTextI18n")
                     override fun onNext(t: Boolean) {
+                        switchOffLine.text = "Modo Online"
                         auditoriaImp.updateOffLine(false)
                     }
 
