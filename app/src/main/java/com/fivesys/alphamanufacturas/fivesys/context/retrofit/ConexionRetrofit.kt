@@ -26,4 +26,20 @@ object ConexionRetrofit {
 
             return retrofit
         }
+
+    val apiEmail : Retrofit
+    get(){
+        val client = OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.MINUTES)
+                .readTimeout(1, TimeUnit.MINUTES)
+                .writeTimeout(1, TimeUnit.MINUTES)
+                .build()
+
+        retrofit = Retrofit.Builder().baseUrl("www.alphamanufacturas.com")
+                .client(client)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create()).build()
+
+        return retrofit
+    }
 }

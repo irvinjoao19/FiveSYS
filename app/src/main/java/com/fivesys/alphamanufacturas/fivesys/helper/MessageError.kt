@@ -17,6 +17,4 @@ open class MessageError {
         this.StackTrace = StackTrace
         this.Error = Error
     }
-
-
 }

@@ -1,6 +1,7 @@
 package com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces
 
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
+import com.fivesys.alphamanufacturas.fivesys.entities.Registro
 import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
 import io.reactivex.Observable
 import okhttp3.RequestBody
@@ -20,5 +21,9 @@ interface LoginInterfaces {
 
     @Headers("Cache-Control: no-cache")
     @POST("/Account/APIRegister")
-    fun sendRegistro(@Body query: RequestBody): Observable<Mensaje>
+    fun sendRegistro(@Body query: RequestBody): Observable<Registro>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("/mail/fivesys.php")
+    fun sendEmail(@Body query: RequestBody): Observable<Mensaje>
 }

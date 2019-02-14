@@ -11,10 +11,8 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
-import com.fivesys.alphamanufacturas.fivesys.helper.ItemClickListener
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
-import com.fivesys.alphamanufacturas.fivesys.views.adapters.PaginationAdapter2
 import com.google.gson.Gson
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers

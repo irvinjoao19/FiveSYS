@@ -7,10 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
-import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
 import com.fivesys.alphamanufacturas.fivesys.entities.Registro
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
@@ -43,7 +40,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.buttonCancelar -> finish()
             R.id.buttonAceptar -> sendRegistro(v)
             R.id.editTextTipoDocumento -> tipoDocumento()
             R.id.editTextSector -> sectorDialog()
@@ -51,7 +47,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     lateinit var loginInterfaces: LoginInterfaces
-    lateinit var toolbar: Toolbar
+//    lateinit var toolbar: Toolbar
 
     lateinit var buttonAceptar: MaterialButton
     lateinit var buttonCancelar: MaterialButton
@@ -81,19 +77,19 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        bindToolbar()
+//        bindToolbar()
         bindUI()
     }
 
-    private fun bindToolbar() {
-        toolbar = findViewById(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        Objects.requireNonNull<ActionBar>(supportActionBar).title = "Registrar"
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener {
-            finish()
-        }
-    }
+//    private fun bindToolbar() {
+//        toolbar = findViewById(R.id.toolbar)
+//        setSupportActionBar(toolbar)
+//        Objects.requireNonNull<ActionBar>(supportActionBar).title = "Registrar"
+//        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+//        toolbar.setNavigationOnClickListener {
+//            finish()
+//        }
+//    }
 
     private fun bindUI() {
         loginInterfaces = ConexionRetrofit.api.create(LoginInterfaces::class.java)
@@ -106,10 +102,8 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         editTextNombre = findViewById(R.id.editTextNombre)
 
         buttonAceptar = findViewById(R.id.buttonAceptar)
-        buttonCancelar = findViewById(R.id.buttonCancelar)
 
         buttonAceptar.setOnClickListener(this)
-        buttonCancelar.setOnClickListener(this)
         editTextTipoDocumento.setOnClickListener(this)
         editTextSector.setOnClickListener(this)
 
@@ -206,7 +200,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                                 val registro = Registro(apellido, nombre, correo, numeroDocumento, tipoDocumentoId, sectorNombre, telefono)
                                 val jsonRegistro = Gson().toJson(registro)
                                 Log.i("TAG", jsonRegistro)
-                                sendPerfil(jsonRegistro, v)
+                                sendRegistro(jsonRegistro, v)
                                 dialog.dismiss()
                             }
                             alertDialog.setNegativeButton("Cancelar"
@@ -234,7 +228,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
 
     @SuppressLint("SetTextI18n")
-    private fun sendPerfil(registro: String, view: View) {
+    private fun sendRegistro(registro: String, view: View) {
 
         builder = AlertDialog.Builder(android.view.ContextThemeWrapper(this@RegisterActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@RegisterActivity).inflate(R.layout.dialog_alert, null)
@@ -245,9 +239,49 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         builder.setView(v)
 
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), registro)
-        val observableEnvio: Observable<Mensaje> = loginInterfaces.sendRegistro(requestBody)
-        var mensaje: String? = ""
+        val observableEnvio: Observable<Registro> = loginInterfaces.sendRegistro(requestBody)
+        var registro: Registro? = null
+        observableEnvio.subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Registro> {
+                    override fun onComplete() {
+                        sendEmail(view, dialog, registro!!)
+                    }
 
+                    override fun onSubscribe(d: Disposable) {
+                    }
+
+                    override fun onNext(t: Registro) {
+                        registro = t
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Util.snackBarMensaje(view, e.toString())
+//                        if (e is HttpException) {
+//                            val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
+//                            Util.snackBarMensaje(view, message.Error!!)
+//                        } else {
+//                            Util.snackBarMensaje(view, e.message.toString())
+//                        }
+                        dialog.dismiss()
+                    }
+                })
+
+        dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun sendEmail(view: View, dialog: AlertDialog, registro: Registro) {
+
+        val emailInterfaces = ConexionRetrofit.apiEmail.create(LoginInterfaces::class.java)
+        val jsonRegistro = Gson().toJson(registro)
+        Log.i("TAG", jsonRegistro)
+        val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonRegistro)
+        val observableEnvio: Observable<Mensaje> = emailInterfaces.sendEmail(requestBody)
+        var mensaje: String? = ""
         observableEnvio.subscribeOn(Schedulers.io())
                 .delay(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -274,10 +308,5 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                         dialog.dismiss()
                     }
                 })
-
-        dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
     }
 }
