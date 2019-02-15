@@ -46,7 +46,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     lateinit var loginInterfaces: LoginInterfaces
-//    lateinit var toolbar: Toolbar
 
     lateinit var buttonAceptar: MaterialButton
     lateinit var buttonCancelar: MaterialButton
@@ -76,19 +75,8 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-//        bindToolbar()
         bindUI()
     }
-
-//    private fun bindToolbar() {
-//        toolbar = findViewById(R.id.toolbar)
-//        setSupportActionBar(toolbar)
-//        Objects.requireNonNull<ActionBar>(supportActionBar).title = "Registrar"
-//        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-//        toolbar.setNavigationOnClickListener {
-//            finish()
-//        }
-//    }
 
     private fun bindUI() {
         loginInterfaces = ConexionRetrofit.api.create(LoginInterfaces::class.java)

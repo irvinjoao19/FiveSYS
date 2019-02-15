@@ -8,8 +8,8 @@
     tools:context=".views.activities.RegisterActivity">
 
     <!--<include-->
-        <!--android:id="@+id/toolbar"-->
-        <!--layout="@layout/toolbar" />-->
+    <!--android:id="@+id/toolbar"-->
+    <!--layout="@layout/toolbar" />-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -76,7 +76,8 @@
                     android:id="@+id/editTextTelefono"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_calendar" />
+                    android:drawableEnd="@drawable/ic_calendar"
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -117,7 +118,8 @@
                     android:id="@+id/editTextNumeroDocumento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_card" />
+                    android:drawableEnd="@drawable/ic_card"
+                    android:inputType="number" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
