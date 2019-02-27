@@ -233,6 +233,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 .subscribe(object : Observer<Registro> {
                     override fun onComplete() {
                         Util.mensajeDialog(this@RegisterActivity, "Mensaje", "Enviado Verificar Su Correo")
+                        dialog.dismiss()
                     }
 
                     override fun onSubscribe(d: Disposable) {
