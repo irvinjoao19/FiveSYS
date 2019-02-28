@@ -3,7 +3,6 @@ package com.fivesys.alphamanufacturas.fivesys.views.fragments
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,6 @@ import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImp
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
-import com.fivesys.alphamanufacturas.fivesys.views.activities.ListAuditoriaActivity
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AreaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
@@ -36,7 +34,7 @@ import io.realm.RealmList
 
 class FiltroDialogFragment : DialogFragment(), View.OnClickListener {
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = context as InterfaceCommunicator
     }

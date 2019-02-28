@@ -34,7 +34,7 @@ import io.realm.RealmList
 
 class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         listener = context as InterfaceCommunicator
     }

@@ -424,7 +424,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         if (tipo == 1) {
             val fragmentManager = supportFragmentManager
             val filtroFragment = FiltroDialogFragment.newInstance(titulo, modo)
-            val transaction = fragmentManager!!.beginTransaction()
+            val transaction = fragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             transaction.add(android.R.id.content, filtroFragment)
                     .addToBackStack(null).commit()

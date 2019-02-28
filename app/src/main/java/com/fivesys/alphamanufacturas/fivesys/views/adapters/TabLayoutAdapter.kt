@@ -7,14 +7,14 @@ import com.fivesys.alphamanufacturas.fivesys.views.fragments.GeneralFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.ObservationFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.PuntosFijosFragment
 
-class TabLayoutAdapter(fm: FragmentManager?, private val numberOfTabs: Int, val id: Int,val estado:Int) : FragmentStatePagerAdapter(fm) {
+class TabLayoutAdapter(fm: FragmentManager, private val numberOfTabs: Int, val id: Int, val estado: Int) : FragmentStatePagerAdapter(fm) {
 
-    override fun getItem(position: Int): Fragment? {
+    override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> GeneralFragment.newInstance(id,estado)
-            1 -> ObservationFragment.newInstance(id,estado)
-            2 -> PuntosFijosFragment.newInstance(id,estado)
-            else -> null
+            0 -> GeneralFragment.newInstance(id, estado)
+            1 -> ObservationFragment.newInstance(id, estado)
+            2 -> PuntosFijosFragment.newInstance(id, estado)
+            else -> Fragment()
         }
     }
 
