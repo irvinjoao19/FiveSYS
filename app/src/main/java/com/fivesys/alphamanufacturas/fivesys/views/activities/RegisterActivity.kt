@@ -232,7 +232,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Registro> {
                     override fun onComplete() {
-                        Util.mensajeDialog(this@RegisterActivity, "Mensaje", "Enviado Verificar Su Correo")
+                        infoMensaje()
                         dialog.dismiss()
                     }
 
@@ -255,6 +255,20 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 })
 
         dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
+    }
+
+    private fun infoMensaje() {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        builder.setTitle("Mensaje")
+        builder.setMessage("Enviado Verificar Su Correo")
+        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
+            dialogInterface.dismiss()
+            finish()
+        }
+        val dialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.setCancelable(false)
         dialog.show()

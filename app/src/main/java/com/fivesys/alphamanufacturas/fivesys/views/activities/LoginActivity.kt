@@ -76,6 +76,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         this.editTextPassError.let { Util.toggleTextInputLayoutError(it, "Ingrese una contraseña.") }
                     } else {
                         this.editTextPassError.let { Util.toggleTextInputLayoutError(it, null) }
+                        Util.hideKeyboard(this)
                         EnterMain().execute(tipoDocumentoId.toString(), user, password)
                     }
                 }

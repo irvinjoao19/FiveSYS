@@ -7,7 +7,9 @@ import androidx.annotation.RequiresApi
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,16 +41,16 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var toolbar: Toolbar
-    private lateinit var layoutManager: RecyclerView.LayoutManager
-    private lateinit var menuAdapter: MenuAdapter
+    lateinit var recyclerView: RecyclerView
+    lateinit var toolbar: Toolbar
+    lateinit var layoutManager: RecyclerView.LayoutManager
+    lateinit var menuAdapter: MenuAdapter
 
-    private lateinit var title: Array<String>
-    private lateinit var image: IntArray
+    lateinit var title: Array<String>
+    lateinit var image: IntArray
 
-    private lateinit var realm: Realm
-    private lateinit var auditoriaImp: AuditoriaImplementation
+    lateinit var realm: Realm
+    lateinit var auditoriaImp: AuditoriaImplementation
 
     override fun onDestroy() {
         super.onDestroy()
@@ -85,19 +87,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindUI() {
-        title = arrayOf("Auditoria", "Perfil", "Configuración")
-        image = intArrayOf(R.mipmap.ic_auditoria, R.mipmap.ic_perfil, R.mipmap.ic_configuration)
+        title = arrayOf("Auditoria", "Perfil", "Configuración", "Información")
+        image = intArrayOf(R.mipmap.ic_auditoria, R.mipmap.ic_perfil, R.mipmap.ic_configuration,R.mipmap.ic_info)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@MainActivity)
         menuAdapter = MenuAdapter(title, image, object : MenuAdapter.OnItemClickListener {
             override fun onItemClick(strings: String, position: Int) {
-                when (strings) {
-                    "Auditoria" -> {
+                when (position) {
+                    0 -> {
                         startActivity(Intent(this@MainActivity, ListAuditoriaActivity::class.java))
                         finish()
                     }
-                    "Perfil" -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
-                    "Configuración" -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
+                    1 -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
+                    2 -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
+                    3 -> info()
                 }
             }
         })
@@ -110,5 +113,19 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, LoginActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
+    }
+
+    private fun info() {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        builder.setTitle("Información")
+        builder.setMessage("Los interesados en la versión completa deben comunicarse al teléfono:\n +51 01 5253555, o escribir al correo fivesys@alphamanufacturas.com\n" +
+                "Mas información a www.alphamanufacturas.com o al fanpage: FiveSYS")
+        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
     }
 }

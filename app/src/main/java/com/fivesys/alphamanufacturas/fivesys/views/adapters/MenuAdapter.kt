@@ -49,6 +49,11 @@ class MenuAdapter(private val titulos: Array<String>, private val imagenes: IntA
                     textViewTitulo.text = string[position]
                     textViewTitulo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAmarrillo))
                 }
+               3 -> {
+                    card_view.setCardBackgroundColor(ContextCompat.getColor(itemView.context, R.color.colorWhite))
+                    textViewTitulo.text = string[position]
+                    textViewTitulo.setTextColor(ContextCompat.getColor(itemView.context, R.color.colorAzul))
+                }
             }
 
             itemView.setOnClickListener { listener.onItemClick(string[position], adapterPosition) }
