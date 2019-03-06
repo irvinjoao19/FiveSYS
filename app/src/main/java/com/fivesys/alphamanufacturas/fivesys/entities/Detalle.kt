@@ -80,6 +80,4 @@ open class Detalle : RealmObject {
         this.Id = Id
         this.AuditoriaDetalleId = AuditoriaDetalleId
     }
-
-
 }

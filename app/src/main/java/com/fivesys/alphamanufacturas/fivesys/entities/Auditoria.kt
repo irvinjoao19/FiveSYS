@@ -18,6 +18,7 @@ open class Auditoria : RealmObject {
     var Detalles: RealmList<Detalle>? = null
     var PuntosFijos: RealmList<PuntosFijosHeader>? = null
     var Categorias: RealmList<Categoria>? = null
+    var Configuracion: Configuracion? = null
     var FechaRegistro: String? = "01/01/0001"
     var FechaProgramado: String? = ""
     var Estado: Int? = 0
@@ -46,7 +47,7 @@ open class Auditoria : RealmObject {
 
     // TODO GET ONE
 
-    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, Estado: Int?, ResponsableId: Int?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?, Categorias: RealmList<Categoria>?) : super() {
+    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, Estado: Int?, ResponsableId: Int?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?, Categorias: RealmList<Categoria>?,Configuracion: Configuracion?) : super() {
         this.AuditoriaId = AuditoriaId
         this.Codigo = Codigo
         this.Nombre = Nombre
@@ -59,6 +60,7 @@ open class Auditoria : RealmObject {
         this.Detalles = Detalles
         this.PuntosFijos = PuntosFijos
         this.Categorias = Categorias
+        this.Configuracion = Configuracion
     }
 
     // TODO NUEVA AUDITORIA

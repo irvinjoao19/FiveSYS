@@ -77,7 +77,6 @@ class AuditoriaActivity : AppCompatActivity() {
     }
 
     lateinit var toolbar: Toolbar
-    lateinit var tabLayout: TabLayout
 
     lateinit var auditoriaInterfaces: AuditoriaInterfaces
     lateinit var progressBar: ProgressBar

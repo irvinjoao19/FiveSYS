@@ -1,6 +1,5 @@
 package com.fivesys.alphamanufacturas.fivesys.views.adapters
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +28,6 @@ class TipoDocumentoAdapter(private var tipoDocumento: ArrayList<TipoDocumento>, 
         private var textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
         private var textViewDescripcion: TextView = itemView.findViewById(R.id.textViewDescripcion)
 
-        @SuppressLint("SetTextI18n")
         internal fun bind(t: TipoDocumento, listener: OnItemClickListener) {
             textViewNombre.text = t.nombre
             if (!t.descripcion.isEmpty()) {

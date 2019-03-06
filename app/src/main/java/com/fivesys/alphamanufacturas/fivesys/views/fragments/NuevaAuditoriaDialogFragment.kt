@@ -176,7 +176,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         buttonCancelar.setOnClickListener(this)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun areaDialog() {
         builderArea = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
@@ -184,8 +183,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        textViewTitulo.text = "Area"
-
+        textViewTitulo.text = String.format("%s", "Area")
         val areas = auditoriaImp.getAreas()
 
         val areaAdapter = AreaAdapter(areas, R.layout.cardview_combo, object : AreaAdapter.OnItemClickListener {
@@ -218,7 +216,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         dialogArea.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun sectorDialog(view: View) {
         if (sectores != null) {
             builderSector = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
@@ -227,7 +224,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-            textViewTitulo.text = "Sector"
+            textViewTitulo.text = String.format("%s", "Sector")
 
             val areaAdapter = SectorAdapter(sectores!!, R.layout.cardview_combo, object : SectorAdapter.OnItemClickListener {
                 override fun onItemClick(sector: Sector, position: Int) {
@@ -252,7 +249,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun responsableDialog(view: View) {
         if (responsables != null) {
             builderResponsable = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
@@ -261,7 +257,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-            textViewTitulo.text = "Responsable"
+            textViewTitulo.text = String.format("%s", "Responsable")
 
             val areaAdapter = ResponsableAdapter(responsables!!, R.layout.cardview_combo, object : ResponsableAdapter.OnItemClickListener {
                 override fun onItemClick(responsable: Responsable, position: Int) {
@@ -284,7 +280,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun estadoDialog() {
         builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
@@ -292,7 +287,7 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        textViewTitulo.text = "Estado"
+        textViewTitulo.text = String.format("%s", "Estado")
 
         val estado = ArrayList<TipoDocumento>()
         estado.add(TipoDocumento(1, "Pendiente"))

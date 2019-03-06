@@ -267,6 +267,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
             }
 
             a.Categorias = listCategorias
+            a.Configuracion = realm.copyToRealmOrUpdate(offLine.configuracion!!)
 
             realm.copyToRealmOrUpdate(a)
         }

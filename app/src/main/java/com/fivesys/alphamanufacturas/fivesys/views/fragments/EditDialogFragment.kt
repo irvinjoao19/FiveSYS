@@ -178,11 +178,14 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         buttonCancelar.setOnClickListener(this)
         buttonAceptar.setOnClickListener(this)
 
-        tipoDocumento.add(TipoDocumento(1, "-20", "SSOMA "))
-        tipoDocumento.add(TipoDocumento(2, "-15", "Calidad"))
-        tipoDocumento.add(TipoDocumento(3, "-10", "Oper."))
-        tipoDocumento.add(TipoDocumento(4, "-5", "No Oper."))
-        tipoDocumento.add(TipoDocumento(5, "5", "Destacable"))
+
+        val c  = auditoriaImp.getAuditoriaByOne(auditoriaId!!)
+
+        tipoDocumento.add(TipoDocumento(1, c!!.Configuracion?.ValorS1.toString(), "SSOMA "))
+        tipoDocumento.add(TipoDocumento(2, c.Configuracion?.ValorS2.toString(), "Calidad"))
+        tipoDocumento.add(TipoDocumento(3, c.Configuracion?.ValorS3.toString(), "Oper."))
+        tipoDocumento.add(TipoDocumento(4, c.Configuracion?.ValorS4.toString(), "No Oper."))
+        tipoDocumento.add(TipoDocumento(5, c.Configuracion?.ValorS5.toString(), "Destacable"))
 
         if (d != null) {
 
@@ -248,7 +251,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    @SuppressLint("SetTextI18n")
     private fun tipoS(type: Int) {
 
         builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
@@ -257,7 +259,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        textViewTitulo.text = "S$type"
+        textViewTitulo.text = String.format("%s", "S$type")
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipoDocumento, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
                 when (type) {
@@ -340,7 +342,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         dialog.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun categoriaDialog() {
         builderCategoria = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
@@ -348,7 +349,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        textViewTitulo.text = "Categoria"
+        textViewTitulo.text = String.format("%s","Categoria")
         val categoria: Auditoria = auditoriaImp.getAuditoriaByOne(auditoriaId!!)!!
         val categoriaAdapter = CategoriaAdapter(categoria.Categorias!!, R.layout.cardview_combo, object : CategoriaAdapter.OnItemClickListener {
             override fun onItemClick(c: Categoria, v: View, position: Int) {
@@ -379,7 +380,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         dialogCategoria.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun componenteDialog(view: View) {
         if (componentes != null) {
             builderComponente = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
@@ -388,7 +388,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-            textViewTitulo.text = "Componentes"
+            textViewTitulo.text =  String.format("%s","Componentes")
 
             val componenteAdapter = ComponenteAdapter(componentes!!, R.layout.cardview_combo, object : ComponenteAdapter.OnItemClickListener {
                 override fun onItemClick(c: Componente, position: Int) {
@@ -410,7 +410,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             Util.snackBarMensaje(view, "Eliga una Categoria")
         }
     }
-
 
     private fun showPopupMenu(v: View, context: Context) {
         val popupMenu = PopupMenu(context, v)
