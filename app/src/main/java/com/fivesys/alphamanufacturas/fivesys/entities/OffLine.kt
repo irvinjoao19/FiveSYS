@@ -10,14 +10,14 @@ open class OffLine : RealmObject {
     var id: Int? = 1
     var areas: RealmList<Area>? = null
     var categorias: RealmList<Categoria>? = null
-    var configuracion: Configuracion? = null
+    var Configuracion: Configuracion? = null
 
     constructor() : super()
 
-    constructor(areas: RealmList<Area>?, categorias: RealmList<Categoria>?, configuracion: Configuracion?) : super() {
-        this.id = 1
+    constructor(id: Int?, areas: RealmList<Area>?, categorias: RealmList<Categoria>?, Configuracion: Configuracion?) : super() {
+        this.id = id
         this.areas = areas
         this.categorias = categorias
-        this.configuracion = configuracion
+        this.Configuracion = Configuracion
     }
 }

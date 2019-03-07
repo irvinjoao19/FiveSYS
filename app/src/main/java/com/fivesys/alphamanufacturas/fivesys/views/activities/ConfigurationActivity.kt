@@ -130,7 +130,7 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         val dialog: AlertDialog
 
         builder.setTitle("Modo Online")
-        builder.setMessage("Deseas cambiar a modo offline?\nSi cuentas con auditorias off-line se enviaran estas seguro ?")
+        builder.setMessage("Deseas cambiar a modo online?\nSi cuentas con auditorias off-line se enviaran estas seguro ?")
         builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
             clearOffLine()
             dialogInterface.dismiss()
