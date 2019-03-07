@@ -15,12 +15,22 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
-import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.MenuAdapter
 import io.realm.Realm
 import java.util.*
+import android.app.DownloadManager
+import android.content.IntentFilter
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.net.Uri
+import android.os.Environment
+import android.util.Log
+import com.fivesys.alphamanufacturas.fivesys.R
+import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import java.io.File
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,7 +76,6 @@ class MainActivity : AppCompatActivity() {
         existsUser(auditoriaImp.getAuditor)
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun existsUser(auditor: Auditor?) {
         if (auditor == null) {
             val intent = Intent(this, LoginActivity::class.java)
@@ -79,7 +88,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun bindToolbar() {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -87,8 +95,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindUI() {
-        title = arrayOf("Auditoria", "Perfil", "Configuración", "Información")
-        image = intArrayOf(R.mipmap.ic_auditoria, R.mipmap.ic_perfil, R.mipmap.ic_configuration,R.mipmap.ic_info)
+        title = arrayOf("Auditoria", "Perfil", "Configuración", "Información", "Manual")
+        image = intArrayOf(R.mipmap.ic_auditoria, R.mipmap.ic_perfil, R.mipmap.ic_configuration, R.mipmap.ic_info, R.mipmap.ic_download)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@MainActivity)
         menuAdapter = MenuAdapter(title, image, object : MenuAdapter.OnItemClickListener {
@@ -101,6 +109,7 @@ class MainActivity : AppCompatActivity() {
                     1 -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
                     2 -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
                     3 -> info()
+                    4 -> download("", "")
                 }
             }
         })
@@ -128,4 +137,39 @@ class MainActivity : AppCompatActivity() {
         dialog.setCancelable(false)
         dialog.show()
     }
+
+    private fun download(url: String, name: String) {
+        val file = File(Environment.getExternalStorageDirectory(), "/download/$name")
+        if (file.exists()) {
+            if (file.delete()) {
+                Log.i("TAG", "deleted")
+            }
+        }
+        val dm = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        val mUri = Uri.parse(url)
+        val r = DownloadManager.Request(mUri)
+        r.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
+        //r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        //r.setAllowedOverRoaming(false);
+        r.setVisibleInDownloadsUi(false)
+        r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name)
+        r.setTitle(name)
+        r.setMimeType("application/vnd.android.package-archive")
+        val downloadId = dm.enqueue(r)
+        val onComplete = object : BroadcastReceiver() {
+            override fun onReceive(ctxt: Context, intent: Intent) {
+                val uri = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "/download/$name"))
+                val install = Intent(Intent.ACTION_VIEW)
+                install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                install.setDataAndType(uri,
+                        dm.getMimeTypeForDownloadedFile(downloadId))
+                startActivity(install)
+                unregisterReceiver(this)
+                finish()
+            }
+        }
+        registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        Util.toastMensaje(this, "Descargando manual")
+    }
+
 }

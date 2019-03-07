@@ -142,7 +142,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         editTextTipoDocumento.setText(nombre)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun tipoDocumento() {
         builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_combo, null)
@@ -150,7 +149,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-        textViewTitulo.text = "Tipo de Documento"
+        textViewTitulo.text = String.format("%s", "Tipo de Documento")
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipoDocumento, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
                 tipoDocumentoId = t.id
@@ -169,7 +168,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun goToMainActivity(realm: Realm, tipoDocumentoId: Int, user: String, password: String): String? {
-
         var result: String?
         val auditor: Auditor?
 
