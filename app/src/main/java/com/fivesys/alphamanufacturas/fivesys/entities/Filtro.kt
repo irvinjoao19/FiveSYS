@@ -9,6 +9,7 @@ open class Filtro {
     var ResponsableId: Int? = 0
     var Nombre: String? = ""
     var NResponsable: String? = ""
+    var AuditorId: Int? = 0
 
 
     var pageIndex: Int? = 0
@@ -42,7 +43,7 @@ open class Filtro {
 
     // TODO PAGINATION
 
-    constructor(Codigo: String?, Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, pageIndex: Int?, pageSize: Int?) {
+    constructor(Codigo: String?, Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, pageIndex: Int?, pageSize: Int?,AuditorId: Int?) {
         this.Codigo = Codigo
         this.Estado = Estado
         this.AreaId = AreaId
@@ -51,5 +52,6 @@ open class Filtro {
         this.Nombre = Nombre
         this.pageIndex = pageIndex
         this.pageSize = pageSize
+        this.AuditorId = AuditorId
     }
 }

@@ -3,9 +3,7 @@ package com.fivesys.alphamanufacturas.fivesys.views.activities
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import android.view.*
 import android.widget.PopupMenu
 import android.widget.ProgressBar
@@ -141,7 +139,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     var SectorId: Int? = 0
     var ResponsableId: Int? = 0
     var Nombre: String? = ""
-    var filtro: Int? = 1
+    var AuditorId: Int? = 0
 
     override fun onDestroy() {
         super.onDestroy()
@@ -156,7 +154,9 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         auditoriaImp = AuditoriaOver(realm)
         bindToolbar()
         bindUI()
-        modo = auditoriaImp.getAuditor?.modo!!
+        val auditor = auditoriaImp.getAuditor
+        AuditorId = auditor?.AuditorId
+        modo = auditor?.modo!!
         if (modo) {
             progressBar.visibility = View.GONE
             getListOffAuditoria()
@@ -165,7 +165,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private fun bindToolbar() {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
@@ -309,7 +308,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                 .concatMap { page ->
                     loading = true
                     progressBarPage.visibility = View.VISIBLE
-                    val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20)
+                    val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20,AuditorId)
                     val sendPage = Gson().toJson(envio)
                     val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
                     auditoriaInterfaces.pagination(requestBody)
@@ -336,13 +335,12 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         paginator.onNext(pageNumber)
     }
 
-    @SuppressLint("SetTextI18n")
     private fun sendAuditoria(value: String) {
         builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
 
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = "Enviando ...."
+        textViewTitle.text = String.format("%s", "Enviando ....")
         var auditoriaId: Int? = 0
         var estado: Int? = 0
 
@@ -382,13 +380,12 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         dialog.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun showFiltro(titulo: String, tipo: Int) {
         builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
 
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = "Cargando ...."
+        textViewTitle.text = String.format("%s", "Cargando ....")
 
         val listAreaCall: Observable<List<Area>> = auditoriaInterfaces.getFiltroGetAll()
         listAreaCall.subscribeOn(Schedulers.io())
@@ -407,7 +404,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     override fun onNext(t: List<Area>) {
                         auditoriaImp.saveFiltroAuditoria(t)
                     }
-
 
                     override fun onError(e: Throwable) {
                         Util.snackBarMensaje(window.decorView, e.message.toString())
@@ -431,7 +427,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         } else {
             val fragmentManager = supportFragmentManager
             val nuevaAuditoriaFragment = NuevaAuditoriaDialogFragment.newInstance(titulo, modo)
-            val transaction = fragmentManager!!.beginTransaction()
+            val transaction = fragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             transaction.add(android.R.id.content, nuevaAuditoriaFragment)
                     .addToBackStack(null).commit()

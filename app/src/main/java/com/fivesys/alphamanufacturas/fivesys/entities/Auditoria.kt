@@ -8,6 +8,7 @@ open class Auditoria : RealmObject {
 
     @PrimaryKey
     var AuditoriaId: Int? = 0
+    var AuditorId: Int? = 0
     var Codigo: String? = ""
     var Nombre: String? = ""
     var ResponsableId: Int? = 0
@@ -22,8 +23,6 @@ open class Auditoria : RealmObject {
     var FechaRegistro: String? = "01/01/0001"
     var FechaProgramado: String? = ""
     var Estado: Int? = 0
-
-
     var envio: Int? = 0
 
 
@@ -31,8 +30,9 @@ open class Auditoria : RealmObject {
 
     // TODO GET ALL
 
-    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, FechaRegistro: String?, FechaProgramado: String?, Estado: Int?) : super() {
+    constructor(AuditoriaId: Int?, AuditorId: Int?, Codigo: String?, Nombre: String?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, FechaRegistro: String?, FechaProgramado: String?, Estado: Int?) : super() {
         this.AuditoriaId = AuditoriaId
+        this.AuditorId = AuditorId
         this.Codigo = Codigo
         this.Nombre = Nombre
         this.Responsable = Responsable
@@ -47,8 +47,9 @@ open class Auditoria : RealmObject {
 
     // TODO GET ONE
 
-    constructor(AuditoriaId: Int?, Codigo: String?, Nombre: String?, Estado: Int?, ResponsableId: Int?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?, Categorias: RealmList<Categoria>?,Configuracion: Configuracion?) : super() {
+    constructor(AuditoriaId: Int?, AuditorId: Int?, Codigo: String?, Nombre: String?, Estado: Int?, ResponsableId: Int?, Responsable: Responsable?, Grupo: Grupo?, Area: Area?, Sector: Sector?, Detalles: RealmList<Detalle>?, PuntosFijos: RealmList<PuntosFijosHeader>?, Categorias: RealmList<Categoria>?, Configuracion: Configuracion?) : super() {
         this.AuditoriaId = AuditoriaId
+        this.AuditorId = AuditorId
         this.Codigo = Codigo
         this.Nombre = Nombre
         this.Estado = Estado

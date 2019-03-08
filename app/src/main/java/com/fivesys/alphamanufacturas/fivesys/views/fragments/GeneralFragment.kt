@@ -61,7 +61,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
     var a: Auditoria? = null
 
     companion object {
-        fun newInstance(id: Int,estado:Int): GeneralFragment {
+        fun newInstance(id: Int, estado: Int): GeneralFragment {
             val fragment = GeneralFragment()
             val args = Bundle()
             args.putInt("id", id)
@@ -135,7 +135,6 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         })
     }
 
-    @SuppressLint("SetTextI18n")
     private fun estadoDialog() {
         builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
@@ -143,7 +142,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        textViewTitulo.text = "Estado"
+        textViewTitulo.text = String.format("%s", "Estado")
 
         val tipo = ArrayList<TipoDocumento>()
         tipo.add(TipoDocumento(1, "Pendiente"))
@@ -152,7 +151,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
 
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipo, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
-                update(a!!, t.id,  1)
+                update(a!!, t.id, 1)
                 editTextEstado.setText(t.nombre)
                 dialogEstado.dismiss()
             }

@@ -236,6 +236,7 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         realm.executeTransaction { realm ->
             val a = Auditoria()
             a.AuditoriaId = getAuditoriaIdentity()
+            a.AuditorId = getAuditor?.AuditorId
             a.Codigo = getAuditoriaCodigoCorrelativo()
             a.Estado = estado
             a.Nombre = nombre
