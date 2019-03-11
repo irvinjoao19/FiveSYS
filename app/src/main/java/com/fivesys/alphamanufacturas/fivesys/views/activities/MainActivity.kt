@@ -149,27 +149,28 @@ class MainActivity : AppCompatActivity() {
         val mUri = Uri.parse(url)
         val r = DownloadManager.Request(mUri)
         r.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-        //r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         //r.setAllowedOverRoaming(false);
         r.setVisibleInDownloadsUi(false)
         r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name)
         r.setTitle(name)
         r.setMimeType("application/vnd.android.package-archive")
-        val downloadId = dm.enqueue(r)
-        val onComplete = object : BroadcastReceiver() {
-            override fun onReceive(ctxt: Context, intent: Intent) {
-                val uri = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "/download/$name"))
-                val install = Intent(Intent.ACTION_VIEW)
-                install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                install.setDataAndType(uri,
-                        dm.getMimeTypeForDownloadedFile(downloadId))
-                startActivity(install)
-                unregisterReceiver(this)
-                finish()
-            }
-        }
-        registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-        Util.toastMensaje(this, "Descargando manual")
+        dm.enqueue(r)
+        //val downloadId = dm.enqueue(r)
+        //val onComplete = object : BroadcastReceiver() {
+        //    override fun onReceive(ctxt: Context, intent: Intent) {
+        //        val uri = Uri.fromFile(File(Environment.getExternalStorageDirectory(), "/download/$name"))
+        //        val install = Intent(Intent.ACTION_VIEW)
+        //        install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        //        install.setDataAndType(uri,
+        //                dm.getMimeTypeForDownloadedFile(downloadId))
+        //        startActivity(install)
+        //        unregisterReceiver(this)
+        //       finish()
+        //    }
+        //}
+        //registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
+        //Util.toastMensaje(this, "Descargando manual")
     }
 
 }
