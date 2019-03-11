@@ -53,7 +53,8 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                                         listener?.sendOffRequest()
                                         dismiss()
                                     } else {
-                                        val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable)
+                                       val auditorId = auditoriaImp.getAuditor?.AuditorId
+                                        val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable,auditorId)
                                         val json = Gson().toJson(f)
                                         Log.i("TAG", json)
                                         listener?.sendRequest(json)

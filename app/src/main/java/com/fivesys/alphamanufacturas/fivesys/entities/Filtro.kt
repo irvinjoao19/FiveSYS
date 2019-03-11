@@ -27,13 +27,14 @@ open class Filtro {
         this.NResponsable = NResponsable
     }
 
-    constructor(Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?) {
+    constructor(Estado: Int?, AreaId: Int?, SectorId: Int?, ResponsableId: Int?, Nombre: String?, NResponsable: String?,AuditorId:Int?) {
         this.Estado = Estado
         this.AreaId = AreaId
         this.SectorId = SectorId
         this.ResponsableId = ResponsableId
         this.Nombre = Nombre
         this.NResponsable = NResponsable
+        this.AuditorId = AuditorId
     }
 
     constructor(pageIndex: Int?, pageSize: Int?) {
