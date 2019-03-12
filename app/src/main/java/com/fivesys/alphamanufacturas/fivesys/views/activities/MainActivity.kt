@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                     1 -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
                     2 -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
                     3 -> info()
-                    4 -> download("", "")
+                    4 -> download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia V2.pdf")
                 }
             }
         })
