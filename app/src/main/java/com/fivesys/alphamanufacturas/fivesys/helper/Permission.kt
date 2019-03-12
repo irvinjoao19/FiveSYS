@@ -16,6 +16,7 @@ object Permission {
     val CAMERA_REQUEST = 1
     val GALERY_REQUEST = 2
     val SPEECH_REQUEST = 3
+    val WRITE_REQUEST = 4
 
 
     fun hasPermissions(context: Context?, vararg permissions: String): Boolean {

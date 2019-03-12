@@ -1,5 +1,6 @@
 package com.fivesys.alphamanufacturas.fivesys.views.activities
 
+import android.Manifest
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -24,11 +25,17 @@ import android.app.DownloadManager
 import android.content.IntentFilter
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import android.view.View
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.fivesys.alphamanufacturas.fivesys.R
+import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import kotlinx.android.synthetic.main.activity_login.*
 import java.io.File
 
 
@@ -109,7 +116,14 @@ class MainActivity : AppCompatActivity() {
                     1 -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
                     2 -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
                     3 -> info()
-                    4 -> download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia_V2.pdf")
+                    4 -> {
+                        if (ContextCompat.checkSelfPermission(this@MainActivity,
+                                        Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                            download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia_V2.pdf")
+                        } else {
+                            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Permission.WRITE_REQUEST)
+                        }
+                    }
                 }
             }
         })
@@ -171,5 +185,19 @@ class MainActivity : AppCompatActivity() {
         //}
         //registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         //Util.toastMensaje(this, "Descargando manual")
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) {
+
+        when (requestCode) {
+            4 -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("TAG", "PERMISO ACEPTADO")
+                } else {
+                    Util.toastMensaje(this, getString(R.string.content_permission))
+                }
+            }
+        }
     }
 }
