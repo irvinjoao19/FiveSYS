@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
                     1 -> startActivity(Intent(this@MainActivity, PerfilActivity::class.java))
                     2 -> startActivity(Intent(this@MainActivity, ConfigurationActivity::class.java))
                     3 -> info()
-                    4 -> download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia V2.pdf")
+                    4 -> download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia_V2.pdf")
                 }
             }
         })
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         val dm = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val mUri = Uri.parse(url)
+        val mUri = Uri.parse(url.trim())
         val r = DownloadManager.Request(mUri)
         r.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
         r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
@@ -172,5 +172,4 @@ class MainActivity : AppCompatActivity() {
         //registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
         //Util.toastMensaje(this, "Descargando manual")
     }
-
 }
