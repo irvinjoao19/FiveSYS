@@ -168,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         r.setVisibleInDownloadsUi(false)
         r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name)
         r.setTitle(name)
-        r.setMimeType("application/vnd.android.package-archive")
+        r.setMimeType("application/pdf")
         dm.enqueue(r)
         //val downloadId = dm.enqueue(r)
         //val onComplete = object : BroadcastReceiver() {
@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
         //    }
         //}
         //registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
-        //Util.toastMensaje(this, "Descargando manual")
+        Util.toastMensaje(this, "Descargando manual")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             4 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Log.i("TAG", "PERMISO ACEPTADO")
+                    download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia_V2.pdf")
                 } else {
                     Util.toastMensaje(this, getString(R.string.content_permission))
                 }
