@@ -29,7 +29,6 @@ class AreaAdapter(private var areas: RealmResults<Area>, private var layout: Int
 
         private var textViewNombre: TextView = itemView.findViewById(R.id.textViewNombre)
 
-        @SuppressLint("SetTextI18n")
         internal fun bind(t: Area, listener: OnItemClickListener) {
             textViewNombre.text = t.Nombre
             itemView.setOnClickListener { listener.onItemClick(t, adapterPosition) }

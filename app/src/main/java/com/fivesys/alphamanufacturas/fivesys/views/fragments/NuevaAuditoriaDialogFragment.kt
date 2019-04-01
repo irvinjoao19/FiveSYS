@@ -53,8 +53,8 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                                         listener?.sendOffRequest()
                                         dismiss()
                                     } else {
-                                       val auditorId = auditoriaImp.getAuditor?.AuditorId
-                                        val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable,auditorId)
+                                        val auditorId = auditoriaImp.getAuditor?.AuditorId
+                                        val f = Filtro(estadoId, areaId, sectorId, responsableId, editTextNombre.text.toString(), nresponsable, auditorId)
                                         val json = Gson().toJson(f)
                                         Log.i("TAG", json)
                                         listener?.sendRequest(json)
@@ -192,19 +192,25 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                 areaId = area.AreaId
                 editTextArea.setText(area.Nombre)
 
-                sectores = area.Sectores!!
+                if (area.Sectores != null) {
+                    sectores = area.Sectores!!
 
-                editTextSector.setText(area.Sectores!![0]!!.Nombre)
-                sectorId = area.Sectores!![0]!!.SectorId
+                    editTextSector.setText(area.Sectores!![0]!!.Nombre)
+                    sectorId = area.Sectores!![0]!!.SectorId
 
-                responsables = area.Sectores!![0]!!.Responsables!!
+                    responsables = area.Sectores!![0]!!.Responsables!!
 
-                editTextResponsable.setText(area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto)
-                responsableId = area.Sectores!![0]!!.Responsables!![0]!!.ResponsableId
-                nresponsable = area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto
-
-                dialogArea.dismiss()
-
+                    if (responsables!!.size > 0) {
+                        editTextResponsable.setText(area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto)
+                        responsableId = area.Sectores!![0]!!.Responsables!![0]!!.ResponsableId
+                        nresponsable = area.Sectores!![0]!!.Responsables!![0]!!.NombreCompleto
+                    } else {
+                        Util.toastMensaje(context!!, String.format("Sector %s no cuenta con responsables", area.Sectores!![0]!!.Nombre))
+                    }
+                    dialogArea.dismiss()
+                } else {
+                    Util.toastMensaje(context!!, String.format("Area %s no cuenta con sectores", area.Nombre))
+                }
             }
         })
 
@@ -232,8 +238,14 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                     sectorId = sector.SectorId
                     editTextSector.setText(sector.Nombre)
                     responsables = sector.Responsables!!
-                    editTextResponsable.setText(sector.Responsables!![0]!!.NombreCompleto)
-                    responsableId = sector.Responsables!![0]!!.ResponsableId
+
+                    if (responsables!!.size > 0) {
+                        editTextResponsable.setText(sector.Responsables!![0]!!.NombreCompleto)
+                        responsableId = sector.Responsables!![0]!!.ResponsableId
+                    } else {
+                        Util.toastMensaje(context!!, String.format("Sector %s no cuenta con responsables", sector.Nombre))
+                    }
+
                     dialogSector.dismiss()
                 }
             })
