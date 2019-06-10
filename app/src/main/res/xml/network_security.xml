@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">http://132.148.68.63:8082</domain>
+        <domain includeSubdomains="true">132.148.68.63</domain>
     </domain-config>
 </network-security-config>
