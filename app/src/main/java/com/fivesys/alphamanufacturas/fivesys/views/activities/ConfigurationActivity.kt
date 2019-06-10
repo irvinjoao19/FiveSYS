@@ -192,7 +192,8 @@ class ConfigurationActivity : AppCompatActivity(), CompoundButton.OnCheckedChang
         val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
         builder.setView(view)
 
-        var cantidad = 0
+
+       var cantidad = 0
         var suma = 0
         val mensaje = "Las auditorias fueron registradas"
 

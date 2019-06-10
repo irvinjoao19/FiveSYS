@@ -179,7 +179,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         buttonAceptar.setOnClickListener(this)
 
 
-        val c  = auditoriaImp.getAuditoriaByOne(auditoriaId!!)
+        val c = auditoriaImp.getAuditoriaByOne(auditoriaId!!)
 
         tipoDocumento.add(TipoDocumento(1, c!!.Configuracion?.ValorS1.toString(), "SSOMA "))
         tipoDocumento.add(TipoDocumento(2, c.Configuracion?.ValorS2.toString(), "Calidad"))
@@ -188,14 +188,13 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         tipoDocumento.add(TipoDocumento(5, c.Configuracion?.ValorS5.toString(), "Destacable"))
 
         if (d != null) {
+            val ca: CategoriaByDetalle? = d.Categoria
+            if (ca != null) {
+                category.Nombre = ca.Nombre
+                category.CategoriaId = ca.CategoriaId
+                editTextCategoria.setText(ca.Nombre)
 
-            val c: CategoriaByDetalle? = d.Categoria
-            if (c != null) {
-                category.Nombre = c.Nombre
-                category.CategoriaId = c.CategoriaId
-                editTextCategoria.setText(c.Nombre)
-
-                val categoria: Categoria? = auditoriaImp.getCategoriasById(c.CategoriaId!!)
+                val categoria: Categoria? = auditoriaImp.getCategoriasById(ca.CategoriaId!!)
                 if (categoria != null) {
                     componentes = categoria.Componentes
                 }
@@ -349,7 +348,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-        textViewTitulo.text = String.format("%s","Categoria")
+        textViewTitulo.text = String.format("%s", "Categoria")
         val categoria: Auditoria = auditoriaImp.getAuditoriaByOne(auditoriaId!!)!!
         val categoriaAdapter = CategoriaAdapter(categoria.Categorias!!, R.layout.cardview_combo, object : CategoriaAdapter.OnItemClickListener {
             override fun onItemClick(c: Categoria, v: View, position: Int) {
@@ -388,7 +387,7 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-            textViewTitulo.text =  String.format("%s","Componentes")
+            textViewTitulo.text = String.format("%s", "Componentes")
 
             val componenteAdapter = ComponenteAdapter(componentes!!, R.layout.cardview_combo, object : ComponenteAdapter.OnItemClickListener {
                 override fun onItemClick(c: Componente, position: Int) {
