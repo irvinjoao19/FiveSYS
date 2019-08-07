@@ -8,7 +8,8 @@ import java.util.concurrent.TimeUnit
 
 object ConexionRetrofit {
 
-    var BaseUrl = "http://alphaman-001-site11.ftempurl.com"
+//    var BaseUrl = "http://alphaman-001-site11.ftempurl.com"
+    var BaseUrl = "http://20.0.0.104/FIVESYS"
     //var BaseUrl = "http://132.148.68.63:8082"
 
     private lateinit var retrofit: Retrofit
