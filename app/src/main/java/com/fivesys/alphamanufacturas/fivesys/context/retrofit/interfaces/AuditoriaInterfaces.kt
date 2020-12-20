@@ -16,43 +16,46 @@ import retrofit2.http.Query
 interface AuditoriaInterfaces {
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/APIGetAll")
+    @POST("Control/Auditoria/APIGetAll")
     fun getAuditorias(): Observable<List<Auditoria>>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/APIGetOne")
+    @POST("Control/Auditoria/APIGetOne")
     fun getAuditoriasByOne(@Query("id") id: Int): Observable<Auditoria>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/APISaveHeader")
+    @POST("Control/Auditoria/APISaveHeader")
     fun saveHeader(@Body model: RequestBody): Observable<Auditoria>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/General/Organizacion/APIGetAll")
+    @POST("General/Organizacion/APIGetAll")
     fun getFiltroGetAll(): Observable<List<Area>>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/APISave")
+    @POST("Control/Auditoria/APISave")
     fun sendRegister(@Body query: RequestBody): Observable<Mensaje>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/APIGetAllLikePagin")
+    @POST("Control/Auditoria/APIGetAllLikePagin")
     fun pagination(@Body query: RequestBody): Flowable<List<Auditoria>>
+
+    @Headers("Cache-Control: no-cache")
+    @POST("Control/Auditoria/APISendEmail")
+    fun sendEmail(@Body query: RequestBody): Observable<String>
 
     // TODO MODO Off-line
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Home/APIGetData")
+    @POST("Home/APIGetData")
     fun getOffLine(): Observable<OffLine>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/APISaveOff")
+    @POST("Control/Auditoria/APISaveOff")
     fun sendRegisterOffLine(@Body query: RequestBody): Observable<ResponseBody>
-
 
     // TODO PRUEBAAAAA
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Control/Auditoria/APISaveOff")
+    @POST("Control/Auditoria/APISaveOff")
     fun sendRegisterOffLineFl(@Body query: RequestBody): Flowable<ResponseBody>
 }

@@ -73,7 +73,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
 
     // TODO AUDITOR
 
-    var auditorId: Int? = 0
+    var auditorId: Int = 0
     var nombre: String = ""
     var apellido: String = ""
     var fechaNacimiento: String? = null
@@ -245,7 +245,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
                     override fun onError(e: Throwable) {
                         if (e is HttpException) {
                             val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
-                            Util.snackBarMensaje(view, message.Error!!)
+                            Util.snackBarMensaje(view, message.Error)
                         } else {
                             Util.snackBarMensaje(view, e.message.toString())
                         }

@@ -70,4 +70,9 @@
     <string name="registrar">REGISTRAR</string>
     <string name="modo_online">Modo Online</string>
     <string name="content_permission">\"Debes de aceptar los permisos para poder acceder a la funcion.\"</string>
+    <string name="iniciando_sesion">Iniciando Sesión</string>
+    <string name="see">Ver</string>
+    <string name="email">Enviar Correo</string>
+    <string name="ingrese_email">Ingrese Email</string>
+    <string name="send">Enviar</string>
 </resources>

@@ -49,8 +49,8 @@ class PaginationActivity : AppCompatActivity() {
         layoutManager!!.orientation = RecyclerView.VERTICAL
         recyclerView!!.layoutManager = layoutManager
         paginationAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
-            override fun onItemClick(a: Auditoria, position: Int) {
-                Util.snackBarMensaje(window.decorView, a.Nombre!!)
+            override fun onItemClick(a: Auditoria, v: View, position: Int) {
+                Util.snackBarMensaje(v, a.Nombre!!)
             }
         })
         recyclerView!!.adapter = paginationAdapter
@@ -122,10 +122,6 @@ class PaginationActivity : AppCompatActivity() {
                 .delay(600, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .map(object : Function<List<Auditoria>, List<Auditoria>> {
-                    override fun apply(t: List<Auditoria>): List<Auditoria> {
-                        return t
-                    }
-                })
+                .map { t -> t }
     }
 }

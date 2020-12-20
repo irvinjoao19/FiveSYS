@@ -246,7 +246,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 //                        Util.snackBarMensaje(view, e.toString())
                         if (e is HttpException) {
                             val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
-                            Util.snackBarMensaje(view, message.Error!!)
+                            Util.snackBarMensaje(view, message.Error)
                         } else {
                             Util.snackBarMensaje(view, e.message.toString())
                         }

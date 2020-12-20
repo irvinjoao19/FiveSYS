@@ -20,7 +20,7 @@ object Permission {
 
 
     fun hasPermissions(context: Context?, vararg permissions: String): Boolean {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
             for (permission in permissions) {
                 if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
                     return false

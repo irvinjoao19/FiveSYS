@@ -12,18 +12,18 @@ import retrofit2.http.POST
 
 interface LoginInterfaces {
 
-    @POST("/Account/APILogin")
+    @POST("Account/APILogin")
     fun getLogin(@Body model: RequestBody): Call<Auditor>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Account/APIProfile")
+    @POST("Account/APIProfile")
     fun sendPerfil(@Body query: RequestBody): Observable<Mensaje>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/Account/APIRegister")
+    @POST("Account/APIRegister")
     fun sendRegistro(@Body query: RequestBody): Observable<Registro>
 
     @Headers("Cache-Control: no-cache")
-    @POST("/mail/fivesys.php")
+    @POST("mail/fivesys.php")
     fun sendEmail(@Body query: RequestBody): Observable<Mensaje>
 }

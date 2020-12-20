@@ -122,11 +122,11 @@ class AuditoriaAdapter(private var layout: Int?, var listener: OnItemClickListen
             textViewArea.text = a.Area?.Nombre
             textviewSector.text = a.Sector?.Nombre
 
-            itemView.setOnClickListener { listener.onItemClick(a, adapterPosition) }
+            itemView.setOnClickListener { v -> listener.onItemClick(a, v, adapterPosition) }
         }
     }
 
     interface OnItemClickListener {
-        fun onItemClick(a: Auditoria, position: Int)
+        fun onItemClick(a: Auditoria, v: View, position: Int)
     }
 }

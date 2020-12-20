@@ -4,7 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
+import android.widget.EditText
 import android.widget.PopupMenu
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -19,18 +21,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
+import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ApiError
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
+import com.fivesys.alphamanufacturas.fivesys.entities.Email
 import com.fivesys.alphamanufacturas.fivesys.entities.Filtro
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaOffLineAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.NuevaAuditoriaDialogFragment
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -42,6 +48,9 @@ import io.realm.Realm
 import io.realm.RealmResults
 import okhttp3.MediaType
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Retrofit
+import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -70,6 +79,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     }
 
     override fun sendRequest(value: String) {
+        load("Enviando...")
         sendAuditoria(value)
     }
 
@@ -84,6 +94,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                 if (modo) {
                     showCreateHeaderDialog("Nueva Auditoria", 1, true)
                 } else {
+                    load("Cargando...")
                     showFiltro("Filtro", 1)
                 }
                 return true
@@ -98,6 +109,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                 if (modo) {
                     showCreateHeaderDialog("Nueva Auditoria", 0, true)
                 } else {
+                    load("Cargando...")
                     showFiltro("Nueva Auditoria", 0)
                 }
             }
@@ -128,7 +140,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     lateinit var realm: Realm
 
     lateinit var builder: AlertDialog.Builder
-    lateinit var dialog: AlertDialog
+    private var dialog: AlertDialog? = null
 
     lateinit var auditoriaInterfaces: AuditoriaInterfaces
 
@@ -271,12 +283,8 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         layoutManager.orientation = RecyclerView.VERTICAL
         recyclerView.layoutManager = layoutManager
         auditoriaAdapter = AuditoriaAdapter(R.layout.cardview_list_auditoria, object : AuditoriaAdapter.OnItemClickListener {
-            override fun onItemClick(a: Auditoria, position: Int) {
-                val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
-                intent.putExtra("auditoriaId", a.AuditoriaId)
-                intent.putExtra("estado", a.Estado)
-                intent.putExtra("tipo", 0)
-                startActivity(intent)
+            override fun onItemClick(a: Auditoria, v: View, position: Int) {
+                showPopupEmail(a, v)
             }
         })
         recyclerView.adapter = auditoriaAdapter
@@ -308,7 +316,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                 .concatMap { page ->
                     loading = true
                     progressBarPage.visibility = View.VISIBLE
-                    val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20,AuditorId)
+                    val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20, AuditorId)
                     val sendPage = Gson().toJson(envio)
                     val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
                     auditoriaInterfaces.pagination(requestBody)
@@ -336,11 +344,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     }
 
     private fun sendAuditoria(value: String) {
-        builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
 
-        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = String.format("%s", "Enviando ....")
         var auditoriaId: Int? = 0
         var estado: Int? = 0
 
@@ -357,7 +361,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                         intent.putExtra("tipo", 1)
                         startActivity(intent)
                         finish()
-                        dialog.dismiss()
+                        closeLoad()
                     }
 
                     override fun onSubscribe(d: Disposable) {
@@ -371,22 +375,12 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
                     override fun onError(e: Throwable) {
                         Util.snackBarMensaje(window.decorView, e.message.toString())
-                        dialog.dismiss()
+                        closeLoad()
                     }
                 })
-
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
     }
 
     private fun showFiltro(titulo: String, tipo: Int) {
-        builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
-
-        val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = String.format("%s", "Cargando ....")
-
         val listAreaCall: Observable<List<Area>> = auditoriaInterfaces.getFiltroGetAll()
         listAreaCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -394,7 +388,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
                     override fun onComplete() {
                         showCreateHeaderDialog(titulo, tipo, false)
-                        dialog.dismiss()
+                        closeLoad()
                     }
 
                     override fun onSubscribe(d: Disposable) {
@@ -407,13 +401,9 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
                     override fun onError(e: Throwable) {
                         Util.snackBarMensaje(window.decorView, e.message.toString())
-                        dialog.dismiss()
+                        closeLoad()
                     }
                 })
-
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
     }
 
     private fun showCreateHeaderDialog(titulo: String, tipo: Int, modo: Boolean) {
@@ -440,5 +430,111 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
             finish()
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    private fun showPopupEmail(a: Auditoria, v: View) {
+        val popupMenu = PopupMenu(this, v, Gravity.BOTTOM)
+        popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.see))
+        popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.email))
+        popupMenu.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                1 -> {
+                    val intent = Intent(this@ListAuditoriaActivity, AuditoriaActivity::class.java)
+                    intent.putExtra("auditoriaId", a.AuditoriaId)
+                    intent.putExtra("estado", a.Estado)
+                    intent.putExtra("tipo", 0)
+                    startActivity(intent)
+                }
+                2 -> dialogEmail(a)
+            }
+            false
+        }
+        popupMenu.show()
+    }
+
+    private fun dialogEmail(a: Auditoria) {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val v =
+                LayoutInflater.from(this).inflate(R.layout.dialog_email, null)
+        val editTextEmail: EditText = v.findViewById(R.id.editTextEmail)
+        val buttonAceptar: MaterialButton = v.findViewById(R.id.buttonAceptar)
+        val buttonCancelar: MaterialButton = v.findViewById(R.id.buttonCancelar)
+
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
+        buttonAceptar.setOnClickListener {
+            val email = editTextEmail.text.toString()
+            if (email.isEmpty()) {
+                Util.toastMensaje(this, "Ingrese Email")
+                return@setOnClickListener
+            }
+            if (!Util.validarEmail(email)) {
+                Util.toastMensaje(this, "Email incorrecto...\nEjemplo : xxx@gmail.com")
+                return@setOnClickListener
+            }
+            load("Enviando...")
+            email(Email(a.AuditoriaId, email))
+            dialog.dismiss()
+        }
+        buttonCancelar.setOnClickListener {
+            dialog.dismiss()
+        }
+    }
+
+    private fun load(title: String) {
+        builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
+        @SuppressLint("InflateParams") val view =
+                LayoutInflater.from(this).inflate(R.layout.dialog_alert, null)
+        builder.setView(view)
+        val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
+        textViewTitle.text = title
+        dialog = builder.create()
+        dialog!!.setCanceledOnTouchOutside(false)
+        dialog!!.setCancelable(false)
+        dialog!!.show()
+    }
+
+    private fun closeLoad() {
+        if (dialog != null) {
+            if (dialog!!.isShowing) {
+                dialog!!.dismiss()
+            }
+        }
+    }
+
+    private fun email(a: Email) {
+        val json = Gson().toJson(a)
+        Log.i("TAG", json)
+        val body =
+                RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json)
+        auditoriaInterfaces.sendEmail(body)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<String> {
+                    override fun onComplete() {}
+                    override fun onSubscribe(d: Disposable) {}
+                    override fun onNext(t: String) {
+                        Util.toastMensaje(this@ListAuditoriaActivity, t)
+                        closeLoad()
+                    }
+
+                    override fun onError(t: Throwable) {
+                        if (t is HttpException) {
+                            val b = t.response().errorBody()
+                            try {
+                                val error = ApiError(ConexionRetrofit.api).errorConverter.convert(b!!)
+                                Util.toastMensaje(this@ListAuditoriaActivity, error!!.Message)
+                            } catch (e1: IOException) {
+                                e1.printStackTrace()
+                            }
+                        } else {
+                            Util.toastMensaje(this@ListAuditoriaActivity, t.message!!)
+                        }
+                        closeLoad()
+                    }
+                })
     }
 }

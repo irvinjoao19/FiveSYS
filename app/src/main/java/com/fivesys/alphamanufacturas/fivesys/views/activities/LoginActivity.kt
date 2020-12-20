@@ -178,7 +178,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val loginCall = loginInterfaces.getLogin(requestBody)
 
         try {
-            val response = loginCall.execute()!!
+            val response = loginCall.execute()
             when {
                 response.code() == 200 -> {
                     auditor = response.body() as Auditor
@@ -214,8 +214,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             super.onPreExecute()
             builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
             @SuppressLint("InflateParams") val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_alert, null)
-            val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
-            textViewTitle.text = "Iniciando Sesión"
             builder.setView(view)
             dialog = builder.create()
             dialog.setCanceledOnTouchOutside(false)
@@ -224,7 +222,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
         override fun doInBackground(vararg string: String): String? {
 
-            var result: String? = null
+            var result: String?
             val tipoDocumento = string[0].toInt()
             val user = string[1]
             val password = string[2]
