@@ -522,17 +522,17 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     }
 
                     override fun onError(t: Throwable) {
-                        if (t is HttpException) {
-                            val b = t.response().errorBody()
-                            try {
-                                val error = ApiError(ConexionRetrofit.api).errorConverter.convert(b!!)
-                                Util.toastMensaje(this@ListAuditoriaActivity, error!!.Message)
-                            } catch (e1: IOException) {
-                                e1.printStackTrace()
-                            }
-                        } else {
-                            Util.toastMensaje(this@ListAuditoriaActivity, t.message!!)
-                        }
+//                        if (t is HttpException) {
+//                            val b = t.response().errorBody()
+//                            try {
+//                                val error = ApiError(ConexionRetrofit.api).errorConverter.convert(b!!)
+//                                Util.toastMensaje(this@ListAuditoriaActivity, error!!.Message)
+//                            } catch (e1: IOException) {
+//                                e1.printStackTrace()
+//                            }
+//                        } else {
+                        Util.toastMensaje(this@ListAuditoriaActivity, t.message!!)
+//                        }
                         closeLoad()
                     }
                 })
