@@ -3,7 +3,6 @@ package com.fivesys.alphamanufacturas.fivesys.views.fragments
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Environment
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
@@ -12,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -21,19 +19,22 @@ import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.entities.Detalle
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ObservacionAdapter
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmResults
+import kotlinx.android.synthetic.main.fragment_observation.*
 import java.io.File
+
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 class ObservationFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                if (modo) {
+                if (!modo) {
                     showCreateHeaderDialog("Nueva Observación", id!!, 0)
                 } else {
                     if (estado == 1) {
@@ -48,28 +49,21 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
-
-    lateinit var recyclerView: RecyclerView
-    lateinit var layoutManager: RecyclerView.LayoutManager
     lateinit var observacionAdapter: ObservacionAdapter
-    lateinit var fab: FloatingActionButton
 
-    lateinit var builder: AlertDialog.Builder
-    lateinit var dialog: AlertDialog
-
-    var id: Int? = 0
-    var estado: Int? = 0
-    var modo: Boolean = false
+    private var id: Int? = 0
+    private var estado: Int? = 0
+    private var modo: Boolean = false
 
     companion object {
-        fun newInstance(id: Int,estado:Int): ObservationFragment {
-            val fragment = ObservationFragment()
-            val args = Bundle()
-            args.putInt("id", id)
-            args.putInt("estado", estado)
-            fragment.arguments = args
-            return fragment
-        }
+        @JvmStatic
+        fun newInstance(param1: Int, param2: Int) =
+                ObservationFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt(ARG_PARAM1, param1)
+                        putInt(ARG_PARAM2, param2)
+                    }
+                }
     }
 
     override fun onDestroy() {
@@ -77,28 +71,31 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         realm.close()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        val view = inflater.inflate(R.layout.fragment_observation, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         realm = Realm.getDefaultInstance()
-        val args = arguments
-        if (args != null) {
-            auditoriaImp = AuditoriaOver(realm)
-            modo = auditoriaImp.getAuditor?.modo!!
-            id = args.getInt("id")
-            estado = args.getInt("estado")
-            bindUI(view, auditoriaImp.getDetalleByAuditoria(id!!, false))
+        auditoriaImp = AuditoriaOver(realm)
+
+        arguments?.let {
+            id = it.getInt(ARG_PARAM1)
+            estado = it.getInt(ARG_PARAM2)
         }
-        return view
     }
 
-    private fun bindUI(view: View, a: RealmResults<Detalle>?) {
-        fab = view.findViewById(R.id.fab)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_observation, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindUI()
+    }
+
+    private fun bindUI() {
         fab.setOnClickListener(this)
-        recyclerView = view.findViewById(R.id.recyclerView)
-        layoutManager = LinearLayoutManager(context)
+        modo = auditoriaImp.getAuditor?.modo!!
+        val a: RealmResults<Detalle>? = auditoriaImp.getDetalleByAuditoria(id!!, false)
 
         if (a != null) {
             a.addChangeListener { _ ->
@@ -109,7 +106,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                     when (v.id) {
                         R.id.imageViewPhoto -> showPhoto(d.Url)
                         R.id.imageViewOption -> {
-                            if (modo) {
+                            if (!modo) {
                                 showPopupMenu(d, v, context!!)
                             } else {
                                 if (estado == 1) {
@@ -123,17 +120,22 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                 }
             })
             recyclerView.itemAnimator = DefaultItemAnimator()
-            recyclerView.layoutManager = layoutManager
+            recyclerView.layoutManager = LinearLayoutManager(context)
             recyclerView.adapter = observacionAdapter
         }
     }
 
     private fun showPhoto(nombre: String?) {
-        builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_photo, null)
 
         val progressBar: ProgressBar = v.findViewById(R.id.progressBar)
         val imageViewPhoto: ImageView = v.findViewById(R.id.imageViewPhoto)
+
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
         val url = ConexionRetrofit.BaseUrl + nombre
         progressBar.visibility = View.VISIBLE
         Picasso.get()
@@ -144,7 +146,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                     }
 
                     override fun onError(e: Exception) {
-                        val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + nombre)
+                        val f = File(Util.getFolder(requireContext()), nombre!!)
                         Picasso.get()
                                 .load(f)
                                 .into(imageViewPhoto, object : Callback {
@@ -159,9 +161,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                                 })
                     }
                 })
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
+
     }
 
     private fun showCreateHeaderDialog(title: String, id: Int, detalleId: Int) {
@@ -191,7 +191,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         popupMenu.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun deletePhoto(d: Detalle, v: View) {
         val alertDialog = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         alertDialog.setTitle("Eliminar")
@@ -199,7 +198,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
 
         alertDialog.setPositiveButton("Aceptar"
         ) { dialog, _ ->
-            if (auditoriaImp.deleteDetalle(d)) {
+            if (auditoriaImp.deleteDetalle(requireContext(),d)) {
                 Util.snackBarMensaje(v, "Observación eliminado")
             } else {
                 Util.snackBarMensaje(v, "No se pudo eliminar")

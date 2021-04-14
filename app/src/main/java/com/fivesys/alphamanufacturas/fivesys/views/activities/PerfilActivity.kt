@@ -21,8 +21,6 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
 import com.fivesys.alphamanufacturas.fivesys.helper.Mensaje
 import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.Observable
@@ -31,6 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_perfil.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
@@ -42,7 +41,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
             R.id.editTextFecha -> getFecha()
             R.id.buttonCancelar -> finish()
             R.id.buttonAceptar -> {
-                if (modo) {
+                if (!modo) {
                     Util.snackBarMensaje(v, "Habilitar modo On-line")
                 } else {
                     sendPerfil(v)
@@ -55,34 +54,17 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var auditoriaImp: AuditoriaImplementation
     lateinit var loginInterfaces: LoginInterfaces
 
-    lateinit var builder: AlertDialog.Builder
-    lateinit var dialog: AlertDialog
-
-    lateinit var toolbar: Toolbar
-
-    lateinit var editTextNombre: TextInputEditText
-    lateinit var editTextApellido: TextInputEditText
-    lateinit var editTextFecha: TextInputEditText
-    lateinit var editTextCorreo: TextInputEditText
-    lateinit var editTextClaveActual: TextInputEditText
-    lateinit var editTextNuevaClave: TextInputEditText
-    lateinit var editTextConfirmNuevaClave: TextInputEditText
-    lateinit var buttonAceptar: MaterialButton
-    lateinit var buttonCancelar: MaterialButton
-
-
     // TODO AUDITOR
 
-    var auditorId: Int = 0
-    var nombre: String = ""
-    var apellido: String = ""
-    var fechaNacimiento: String? = null
-    var correo: String = ""
-    var claveAnterior: String = ""
-    var claveNueva: String = ""
-    var confirmClaveNueva: String = ""
-
-    var modo: Boolean = false
+    private var auditorId: Int = 0
+    private var nombre: String = ""
+    private var apellido: String = ""
+    private var fechaNacimiento: String? = null
+    private var correo: String = ""
+    private var claveAnterior: String = ""
+    private var claveNueva: String = ""
+    private var confirmClaveNueva: String = ""
+    private var modo: Boolean = false
 
     override fun onDestroy() {
         super.onDestroy()
@@ -99,7 +81,7 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun bindToolbar() {
-        toolbar = findViewById(R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         Objects.requireNonNull<ActionBar>(supportActionBar).title = "Perfil"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -109,22 +91,10 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun bindUI(a: Auditor?) {
-
         loginInterfaces = ConexionRetrofit.api.create(LoginInterfaces::class.java)
-        editTextNombre = findViewById(R.id.editTextNombre)
-        editTextApellido = findViewById(R.id.editTextApellido)
-        editTextFecha = findViewById(R.id.editTextFecha)
-        editTextCorreo = findViewById(R.id.editTextCorreo)
-        editTextClaveActual = findViewById(R.id.editTextClaveActual)
-        editTextNuevaClave = findViewById(R.id.editTextNuevaClave)
-        editTextConfirmNuevaClave = findViewById(R.id.editTextConfirmNuevaClave)
-        buttonAceptar = findViewById(R.id.buttonAceptar)
-        buttonCancelar = findViewById(R.id.buttonCancelar)
-
         editTextFecha.setOnClickListener(this)
         buttonAceptar.setOnClickListener(this)
         buttonCancelar.setOnClickListener(this)
-
 
         if (a != null) {
             auditorId = a.AuditorId
@@ -151,7 +121,6 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun sendPerfil(v: View) {
-
         nombre = editTextNombre.text.toString()
         apellido = editTextApellido.text.toString()
         fechaNacimiento = if (editTextFecha.text.toString().isEmpty()) null else editTextFecha.text.toString()
@@ -160,67 +129,72 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
         claveNueva = editTextNuevaClave.text.toString()
         confirmClaveNueva = editTextConfirmNuevaClave.text.toString()
 
-        if (!nombre.isEmpty()) {
-            if (!apellido.isEmpty()) {
-                if (Util.validarEmail(correo)) {
-                    if (!claveAnterior.isEmpty()) {
-                        if (!claveNueva.isEmpty()) {
-                            if (!confirmClaveNueva.isEmpty()) {
-                                if (claveNueva == confirmClaveNueva) {
-                                    Util.hideKeyboard(this)
-                                    val alertDialog = AlertDialog.Builder(ContextThemeWrapper(this@PerfilActivity, R.style.AppTheme))
-                                    alertDialog.setTitle("Mensaje")
-                                    alertDialog.setMessage("Desear Guardar ?")
-
-                                    alertDialog.setPositiveButton("Aceptar"
-                                    ) { dialog, _ ->
-                                        val auditor = Auditor(auditorId,nombre,apellido,fechaNacimiento,correo,claveAnterior,claveNueva)
-                                        val jsonAuditor = Gson().toJson(auditor)
-                                        sendPerfil(jsonAuditor, v)
-                                        dialog.dismiss()
-                                    }
-                                    alertDialog.setNegativeButton("Cancelar"
-                                    ) { dialog, _ ->
-                                        dialog.dismiss()
-                                    }
-
-                                    val dialog = alertDialog.create()
-                                    dialog.show()
-
-                                } else {
-                                    Util.snackBarMensaje(v, "Las Claves no coinciden")
-                                }
-                            } else {
-                                Util.snackBarMensaje(v, "Ingresar Confirmar Clave Nueva")
-                            }
-                        } else {
-                            Util.snackBarMensaje(v, "Ingresar Clave Nueva")
-                        }
-                    } else {
-                        Util.snackBarMensaje(v, "Ingrese Clave Anterior")
-                    }
-                } else {
-                    Util.snackBarMensaje(v, "Ingrese Correo correctamente")
-                }
-            } else {
-                Util.snackBarMensaje(v, "Ingrese Apellido")
-            }
-        } else {
+        if (nombre.isEmpty()) {
             Util.snackBarMensaje(v, "Ingrese Nombre")
+            return
         }
+
+        if (apellido.isEmpty()) {
+            Util.snackBarMensaje(v, "Ingrese Apellido")
+            return
+        }
+
+        if (!Util.validarEmail(correo)) {
+            Util.snackBarMensaje(v, "Ingrese Correo correctamente")
+            return
+        }
+
+        if (claveAnterior.isEmpty()) {
+            Util.snackBarMensaje(v, "Ingrese Clave Anterior")
+            return
+        }
+
+        if (claveNueva.isEmpty()) {
+            Util.snackBarMensaje(v, "Ingresar Clave Nueva")
+            return
+        }
+
+        if (confirmClaveNueva.isEmpty()) {
+            Util.snackBarMensaje(v, "Ingresar Confirmar Clave Nueva")
+            return
+        }
+
+        if (claveNueva != confirmClaveNueva) {
+            Util.snackBarMensaje(v, "Las Claves no coinciden")
+            return
+        }
+
+        Util.hideKeyboard(this)
+        val alertDialog = AlertDialog.Builder(ContextThemeWrapper(this@PerfilActivity, R.style.AppTheme))
+        alertDialog.setTitle("Mensaje")
+        alertDialog.setMessage("Desear Guardar ?")
+        alertDialog.setPositiveButton("Aceptar"
+        ) { dialog, _ ->
+            val auditor = Auditor(auditorId, nombre, apellido, fechaNacimiento, correo, claveAnterior, claveNueva)
+            val jsonAuditor = Gson().toJson(auditor)
+            sendPerfil(jsonAuditor, v)
+            dialog.dismiss()
+        }
+        alertDialog.setNegativeButton("Cancelar"
+        ) { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = alertDialog.create()
+        dialog.show()
     }
 
 
-    @SuppressLint("SetTextI18n")
     private fun sendPerfil(auditor: String, view: View) {
-
-        builder = AlertDialog.Builder(android.view.ContextThemeWrapper(this@PerfilActivity, R.style.AppTheme))
+        val builder = AlertDialog.Builder(android.view.ContextThemeWrapper(this@PerfilActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@PerfilActivity).inflate(R.layout.dialog_alert, null)
-
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = "Enviando ...."
-
+        textViewTitle.text = String.format("Enviando ....")
         builder.setView(v)
+
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
 
         Log.i("TAG", auditor)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), auditor)
@@ -230,12 +204,10 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
         observableEnvio.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Mensaje> {
+                    override fun onSubscribe(d: Disposable) {}
                     override fun onComplete() {
                         Util.mensajeDialog(this@PerfilActivity, "Mensaje", mensaje)
                         dialog.dismiss()
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
                     }
 
                     override fun onNext(t: Mensaje) {
@@ -252,10 +224,5 @@ class PerfilActivity : AppCompatActivity(), View.OnClickListener {
                         dialog.dismiss()
                     }
                 })
-
-        dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
     }
 }

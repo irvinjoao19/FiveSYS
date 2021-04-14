@@ -22,15 +22,18 @@ import com.fivesys.alphamanufacturas.fivesys.entities.Auditoria
 import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
-import com.google.android.material.textfield.TextInputEditText
 import io.realm.Realm
+import kotlinx.android.synthetic.main.fragment_general.*
+
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 class GeneralFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.editTextEstado -> {
-                if (modo) {
+                if (!modo) {
                     estadoDialog()
                 } else {
                     if (estado == 1) {
@@ -43,64 +46,45 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    lateinit var editTextCodigo: TextInputEditText
-    lateinit var editTextArea: TextInputEditText
-    lateinit var editTextSector: TextInputEditText
-    lateinit var editTextResponsable: TextInputEditText
-    lateinit var editTextNombre: TextInputEditText
-    lateinit var editTextEstado: TextInputEditText
-
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
 
-    lateinit var builderEstado: AlertDialog.Builder
-    lateinit var dialogEstado: AlertDialog
-
-    var estado: Int? = null
-    var modo: Boolean = false
-    var a: Auditoria? = null
-
-    companion object {
-        fun newInstance(id: Int, estado: Int): GeneralFragment {
-            val fragment = GeneralFragment()
-            val args = Bundle()
-            args.putInt("id", id)
-            args.putInt("estado", estado)
-            fragment.arguments = args
-            return fragment
-        }
-    }
+    private var auditoriaId: Int = 0
+    private var estado: Int? = null
+    private var modo: Boolean = false
+    private var a: Auditoria? = null
 
     override fun onDestroy() {
         super.onDestroy()
         realm.close()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_general, container, false)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         realm = Realm.getDefaultInstance()
-        val args = arguments
-        if (args != null) {
-            auditoriaImp = AuditoriaOver(realm)
-            modo = auditoriaImp.getAuditor?.modo!!
-            val id = args.getInt("id")
-            estado = args.getInt("estado")
-            a = auditoriaImp.getAuditoriaByOne(id)
-            bindUI(view)
+        auditoriaImp = AuditoriaOver(realm)
+
+        arguments?.let {
+            auditoriaId = it.getInt(ARG_PARAM1)
+            estado = it.getInt(ARG_PARAM2)
         }
-        return view
+        setHasOptionsMenu(true)
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun bindUI(view: View) {
-        editTextCodigo = view.findViewById(R.id.editTextCodigo)
-        editTextArea = view.findViewById(R.id.editTextArea)
-        editTextSector = view.findViewById(R.id.editTextSector)
-        editTextResponsable = view.findViewById(R.id.editTextResponsable)
-        editTextNombre = view.findViewById(R.id.editTextNombre)
-        editTextEstado = view.findViewById(R.id.editTextEstado)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_general, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindUI()
+    }
+
+    private fun bindUI() {
+        modo = auditoriaImp.getAuditor?.modo!!
+
+        a = auditoriaImp.getAuditoriaByOne(auditoriaId)
+
         editTextEstado.setOnClickListener(this)
 
         if (a != null) {
@@ -115,33 +99,32 @@ class GeneralFragment : Fragment(), View.OnClickListener {
                 3 -> "Anulado"
                 else -> "Vacio"
             })
-            if (!modo) {
+            if (modo) {
                 editTextNombre.isEnabled = estado == 1
             }
         }
 
         editTextNombre.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                updateNombre(a!!, p0.toString(), 1)
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                updateNombre(a!!, p0.toString())
             }
         })
     }
 
     private fun estadoDialog() {
-        builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+      val  builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+
+        builderEstado.setView(v)
+        val dialogEstado = builderEstado.create()
+        dialogEstado.show()
+
         textViewTitulo.text = String.format("%s", "Estado")
 
         val tipo = ArrayList<TipoDocumento>()
@@ -151,7 +134,7 @@ class GeneralFragment : Fragment(), View.OnClickListener {
 
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipo, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
-                update(a!!, t.id, 1)
+                update(a!!, t.id)
                 editTextEstado.setText(t.nombre)
                 dialogEstado.dismiss()
             }
@@ -160,16 +143,24 @@ class GeneralFragment : Fragment(), View.OnClickListener {
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
-        builderEstado.setView(v)
-        dialogEstado = builderEstado.create()
-        dialogEstado.show()
     }
 
-    private fun update(a: Auditoria, estado: Int, tipo: Int) {
-        auditoriaImp.updateAuditoriaByEstado(a, estado, tipo)
+    private fun update(a: Auditoria, estado: Int) {
+        auditoriaImp.updateAuditoriaByEstado(a, estado, 1)
     }
 
-    private fun updateNombre(a: Auditoria, nombre: String, tipo: Int) {
-        auditoriaImp.updateAuditoriaByNombre(a, nombre, tipo)
+    private fun updateNombre(a: Auditoria, nombre: String) {
+        auditoriaImp.updateAuditoriaByNombre(a, nombre, 1)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: Int, param2: Int) =
+                GeneralFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt(ARG_PARAM1, param1)
+                        putInt(ARG_PARAM2, param2)
+                    }
+                }
     }
 }

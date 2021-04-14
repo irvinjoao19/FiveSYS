@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.PopupMenu
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
-import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ApiError
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.AuditoriaInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Area
@@ -34,9 +32,7 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.AuditoriaOffLineAdap
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.FiltroDialogFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.NuevaAuditoriaDialogFragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
-import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,11 +42,9 @@ import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import io.realm.RealmResults
+import kotlinx.android.synthetic.main.activity_list_auditoria.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Retrofit
-import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -62,7 +56,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     }
 
     override fun filtroRequest(value: String, modo: Boolean) {
-        if (modo) {
+        if (!modo) {
             auditoriaOffLineAdapter?.getFilter()?.filter(value)
         } else {
             val filtro: Filtro? = Gson().fromJson(value, Filtro::class.java)
@@ -91,8 +85,8 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.filter -> {
-                if (modo) {
-                    showCreateHeaderDialog("Nueva Auditoria", 1, true)
+                if (!modo) {
+                    showCreateHeaderDialog("Nueva Auditoria", 1, false)
                 } else {
                     load("Cargando...")
                     showFiltro("Filtro", 1)
@@ -106,8 +100,8 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     override fun onClick(v: View) {
         when (v.id) {
             R.id.fab -> {
-                if (modo) {
-                    showCreateHeaderDialog("Nueva Auditoria", 0, true)
+                if (!modo) {
+                    showCreateHeaderDialog("Nueva Auditoria", 0, false)
                 } else {
                     load("Cargando...")
                     showFiltro("Nueva Auditoria", 0)
@@ -126,11 +120,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     private var totalItemCount: Int = 0
     private var visibleItemCount: Int = 0
 
-    lateinit var progressBar: ProgressBar
-    lateinit var progressBarPage: ProgressBar
-    lateinit var fab: FloatingActionButton
-
-    lateinit var toolbar: Toolbar
 
     lateinit var recyclerView: RecyclerView
     lateinit var layoutManager: LinearLayoutManager
@@ -144,14 +133,14 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
 
     lateinit var auditoriaInterfaces: AuditoriaInterfaces
 
-    var modo: Boolean = false
-    var Codigo: String? = ""
-    var Estado: Int? = 0
-    var AreaId: Int? = 0
-    var SectorId: Int? = 0
-    var ResponsableId: Int? = 0
-    var Nombre: String? = ""
-    var AuditorId: Int? = 0
+    private var modo: Boolean = false
+    private var Codigo: String? = ""
+    private var Estado: Int? = 0
+    private var AreaId: Int? = 0
+    private var SectorId: Int? = 0
+    private var ResponsableId: Int? = 0
+    private var Nombre: String? = ""
+    private var AuditorId: Int? = 0
 
     override fun onDestroy() {
         super.onDestroy()
@@ -169,7 +158,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         val auditor = auditoriaImp.getAuditor
         AuditorId = auditor?.AuditorId
         modo = auditor?.modo!!
-        if (modo) {
+        if (!modo) {
             progressBar.visibility = View.GONE
             getListOffAuditoria()
         } else {
@@ -178,7 +167,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     }
 
     private fun bindToolbar() {
-        toolbar = findViewById(R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         Objects.requireNonNull<ActionBar>(supportActionBar).title = "Mis Auditorias"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -189,9 +178,6 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
     }
 
     private fun bindUI() {
-        progressBar = findViewById(R.id.progressBar)
-        progressBarPage = findViewById(R.id.progressBarPage)
-        fab = findViewById(R.id.fab)
         fab.setOnClickListener(this)
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this@ListAuditoriaActivity)
@@ -318,6 +304,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     progressBarPage.visibility = View.VISIBLE
                     val envio = Filtro(Codigo, Estado, AreaId, SectorId, ResponsableId, Nombre, page, 20, AuditorId)
                     val sendPage = Gson().toJson(envio)
+                    Log.i("TAG", sendPage)
                     val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendPage)
                     auditoriaInterfaces.pagination(requestBody)
                             .delay(600, TimeUnit.MILLISECONDS)
@@ -364,10 +351,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                         closeLoad()
                     }
 
-                    override fun onSubscribe(d: Disposable) {
-
-                    }
-
+                    override fun onSubscribe(d: Disposable) {}
                     override fun onNext(t: Auditoria) {
                         auditoriaId = t.AuditoriaId
                         estado = t.Estado
@@ -385,14 +369,10 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
         listAreaCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<List<Area>> {
-
+                    override fun onSubscribe(d: Disposable) {}
                     override fun onComplete() {
-                        showCreateHeaderDialog(titulo, tipo, false)
+                        showCreateHeaderDialog(titulo, tipo, true)
                         closeLoad()
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-
                     }
 
                     override fun onNext(t: List<Area>) {
@@ -522,17 +502,7 @@ class ListAuditoriaActivity : AppCompatActivity(), View.OnClickListener, FiltroD
                     }
 
                     override fun onError(t: Throwable) {
-//                        if (t is HttpException) {
-//                            val b = t.response().errorBody()
-//                            try {
-//                                val error = ApiError(ConexionRetrofit.api).errorConverter.convert(b!!)
-//                                Util.toastMensaje(this@ListAuditoriaActivity, error!!.Message)
-//                            } catch (e1: IOException) {
-//                                e1.printStackTrace()
-//                            }
-//                        } else {
-                        Util.toastMensaje(this@ListAuditoriaActivity, t.message!!)
-//                        }
+                        Util.toastMensaje(this@ListAuditoriaActivity, t.message!!)//
                         closeLoad()
                     }
                 })

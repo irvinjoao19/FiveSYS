@@ -3,7 +3,6 @@ package com.fivesys.alphamanufacturas.fivesys.views.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
@@ -22,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
-import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
+import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ApiError
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.interfaces.LoginInterfaces
 import com.fivesys.alphamanufacturas.fivesys.entities.Auditor
@@ -30,11 +29,16 @@ import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
+import io.reactivex.CompletableObserver
+import io.reactivex.Observer
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_login.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.IOException
@@ -77,7 +81,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     } else {
                         this.editTextPassError.let { Util.toggleTextInputLayoutError(it, null) }
                         Util.hideKeyboard(this)
-                        EnterMain().execute(tipoDocumentoId.toString(), user, password)
+
+                        load()
+                        Realm.getDefaultInstance().use { realm ->
+                            goToMainActivity(realm, tipoDocumentoId, user, password)
+
+                        }
                     }
                 }
             }
@@ -88,21 +97,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private lateinit var editTextUser: TextInputEditText
-    private lateinit var editTextPass: TextInputEditText
-    private lateinit var editTextTipoDocumento: TextInputEditText
-    private lateinit var editTextPassError: TextInputLayout
-    private lateinit var editTextUserError: TextInputLayout
-    private lateinit var buttonEnviar: MaterialButton
-    private lateinit var buttonRegistrar: TextView
     private lateinit var loginInterfaces: LoginInterfaces
-
     private lateinit var builder: AlertDialog.Builder
-    private lateinit var dialog: AlertDialog
+    private var dialog: AlertDialog? = null
 
-    var tipoDocumento = ArrayList<TipoDocumento>()
-    var tipoDocumentoId: Int = 3
-    var nombre: String = "L.E / DNI"
+    private var tipoDocumento = ArrayList<TipoDocumento>()
+    private var tipoDocumentoId: Int = 3
+    private var nombre: String = "L.E / DNI"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,15 +122,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun bindUI() {
+        textViewVersion.text = String.format("V %s", Util.getVersion(this))
         loginInterfaces = ConexionRetrofit.api.create(LoginInterfaces::class.java)
-        editTextUser = findViewById(R.id.editTextUser)
-        editTextPass = findViewById(R.id.editTextPass)
-        editTextTipoDocumento = findViewById(R.id.editTextTipoDocumento)
-        editTextUserError = findViewById(R.id.editTextUserError)
-        editTextPassError = findViewById(R.id.editTextPassError)
-
-        buttonEnviar = findViewById(R.id.buttonEnviar)
-        buttonRegistrar = findViewById(R.id.buttonRegistrar)
         buttonEnviar.setOnClickListener(this)
         buttonRegistrar.setOnClickListener(this)
         editTextTipoDocumento.setOnClickListener(this)
@@ -143,12 +137,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun tipoDocumento() {
-        builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_combo, null)
 
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
+
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
         textViewTitulo.text = String.format("%s", "Tipo de Documento")
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipoDocumento, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
@@ -162,114 +161,90 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
     }
 
-    private fun goToMainActivity(realm: Realm, tipoDocumentoId: Int, user: String, password: String): String? {
-        var result: String?
-        val auditor: Auditor?
-
+    private fun goToMainActivity(realm: Realm, tipoDocumentoId: Int, user: String, password: String) {
         val auditoriaImp: AuditoriaImplementation = AuditoriaOver(realm)
         val envio = Auditor(tipoDocumentoId, user, password)
         val sendLogin = Gson().toJson(envio)
+        Log.i("TAG", sendLogin)
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), sendLogin)
-        val loginCall = loginInterfaces.getLogin(requestBody)
-
-        try {
-            val response = loginCall.execute()
-            when {
-                response.code() == 200 -> {
-                    auditor = response.body() as Auditor
-                    result = when {
-                        auditor.NombreCompleto!!.isNotEmpty() -> {
-                            auditoriaImp.saveAuditor(auditor)
-                            "enter"
+        loginInterfaces.getLogin(requestBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Auditor> {
+                    override fun onNext(t: Auditor) {
+                        closeLoad()
+                        if (t.NombreCompleto!!.isNotEmpty()) {
+                            insertAuditor(auditoriaImp, t)
+                        } else {
+                            Util.mensajeDialog(this@LoginActivity, "Error", "Usuario no existe")
                         }
-                        else -> "users"
                     }
-                }
-                response.code() == 404 -> result = "users"
-                else -> {
-                    val message = Gson().fromJson(response.errorBody()?.string(), MessageError::class.java)
-                    Log.i("TAG", message.Error)
-                    result = message.Error
-                }
-            }
-        } catch (e: IOException) {
-            result = e.message + "\nVerificar si cuentas con Internet."
-        }
 
-        return result
+                    override fun onError(t: Throwable) {
+                        closeLoad()
+                        if (t is HttpException) {
+                            val b = t.response().errorBody()
+                            try {
+                                val error = ApiError(ConexionRetrofit.api).errorConverter.convert(b!!)
+                                Util.mensajeDialog(this@LoginActivity, "Error", error!!.Error)
+                            } catch (e1: IOException) {
+                                Util.mensajeDialog(this@LoginActivity, "Error", e1.toString())
+                            }
+                        } else {
+                            Util.mensajeDialog(this@LoginActivity, "Error", t.toString())
+                        }
+                    }
+
+                    override fun onSubscribe(d: Disposable) {}
+                    override fun onComplete() {}
+                })
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private inner class EnterMain : AsyncTask<String, Void, String>() {
-        private lateinit var builder: AlertDialog.Builder
-        private lateinit var dialog: AlertDialog
+    private fun messagePermission() {
+        MaterialAlertDialogBuilder(ContextThemeWrapper(this, R.style.AppTheme))
+                .setTitle("Permisos Denegados")
+                .setMessage("Debes de aceptar los permisos para poder acceder al aplicativo.")
+                .setPositiveButton("Aceptar") { dialogInterface, _ ->
+                    permision()
+                    dialogInterface.dismiss()
+                }
+                .setCancelable(false)
+                .show()
+    }
 
-        @SuppressLint("SetTextI18n")
-        override fun onPreExecute() {
-            super.onPreExecute()
-            builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
-            @SuppressLint("InflateParams") val view = LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_alert, null)
-            builder.setView(view)
-            dialog = builder.create()
-            dialog.setCanceledOnTouchOutside(false)
-            dialog.show()
-        }
+    private fun load() {
+        builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
+        @SuppressLint("InflateParams") val view =
+                LayoutInflater.from(this@LoginActivity).inflate(R.layout.dialog_alert, null)
+        builder.setView(view)
+        dialog = builder.create()
+        dialog!!.setCanceledOnTouchOutside(false)
+        dialog!!.setCancelable(false)
+        dialog!!.show()
+    }
 
-        override fun doInBackground(vararg string: String): String? {
-
-            var result: String?
-            val tipoDocumento = string[0].toInt()
-            val user = string[1]
-            val password = string[2]
-
-            Realm.getDefaultInstance().use { realm ->
-                result = goToMainActivity(realm, tipoDocumento, user, password)
-                Thread.sleep(1000)
+    private fun closeLoad() {
+        if (dialog != null) {
+            if (dialog!!.isShowing) {
+                dialog!!.dismiss()
             }
-
-            publishProgress()
-            return result
         }
+    }
 
-        @SuppressLint("RestrictedApi")
-        override fun onPostExecute(s: String?) {
-            super.onPostExecute(s)
-            if (dialog.isShowing) {
-                dialog.dismiss()
-            }
-            if (s != null) {
-                when (s) {
-                    "enter" -> {
+    private fun insertAuditor(auditoriaImp: AuditoriaImplementation, a: Auditor) {
+        auditoriaImp.saveAuditor(a)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CompletableObserver {
+                    override fun onSubscribe(d: Disposable) {}
+                    override fun onError(e: Throwable) {}
+                    override fun onComplete() {
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                     }
-                    else -> {
-                        Util.mensajeDialog(this@LoginActivity, "Error", s)
-                    }
-                }
-            }
-        }
-    }
-
-    private fun messagePermission() {
-        val builder = AlertDialog.Builder(ContextThemeWrapper(this@LoginActivity, R.style.AppTheme))
-        val dialog: AlertDialog
-
-        builder.setTitle("Permisos Denegados")
-        builder.setMessage("Debes de aceptar los permisos para poder acceder al aplicativo.")
-        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
-            permision()
-            dialogInterface.dismiss()
-        }
-        dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
+                })
     }
 }

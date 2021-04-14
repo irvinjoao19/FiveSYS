@@ -30,7 +30,7 @@ class TipoDocumentoAdapter(private var tipoDocumento: ArrayList<TipoDocumento>, 
 
         internal fun bind(t: TipoDocumento, listener: OnItemClickListener) {
             textViewNombre.text = t.nombre
-            if (!t.descripcion.isEmpty()) {
+            if (t.descripcion.isNotEmpty()) {
                 textViewDescripcion.text = t.descripcion
             }
             itemView.setOnClickListener { listener.onItemClick(t, adapterPosition) }

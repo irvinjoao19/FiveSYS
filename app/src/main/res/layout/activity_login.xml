@@ -39,11 +39,11 @@
                     android:src="@drawable/fivesys" />
 
             <TextView
+                    android:id="@+id/textViewVersion"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="15dp"
-                    android:text="@string/version"
                     android:textAlignment="center"
                     android:textColor="@color/colorWhite"
                     android:textStyle="bold" />

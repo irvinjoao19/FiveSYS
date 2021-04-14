@@ -3,18 +3,15 @@ package com.fivesys.alphamanufacturas.fivesys.views.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Environment
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TabLayoutAdapter
 import android.util.Log
 import android.view.*
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.viewpager.widget.ViewPager
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
 import com.fivesys.alphamanufacturas.fivesys.context.retrofit.ConexionRetrofit
@@ -32,6 +29,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import kotlinx.android.synthetic.main.activity_auditoria.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -46,7 +44,7 @@ class AuditoriaActivity : AppCompatActivity() {
     }
 
     override fun onPrepareOptionsMenu(menu: Menu): Boolean {
-        if (modo) {
+        if (!modo) {
             menu.findItem(R.id.save).isVisible = false
         }
         return super.onPrepareOptionsMenu(menu)
@@ -76,10 +74,7 @@ class AuditoriaActivity : AppCompatActivity() {
         realm.close()
     }
 
-    lateinit var toolbar: Toolbar
-
     lateinit var auditoriaInterfaces: AuditoriaInterfaces
-    lateinit var progressBar: ProgressBar
 
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
@@ -87,24 +82,23 @@ class AuditoriaActivity : AppCompatActivity() {
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
 
-    var envioId: Int? = 0
-    var estado: Int? = 0
-    var tipo: Int? = 0
-    var modo: Boolean = false
+    private var envioId: Int? = 0
+    private var estado: Int? = 0
+    private var tipo: Int? = 0
+    private var modo: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auditoria)
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
-        progressBar = findViewById(R.id.progressBar)
         val bundle = intent.extras
         if (bundle != null) {
             auditoriaInterfaces = ConexionRetrofit.api.create(AuditoriaInterfaces::class.java)
             tipo = bundle.getInt("tipo")
             modo = auditoriaImp.getAuditor?.modo!!
             estado = bundle.getInt("estado")
-            if (modo) {
+            if (!modo) {
                 progressBar.visibility = View.GONE
                 bindToolbar()
                 bindTabLayout(bundle.getInt("auditoriaId"), estado!!)
@@ -116,12 +110,12 @@ class AuditoriaActivity : AppCompatActivity() {
     }
 
     private fun bindToolbar() {
-        toolbar = findViewById(R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         Objects.requireNonNull<ActionBar>(supportActionBar).title = "Nueva Auditoria"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar.setNavigationOnClickListener {
-            if (modo) {
+            if (!modo) {
                 confirmExit(tipo!!, "Se guardaran los cambios al salir ?")
             } else {
                 confirmExit(tipo!!, "Se eliminaran los cambios al salir ?")
@@ -131,11 +125,9 @@ class AuditoriaActivity : AppCompatActivity() {
 
     private fun bindTabLayout(id: Int, estado: Int) {
         envioId = id
-        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab1))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab2))
         tabLayout.addTab(tabLayout.newTab().setText(R.string.tab3))
-        val viewPager = findViewById<ViewPager>(R.id.viewPager)
         val tabLayoutAdapter = TabLayoutAdapter(supportFragmentManager, tabLayout.tabCount, id, estado)
         viewPager.adapter = tabLayoutAdapter
         viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
@@ -146,10 +138,7 @@ class AuditoriaActivity : AppCompatActivity() {
                 Util.hideKeyboard(this@AuditoriaActivity)
             }
 
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-
-            }
-
+            override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
@@ -161,14 +150,11 @@ class AuditoriaActivity : AppCompatActivity() {
         auditoriaCall.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Auditoria> {
+                    override fun onSubscribe(d: Disposable) {}
                     override fun onComplete() {
                         progressBar.visibility = View.GONE
                         bindToolbar()
                         bindTabLayout(id, estado)
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
-
                     }
 
                     override fun onNext(t: Auditoria) {
@@ -184,7 +170,6 @@ class AuditoriaActivity : AppCompatActivity() {
 
     private fun confirmRegister(id: Int) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
-        val dialog: AlertDialog
 
         builder.setTitle("Mensaje")
         builder.setMessage("Estas seguro de enviar ?")
@@ -193,19 +178,17 @@ class AuditoriaActivity : AppCompatActivity() {
             dialogInterface.dismiss()
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, _ -> dialogInterface.dismiss() }
-        dialog = builder.create()
+        val dialog: AlertDialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun sendRegister(id: Int) {
         builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@AuditoriaActivity).inflate(R.layout.dialog_alert, null)
 
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = "Enviando ...."
-
+        textViewTitle.text = String.format("Enviando ....")
         builder.setView(v)
 
         val filePaths: ArrayList<String> = ArrayList()
@@ -219,20 +202,17 @@ class AuditoriaActivity : AppCompatActivity() {
         b.addFormDataPart("model", json)
 
         for (f: PuntosFijosHeader in auditoria.PuntosFijos!!) {
-            if (!f.Url.isNullOrEmpty()) {
-
-                val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + f.Url)
+            if (f.Url!!.isNotEmpty()) {
+                val file = File(Util.getFolder(this), f.Url!!)
                 if (file.exists()) {
                     filePaths.add(file.toString())
                 }
-
             }
         }
 
         for (d: Detalle in auditoria.Detalles!!) {
-            if (!d.Url.isNullOrEmpty()) {
-
-                val file = File(Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url)
+            if (d.Url!!.isNotEmpty()) {
+                val file = File(Util.getFolder(this), d.Url!!)
                 if (file.exists()) {
                     filePaths.add(file.toString())
                 }
@@ -253,12 +233,10 @@ class AuditoriaActivity : AppCompatActivity() {
         observableEnvio.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Mensaje> {
+                    override fun onSubscribe(d: Disposable) {}
                     override fun onComplete() {
                         Util.mensajeDialog(this@AuditoriaActivity, "Mensaje", mensaje)
                         dialog.dismiss()
-                    }
-
-                    override fun onSubscribe(d: Disposable) {
                     }
 
                     override fun onNext(t: Mensaje) {
@@ -279,12 +257,12 @@ class AuditoriaActivity : AppCompatActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (modo) {
+            if (!modo) {
                 confirmExit(tipo!!, "Se guardaran los cambios al salir ?")
             } else {
-                if (estado!! == 1){
+                if (estado!! == 1) {
                     confirmExit(tipo!!, "Se eliminaran los cambios al salir ?")
-                }else{
+                } else {
                     go(tipo!!)
                 }
             }
@@ -294,8 +272,6 @@ class AuditoriaActivity : AppCompatActivity() {
 
     private fun confirmExit(valor: Int, mensaje: String) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this@AuditoriaActivity, R.style.AppTheme))
-        val dialog: AlertDialog
-
         builder.setTitle("Mensaje")
         builder.setMessage(mensaje)
         builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
@@ -303,12 +279,12 @@ class AuditoriaActivity : AppCompatActivity() {
             dialogInterface.dismiss()
         }
         builder.setNegativeButton("Cancelar") { dialogInterface, _ -> dialogInterface.dismiss() }
-        dialog = builder.create()
+        val dialog: AlertDialog = builder.create()
         dialog.setCanceledOnTouchOutside(false)
         dialog.show()
     }
 
-    private fun go(valor:Int){
+    private fun go(valor: Int) {
         if (valor == 1) {
             startActivity(Intent(this@AuditoriaActivity, ListAuditoriaActivity::class.java))
             finish()

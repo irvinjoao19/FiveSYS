@@ -2,9 +2,7 @@ package com.fivesys.alphamanufacturas.fivesys.views.activities
 
 import android.Manifest
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import androidx.annotation.RequiresApi
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
@@ -22,14 +20,11 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.MenuAdapter
 import io.realm.Realm
 import java.util.*
 import android.app.DownloadManager
-import android.content.IntentFilter
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
-import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.fivesys.alphamanufacturas.fivesys.R
@@ -37,7 +32,7 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Permission
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import kotlinx.android.synthetic.main.activity_login.*
 import java.io.File
-
+import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity() {
 
@@ -51,8 +46,7 @@ class MainActivity : AppCompatActivity() {
             R.id.logout -> {
                 auditoriaImp.deleteAuditor()
                 logOut()
-                System.exit(0)
-                return true
+                exitProcess(0)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -119,7 +113,7 @@ class MainActivity : AppCompatActivity() {
                     4 -> {
                         if (ContextCompat.checkSelfPermission(this@MainActivity,
                                         Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                            download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia_V2.pdf")
+                            download()
                         } else {
                             ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Permission.WRITE_REQUEST)
                         }
@@ -152,22 +146,22 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun download(url: String, name: String) {
-        val file = File(Environment.getExternalStorageDirectory(), "/download/$name")
+    private fun download() {
+        val file = File(Environment.DIRECTORY_DOWNLOADS, "Guia_V2.pdf")
         if (file.exists()) {
             if (file.delete()) {
                 Log.i("TAG", "deleted")
             }
         }
         val dm = getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        val mUri = Uri.parse(url.trim())
+        val mUri = Uri.parse("http://alphaman-001-site11.ftempurl.com/archivos/guia_v2.pdf")
         val r = DownloadManager.Request(mUri)
         r.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI or DownloadManager.Request.NETWORK_MOBILE)
-        r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        r.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         //r.setAllowedOverRoaming(false);
-        r.setVisibleInDownloadsUi(false)
-        r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name)
-        r.setTitle(name)
+        //r.setVisibleInDownloadsUi(false)
+        r.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Guia_V2.pdf")
+        r.setTitle("Guia_V2.pdf")
         r.setMimeType("application/pdf")
         dm.enqueue(r)
         //val downloadId = dm.enqueue(r)
@@ -193,7 +187,7 @@ class MainActivity : AppCompatActivity() {
         when (requestCode) {
             4 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    download("http://132.148.68.63:8082/archivos/guia_v2.pdf", "Guia_V2.pdf")
+                    download()
                 } else {
                     Util.toastMensaje(this, getString(R.string.content_permission))
                 }

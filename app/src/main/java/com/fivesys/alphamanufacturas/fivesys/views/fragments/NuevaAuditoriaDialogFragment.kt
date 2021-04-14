@@ -26,11 +26,13 @@ import com.fivesys.alphamanufacturas.fivesys.views.adapters.AreaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ResponsableAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.SectorAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.Gson
 import io.realm.Realm
 import io.realm.RealmList
+import kotlinx.android.synthetic.main.dialog_nueva_auditoria.*
+
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
@@ -46,8 +48,8 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
                     if (areaId != 0) {
                         if (sectorId != 0) {
                             if (responsableId != 0) {
-                                if (!editTextNombre.text.toString().isEmpty()) {
-                                    if (modo) {
+                                if (editTextNombre.text.toString().isNotEmpty()) {
+                                    if (!modo) {
                                         auditoriaImp.saveAuditoriaOffLine(estadoId, editTextNombre.text.toString(), responsableId, areaId, sectorId)
                                         Util.hideKeyboardFrom(context!!, v)
                                         listener?.sendOffRequest()
@@ -87,60 +89,44 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         }
     }
 
-    lateinit var textViewTitulo: TextView
-
-    lateinit var editTextEstado: TextInputEditText
-    lateinit var editTextArea: TextInputEditText
-    lateinit var editTextSector: TextInputEditText
-    lateinit var editTextResponsable: TextInputEditText
-    lateinit var editTextNombre: TextInputEditText
-
-    lateinit var buttonAceptar: MaterialButton
-    lateinit var buttonCancelar: MaterialButton
-
-    lateinit var builderArea: AlertDialog.Builder
-    lateinit var builderSector: AlertDialog.Builder
-    lateinit var builderResponsable: AlertDialog.Builder
-    lateinit var builderEstado: AlertDialog.Builder
-
-    lateinit var dialogArea: AlertDialog
-    lateinit var dialogSector: AlertDialog
-    lateinit var dialogResponasble: AlertDialog
-    lateinit var dialogEstado: AlertDialog
-
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
 
-    var sectores: RealmList<Sector>? = null
-    var responsables: RealmList<Responsable>? = null
+    private var sectores: RealmList<Sector>? = null
+    private var responsables: RealmList<Responsable>? = null
 
-    var areaId: Int = 0
-    var sectorId: Int = 0
-    var responsableId: Int = 0
-    var nresponsable: String? = ""
-    var estadoId: Int = 1
+    private var areaId: Int = 0
+    private var sectorId: Int = 0
+    private var responsableId: Int = 0
+    private var nresponsable: String? = ""
+    private var estadoId: Int = 1
 
     private var titulo: String? = null
-    var listener: InterfaceCommunicator? = null
-    var modo: Boolean = false
+    private var listener: InterfaceCommunicator? = null
+    private var modo: Boolean = false
 
     companion object {
-        fun newInstance(titulo: String, modo: Boolean): NuevaAuditoriaDialogFragment {
-            val f = NuevaAuditoriaDialogFragment()
-            val args = Bundle()
-            args.putString("titulo", titulo)
-            args.putBoolean("modo", modo)
-            f.arguments = args
-            return f
-        }
+        @JvmStatic
+        fun newInstance(param1: String, param2: Boolean) =
+                NuevaAuditoriaDialogFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putBoolean(ARG_PARAM2, param2)
+                    }
+                }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        titulo = arguments!!.getString("titulo")
-        modo = arguments!!.getBoolean("modo")
+
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
+
+        arguments?.let {
+            titulo = it.getString(ARG_PARAM1)
+            modo = it.getBoolean(ARG_PARAM2)
+        }
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -150,25 +136,16 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dialog_nueva_auditoria, container, false)
-        bindUI(view)
-        setHasOptionsMenu(true)
-        return view
+        return inflater.inflate(R.layout.dialog_nueva_auditoria, container, false)
     }
 
-    private fun bindUI(view: View) {
-        textViewTitulo = view.findViewById(R.id.textViewTitulo)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindUI()
+    }
+
+    private fun bindUI() {
         textViewTitulo.text = titulo
-
-        editTextEstado = view.findViewById(R.id.editTextEstado)
-        editTextArea = view.findViewById(R.id.editTextArea)
-        editTextSector = view.findViewById(R.id.editTextSector)
-        editTextResponsable = view.findViewById(R.id.editTextResponsable)
-        editTextNombre = view.findViewById(R.id.editTextNombre)
-
-        buttonAceptar = view.findViewById(R.id.buttonAceptar)
-        buttonCancelar = view.findViewById(R.id.buttonCancelar)
-
         editTextEstado.setOnClickListener(this)
         editTextArea.setOnClickListener(this)
         editTextSector.setOnClickListener(this)
@@ -178,12 +155,17 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun areaDialog() {
-        builderArea = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        val builderArea = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+
+        builderArea.setView(v)
+        val dialogArea = builderArea.create()
+        dialogArea.show()
+
         textViewTitulo.text = String.format("%s", "Area")
         val areas = auditoriaImp.getAreas()
 
@@ -218,19 +200,21 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = areaAdapter
-        builderArea.setView(v)
-        dialogArea = builderArea.create()
-        dialogArea.show()
     }
 
     private fun sectorDialog(view: View) {
         if (sectores != null) {
-            builderSector = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+            val builderSector = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
             val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+
+            builderSector.setView(v)
+            val dialogSector = builderSector.create()
+            dialogSector.show()
+
             textViewTitulo.text = String.format("%s", "Sector")
 
             val areaAdapter = SectorAdapter(sectores!!, R.layout.cardview_combo, object : SectorAdapter.OnItemClickListener {
@@ -254,9 +238,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = areaAdapter
-            builderSector.setView(v)
-            dialogSector = builderSector.create()
-            dialogSector.show()
         } else {
             Util.snackBarMensaje(view, "Primero elige un Area")
         }
@@ -264,12 +245,17 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
 
     private fun responsableDialog(view: View) {
         if (responsables != null) {
-            builderResponsable = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+            val builderResponsable = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
             val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+
+            builderResponsable.setView(v)
+            val dialogResponasble = builderResponsable.create()
+            dialogResponasble.show()
+
             textViewTitulo.text = String.format("%s", "Responsable")
 
             val areaAdapter = ResponsableAdapter(responsables!!, R.layout.cardview_combo, object : ResponsableAdapter.OnItemClickListener {
@@ -285,21 +271,24 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
             recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = areaAdapter
-            builderResponsable.setView(v)
-            dialogResponasble = builderResponsable.create()
-            dialogResponasble.show()
+
         } else {
             Util.snackBarMensaje(view, "Primero elige un Sector")
         }
     }
 
     private fun estadoDialog() {
-        builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        val builderEstado = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
 
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+
+        builderEstado.setView(v)
+        val dialogEstado = builderEstado.create()
+        dialogEstado.show()
+
         textViewTitulo.text = String.format("%s", "Estado")
 
         val estado = ArrayList<TipoDocumento>()
@@ -317,9 +306,6 @@ class NuevaAuditoriaDialogFragment : DialogFragment(), View.OnClickListener {
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
-        builderEstado.setView(v)
-        dialogEstado = builderEstado.create()
-        dialogEstado.show()
     }
 
     interface InterfaceCommunicator {

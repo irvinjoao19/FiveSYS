@@ -13,6 +13,7 @@
     <color name="colorCloud">#3498db</color>
     <color name="colorTrans">#00000000</color>
     <color name="colorButton">#2980b9</color>
+    <color name="transparentBlack">#64000000</color>
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>

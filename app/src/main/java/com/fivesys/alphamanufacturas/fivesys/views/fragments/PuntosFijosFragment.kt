@@ -6,9 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -16,13 +16,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.fivesys.alphamanufacturas.fivesys.BuildConfig
 
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
@@ -35,40 +35,43 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.PuntosFijosAdapter
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import io.reactivex.CompletableObserver
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
+import kotlinx.android.synthetic.main.fragment_puntos_fijos.*
 import java.io.File
+
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 class PuntosFijosFragment : Fragment() {
 
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
-
-    lateinit var recyclerView: RecyclerView
-    lateinit var layoutManager: RecyclerView.LayoutManager
     lateinit var puntosFijosAdapter: PuntosFijosAdapter
 
     lateinit var folder: File
     lateinit var image: File
 
-    lateinit var builder: AlertDialog.Builder
-    lateinit var dialog: AlertDialog
-
-    var receive: Int? = 0
-    var estado: Int? = 0
-    var modo: Boolean = false
+    private var receive: Int = 0
+    private var estado: Int = 0
+    private var modo: Boolean = false
+    private var auditoriaId: Int = 0
 
     lateinit var nameImg: String
-    lateinit var Direccion: String
+    lateinit var direction: String
 
     companion object {
-        fun newInstance(id: Int,estado:Int): PuntosFijosFragment {
-            val fragment = PuntosFijosFragment()
-            val args = Bundle()
-            args.putInt("id", id)
-            args.putInt("estado", estado)
-            fragment.arguments = args
-            return fragment
-        }
+        @JvmStatic
+        fun newInstance(param1: Int, param2: Int) =
+                PuntosFijosFragment().apply {
+                    arguments = Bundle().apply {
+                        putInt(ARG_PARAM1, param1)
+                        putInt(ARG_PARAM2, param2)
+                    }
+                }
     }
 
     override fun onDestroy() {
@@ -76,26 +79,30 @@ class PuntosFijosFragment : Fragment() {
         realm.close()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-        val view = inflater.inflate(R.layout.fragment_puntos_fijos, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         realm = Realm.getDefaultInstance()
-        val args = arguments
-        if (args != null) {
-            auditoriaImp = AuditoriaOver(realm)
-            modo = auditoriaImp.getAuditor?.modo!!
-            val id = args.getInt("id")
-            estado = args.getInt("estado")
-            bindUI(view, auditoriaImp.getAuditoriaByOne(id))
+        auditoriaImp = AuditoriaOver(realm)
+
+        arguments?.let {
+            auditoriaId = it.getInt(ARG_PARAM1)
+            estado = it.getInt(ARG_PARAM2)
         }
-        return view
     }
 
-    private fun bindUI(view: View, a: Auditoria?) {
-        recyclerView = view.findViewById(R.id.recyclerView)
-        layoutManager = LinearLayoutManager(context)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_puntos_fijos, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindUI()
+    }
+
+    private fun bindUI() {
+        modo = auditoriaImp.getAuditor?.modo!!
+        val a: Auditoria? = auditoriaImp.getAuditoriaByOne(auditoriaId)
         if (a != null) {
             a.PuntosFijos!!.addChangeListener { _ ->
                 puntosFijosAdapter.notifyDataSetChanged()
@@ -105,7 +112,7 @@ class PuntosFijosFragment : Fragment() {
                     when (v.id) {
                         R.id.imageViewPhoto -> showPhoto(p.Url)
                         R.id.imageViewOption -> {
-                            if (modo) {
+                            if (!modo) {
                                 showPopupMenu(p, v, context!!)
                             } else {
                                 if (estado == 1) {
@@ -119,17 +126,21 @@ class PuntosFijosFragment : Fragment() {
                 }
             })
             recyclerView.itemAnimator = DefaultItemAnimator()
-            recyclerView.layoutManager = layoutManager
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
             recyclerView.adapter = puntosFijosAdapter
         }
     }
 
     private fun showPhoto(nombre: String?) {
-        builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
-        @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_photo, null)
+        val builder = AlertDialog.Builder(ContextThemeWrapper(requireContext(), R.style.AppTheme))
+        @SuppressLint("InflateParams") val v = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_photo, null)
 
         val progressBar: ProgressBar = v.findViewById(R.id.progressBar)
         val imageViewPhoto: ImageView = v.findViewById(R.id.imageViewPhoto)
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
         val url = ConexionRetrofit.BaseUrl + nombre
         progressBar.visibility = View.VISIBLE
         Picasso.get()
@@ -140,7 +151,7 @@ class PuntosFijosFragment : Fragment() {
                     }
 
                     override fun onError(e: Exception) {
-                        val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + nombre)
+                        val f = File(Util.getFolder(requireContext()), nombre!!)
                         Picasso.get()
                                 .load(f)
                                 .into(imageViewPhoto, object : Callback {
@@ -155,26 +166,17 @@ class PuntosFijosFragment : Fragment() {
                                 })
                     }
                 })
-
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
     }
 
     private fun showPopupMenu(p: PuntosFijosHeader, v: View, context: Context) {
         receive = p.AuditoriaPuntoFijoId!!
-
         val popupMenu = PopupMenu(context, v)
         popupMenu.menu.add(0, Menu.FIRST, 0, getText(R.string.tomarFoto))
         popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.elegirFoto))
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                1 -> {
-                    createImage()
-                }
-                2 -> {
-                    openImage()
-                }
+                1 -> createImage()
+                2 -> openImage()
             }
             false
         }
@@ -182,63 +184,62 @@ class PuntosFijosFragment : Fragment() {
     }
 
     private fun openImage() {
-        val i = Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        val i = Intent(Intent.ACTION_GET_CONTENT)
+        i.type = "image/*"
+        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         startActivityForResult(i, Permission.GALERY_REQUEST)
     }
 
     private fun createImage() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
-            folder = Util.getFolder()
-            nameImg = Util.getFechaActualForPhoto() + ".jpg"
-            image = File(folder, nameImg)
-            Direccion = "$folder/$nameImg"
-            val uriSavedImage = Uri.fromFile(image)
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage)
-
-            if (Build.VERSION.SDK_INT >= 24) {
-                try {
-                    val m = StrictMode::class.java.getMethod("disableDeathOnFileUriExposure")
-                    m.invoke(null)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+                nameImg = Util.getFechaActualForPhoto() + ".jpg"
+                image = Util.createImageFile(nameImg, requireContext())
+                image.also {
+                    direction = it.absolutePath
+//                        val uriSavedImage = Uri.fromFile(it)
+                    val uriSavedImage = FileProvider.getUriForFile(
+                            requireContext(), BuildConfig.APPLICATION_ID + ".fileprovider", it)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage)
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        try {
+                            val m =
+                                    StrictMode::class.java.getMethod("disableDeathOnFileUriExposure")
+                            m.invoke(null)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                    startActivityForResult(takePictureIntent, Permission.CAMERA_REQUEST)
                 }
             }
-            startActivityForResult(takePictureIntent, Permission.CAMERA_REQUEST)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Permission.CAMERA_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
-            if (!Util.comprimirImagen(Direccion)) {
-                Util.toastMensaje(context!!, "Volver a intentarlo")
-            } else {
-                savePhoto(receive!!, nameImg)
-            }
+        if (requestCode == Permission.CAMERA_REQUEST) {
+            savePhoto(direction, receive, nameImg)
         } else if (requestCode == Permission.GALERY_REQUEST) {
             if (data != null) {
-                folder = Util.getFolder()
+                folder = Util.getFolder(requireContext())
                 nameImg = Util.getFechaActualForPhoto() + ".jpg"
-                val imagepath = Util.getFolderAdjunto(nameImg, context!!, data)
-                if (imagepath != null) {
-                    if (!Util.comprimirImagen(imagepath)) {
-                        Util.toastMensaje(context!!, "No se pudo reducir imagen. Favor de volver a intentarlo !")
-                    } else {
-                        savePhoto(receive!!, nameImg)
-                    }
-                } else {
-                    Util.toastMensaje(context!!, "Esta Foto no existe en tu galeria")
-                }
+                val imagepath = Util.getFolderAdjunto(nameImg, requireContext(), data)
+                savePhoto(imagepath, receive, nameImg)
             }
         }
-
     }
 
-    private fun savePhoto(id: Int, nameImg: String) {
-        auditoriaImp.savePhoto(id, nameImg)
+    private fun savePhoto(path: String, id: Int, nameImg: String) {
+        auditoriaImp.savePhoto(requireContext(), path, id, nameImg)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : CompletableObserver {
+                    override fun onSubscribe(d: Disposable) {}
+                    override fun onError(e: Throwable) {}
+                    override fun onComplete() {
+                        Log.i("TAG", "ok")
+                    }
+                })
     }
-
-
 }

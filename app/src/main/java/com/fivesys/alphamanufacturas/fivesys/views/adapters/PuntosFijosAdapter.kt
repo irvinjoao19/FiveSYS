@@ -45,7 +45,7 @@ class PuntosFijosAdapter(private var puntosFijos: RealmList<PuntosFijosHeader>, 
 
             textViewTitulo.text = p.NPuntoFijo
 
-            val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + p.Url)
+            val f = File(Util.getFolder(itemView.context), p.Url!!)
             Picasso.get()
                     .load(f)
                     .into(imageViewPhoto, object : Callback {

@@ -21,8 +21,7 @@ import com.fivesys.alphamanufacturas.fivesys.entities.TipoDocumento
 import com.fivesys.alphamanufacturas.fivesys.helper.MessageError
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException
 import io.reactivex.Observable
@@ -30,6 +29,7 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.activity_register.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.util.*
@@ -46,31 +46,20 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     lateinit var loginInterfaces: LoginInterfaces
-
-    lateinit var buttonAceptar: MaterialButton
-    lateinit var buttonCancelar: MaterialButton
-    lateinit var editTextCorreo: TextInputEditText
-    lateinit var editTextNumeroDocumento: TextInputEditText
-    lateinit var editTextTipoDocumento: TextInputEditText
-    lateinit var editTextSector: TextInputEditText
-    lateinit var editTextTelefono: TextInputEditText
-    lateinit var editTextApellido: TextInputEditText
-    lateinit var editTextNombre: TextInputEditText
-
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
 
-    var tipoDocumento = ArrayList<TipoDocumento>()
-    var sector = ArrayList<TipoDocumento>()
+    private var tipoDocumento = ArrayList<TipoDocumento>()
+    private var sector = ArrayList<TipoDocumento>()
 
-    var nombreDocumento: String = "L.E / DNI"
-    var apellido: String = ""
-    var nombre: String = ""
-    var correo: String = ""
-    var numeroDocumento: String = ""
-    var tipoDocumentoId: Int = 3
-    var sectorNombre: String = "Industrial"
-    var telefono: String = ""
+    private var nombreDocumento: String = "L.E / DNI"
+    private var apellido: String = ""
+    private var nombre: String = ""
+    private var correo: String = ""
+    private var numeroDocumento: String = ""
+    private var tipoDocumentoId: Int = 3
+    private var sectorNombre: String = "Industrial"
+    private var telefono: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,16 +69,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun bindUI() {
         loginInterfaces = ConexionRetrofit.api.create(LoginInterfaces::class.java)
-        editTextCorreo = findViewById(R.id.editTextCorreo)
-        editTextNumeroDocumento = findViewById(R.id.editTextNumeroDocumento)
-        editTextTipoDocumento = findViewById(R.id.editTextTipoDocumento)
-        editTextSector = findViewById(R.id.editTextSector)
-        editTextTelefono = findViewById(R.id.editTextTelefono)
-        editTextApellido = findViewById(R.id.editTextApellido)
-        editTextNombre = findViewById(R.id.editTextNombre)
-
-        buttonAceptar = findViewById(R.id.buttonAceptar)
-
         buttonAceptar.setOnClickListener(this)
         editTextTipoDocumento.setOnClickListener(this)
         editTextSector.setOnClickListener(this)
@@ -138,7 +117,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         dialog.show()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun sectorDialog() {
         builder = AlertDialog.Builder(ContextThemeWrapper(this@RegisterActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@RegisterActivity).inflate(R.layout.dialog_combo, null)
@@ -146,7 +124,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(this)
-        textViewTitulo.text = "Sector"
+        textViewTitulo.text = String.format("Sector")
         val tipoDocumentoAdapter = TipoDocumentoAdapter(sector, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
                 editTextSector.setText(t.nombre)
@@ -214,16 +192,17 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    @SuppressLint("SetTextI18n")
     private fun sendRegistro(registro: String, view: View) {
-
-        builder = AlertDialog.Builder(android.view.ContextThemeWrapper(this@RegisterActivity, R.style.AppTheme))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this@RegisterActivity, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(this@RegisterActivity).inflate(R.layout.dialog_alert, null)
-
         val textViewTitle: TextView = v.findViewById(R.id.textViewTitle)
-        textViewTitle.text = "Enviando ...."
+        textViewTitle.text = String.format("Enviando ....")
 
         builder.setView(v)
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.setCancelable(false)
+        dialog.show()
 
         val requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), registro)
         val observableEnvio: Observable<Registro> = loginInterfaces.sendRegistro(requestBody)
@@ -231,19 +210,14 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 .delay(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Registro> {
+                    override fun onSubscribe(d: Disposable) {}
+                    override fun onNext(t: Registro) {}
                     override fun onComplete() {
                         infoMensaje()
                         dialog.dismiss()
                     }
 
-                    override fun onSubscribe(d: Disposable) {
-                    }
-
-                    override fun onNext(t: Registro) {
-                    }
-
                     override fun onError(e: Throwable) {
-//                        Util.snackBarMensaje(view, e.toString())
                         if (e is HttpException) {
                             val message = Gson().fromJson(e.response().errorBody()?.string(), MessageError::class.java)
                             Util.snackBarMensaje(view, message.Error)
@@ -253,24 +227,17 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                         dialog.dismiss()
                     }
                 })
-
-        dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
     }
 
     private fun infoMensaje() {
-        val builder = AlertDialog.Builder(ContextThemeWrapper(this, R.style.AppTheme))
-        builder.setTitle("Mensaje")
-        builder.setMessage("Enviado Verificar Su Correo")
-        builder.setPositiveButton("Aceptar") { dialogInterface, _ ->
-            dialogInterface.dismiss()
-            finish()
-        }
-        val dialog = builder.create()
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.setCancelable(false)
-        dialog.show()
+        MaterialAlertDialogBuilder(ContextThemeWrapper(this, R.style.AppTheme))
+                .setTitle("Mensaje")
+                .setMessage("Enviado Verificar Su Correo")
+                .setPositiveButton("Aceptar") { dialogInterface, _ ->
+                    dialogInterface.dismiss()
+                    finish()
+                }
+                .setCancelable(false)
+                .show()
     }
 }

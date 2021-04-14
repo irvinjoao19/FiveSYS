@@ -7,7 +7,8 @@ import com.fivesys.alphamanufacturas.fivesys.views.fragments.GeneralFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.ObservationFragment
 import com.fivesys.alphamanufacturas.fivesys.views.fragments.PuntosFijosFragment
 
-class TabLayoutAdapter(fm: FragmentManager, private val numberOfTabs: Int, val id: Int, val estado: Int) : FragmentStatePagerAdapter(fm) {
+class TabLayoutAdapter(fm: FragmentManager, private val numberOfTabs: Int, val id: Int, val estado: Int)
+    : FragmentStatePagerAdapter(fm, numberOfTabs) {
 
     override fun getItem(position: Int): Fragment {
         return when (position) {

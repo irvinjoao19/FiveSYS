@@ -1,151 +1,165 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/main_header_selector"
-    android:orientation="vertical"
-    tools:context=".views.activities.RegisterActivity">
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_header_selector"
+        android:orientation="vertical"
+        tools:context=".views.activities.RegisterActivity">
 
     <!--<include-->
     <!--android:id="@+id/toolbar"-->
     <!--layout="@layout/toolbar" />-->
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="UselessParent">
-
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
+            android:layout_height="match_parent"
             tools:ignore="UselessParent">
 
-            <ImageView
-                android:id="@+id/imageView"
+        <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="@string/img"
-                android:src="@drawable/logo_large" />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                tools:ignore="UselessParent">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="@string/img"
-                android:src="@drawable/fivesys" />
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:contentDescription="@string/img"
+                    android:src="@drawable/logo_large" />
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:contentDescription="@string/img"
+                    android:src="@drawable/fivesys" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/nombre">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextNombre"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_person"
-                    android:inputType="text" />
+                    android:layout_margin="5dp"
+                    android:hint="@string/nombre">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_person"
+                        android:inputType="text"
+                        android:textColor="@color/colorWhite" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/apellido">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextApellido"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_person"
-                    android:inputType="text" />
+                    android:layout_margin="5dp"
+                    android:hint="@string/apellido">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextApellido"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_person"
+                        android:inputType="text"
+                        android:textColor="@color/colorWhite" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/phone">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTelefono"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_calendar"
-                    android:inputType="number" />
+                    android:layout_margin="5dp"
+                    android:hint="@string/phone">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextTelefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:inputType="number"
+                        android:textColor="@color/colorWhite" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/sector_work">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextSector"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_down"
-                    android:focusable="false" />
+                    android:layout_margin="5dp"
+                    android:hint="@string/sector_work">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextSector"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false"
+                        android:textColor="@color/colorWhite" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/tipo_de_documento">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextTipoDocumento"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_down"
-                    android:focusable="false" />
+                    android:layout_margin="5dp"
+                    android:hint="@string/tipo_de_documento">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextTipoDocumento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_down"
+                        android:focusable="false"
+                        android:textColor="@color/colorWhite" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/nro_documento">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextNumeroDocumento"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_card"
-                    android:inputType="number" />
+                    android:layout_margin="5dp"
+                    android:hint="@string/nro_documento">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextNumeroDocumento"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_card"
+                        android:inputType="number"
+                        android:textColor="@color/colorWhite" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/correo">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editTextCorreo"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/ic_email"
-                    android:inputType="text" />
+                    android:layout_margin="5dp"
+                    android:hint="@string/correo">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editTextCorreo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawableEnd="@drawable/ic_email"
+                        android:inputType="text"
+                        android:textColor="@color/colorWhite" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonAceptar"
-                style="@style/Widget.MaterialComponents.Button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5sp"
-                android:layout_marginBottom="5sp"
-                android:text="@string/registrar" />
+                    android:id="@+id/buttonAceptar"
+                    style="@style/Widget.MaterialComponents.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5sp"
+                    android:layout_marginBottom="5sp"
+                    android:text="@string/registrar" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

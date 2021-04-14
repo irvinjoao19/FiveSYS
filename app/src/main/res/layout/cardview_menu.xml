@@ -1,49 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_marginTop="20dp"
-    android:layout_marginBottom="20dp"
-    android:clickable="true"
-    android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    card_view:cardCornerRadius="20dp"
-    card_view:cardElevation="5dp"
-    card_view:cardMaxElevation="5dp"
-    card_view:contentPadding="3dp"
-    tools:ignore="UnusedAttribute">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="5dp"
+        app:contentPadding="3dp"
+        tools:ignore="UnusedAttribute">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
-
-        <ImageView
-            android:id="@+id/imageViewPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:contentDescription="@string/img"
-            android:paddingStart="15sp"
-            android:paddingEnd="0sp"
-            android:src="@mipmap/ic_auditoria" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+        <ImageView
+                android:id="@+id/imageViewPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:contentDescription="@string/img"
+                android:paddingStart="15sp"
+                android:paddingEnd="0sp"
+                android:src="@mipmap/ic_auditoria" />
 
         <TextView
-            android:id="@+id/textViewTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:paddingStart="15sp"
-            android:text="asdasdasdasd"
-            android:paddingEnd="0sp"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            tools:ignore="RtlSymmetry" />
+                android:id="@+id/textViewTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingStart="15sp"
+                android:paddingEnd="0sp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="RtlSymmetry" />
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

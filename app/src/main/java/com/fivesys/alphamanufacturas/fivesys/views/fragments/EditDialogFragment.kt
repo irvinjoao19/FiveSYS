@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.os.StrictMode
 import android.provider.MediaStore
 import android.view.*
@@ -16,11 +15,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.fivesys.alphamanufacturas.fivesys.BuildConfig
 import com.fivesys.alphamanufacturas.fivesys.R
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod.AuditoriaOver
@@ -31,13 +32,16 @@ import com.fivesys.alphamanufacturas.fivesys.helper.Util
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.CategoriaAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.ComponenteAdapter
 import com.fivesys.alphamanufacturas.fivesys.views.adapters.TipoDocumentoAdapter
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import io.realm.Realm
 import io.realm.RealmList
+import kotlinx.android.synthetic.main.dialog_editar.*
 import java.io.File
+
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM3 = "param3"
 
 class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
@@ -59,78 +63,61 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     companion object {
-        fun newInstance(title: String, id: Int, detalleId: Int): EditDialogFragment {
-            val f = EditDialogFragment()
-            val args = Bundle()
-            args.putString("title", title)
-            args.putInt("id", id)
-            args.putInt("detalleId", detalleId)
-            f.arguments = args
-            return f
-        }
+        @JvmStatic
+        fun newInstance(param1: String, param2: Int, param3: Int) =
+                EditDialogFragment().apply {
+                    arguments = Bundle().apply {
+                        putString(ARG_PARAM1, param1)
+                        putInt(ARG_PARAM2, param2)
+                        putInt(ARG_PARAM3, param3)
+                    }
+                }
     }
 
     private var title: String? = null
 
-    lateinit var textViewTitulo: TextView
-    lateinit var editTextCategoria: TextInputEditText
-    lateinit var editTextComponente: TextInputEditText
-    lateinit var editTextS1: TextInputEditText
-    lateinit var editTextS2: TextInputEditText
-    lateinit var editTextS3: TextInputEditText
-    lateinit var editTextS4: TextInputEditText
-    lateinit var editTextS5: TextInputEditText
-
-    lateinit var editTextReferencia: TextInputEditText
-    lateinit var editTextAspecto: TextInputEditText
-    lateinit var editTextObservacion: TextInputEditText
-
-    lateinit var imageViewObservacion: ImageView
-    lateinit var buttonCancelar: MaterialButton
-    lateinit var buttonAceptar: MaterialButton
-
     lateinit var builder: AlertDialog.Builder
     lateinit var dialog: AlertDialog
-    lateinit var builderCategoria: AlertDialog.Builder
-    lateinit var dialogCategoria: AlertDialog
-    lateinit var builderComponente: AlertDialog.Builder
-    lateinit var dialogComponente: AlertDialog
 
     lateinit var realm: Realm
     lateinit var auditoriaImp: AuditoriaImplementation
 
-    var componentes: RealmList<Componente>? = null
-    var tipoDocumento = ArrayList<TipoDocumento>()
+    private var componentes: RealmList<Componente>? = null
+    private var tipoDocumento = ArrayList<TipoDocumento>()
 
     lateinit var folder: File
     lateinit var image: File
 
 
     // TODO SAVE DETALLE
-    var auditoriaId: Int? = 0
-    var detalleId: Int? = 0
-    var nameImg: String? = null
-    var Direccion: String? = ""
+    private var auditoriaId: Int? = 0
+    private var detalleId: Int? = 0
+    private var nameImg: String = ""
+    private var direction: String = ""
 
-    var componente = ComponenteByDetalle()
-    var category = CategoriaByDetalle()
+    private var componente = ComponenteByDetalle()
+    private var category = CategoriaByDetalle()
 
-    var s1: Int? = 0
-    var s2: Int? = 0
-    var s3: Int? = 0
-    var s4: Int? = 0
-    var s5: Int? = 0
+    private var s1: Int? = 0
+    private var s2: Int? = 0
+    private var s3: Int? = 0
+    private var s4: Int? = 0
+    private var s5: Int? = 0
 
-    var estado: Int? = 1
+    private var estado: Int? = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         realm = Realm.getDefaultInstance()
         auditoriaImp = AuditoriaOver(realm)
-        title = arguments!!.getString("title")
-        auditoriaId = arguments!!.getInt("id")
-        detalleId = if (arguments!!.getInt("detalleId") == 0) auditoriaImp.getDetalleIdentity() else arguments!!.getInt("detalleId")
-        estado = if (arguments!!.getInt("detalleId") == 0) 1 else 0
+
+        arguments?.let {
+            title = it.getString(ARG_PARAM1)
+            auditoriaId = it.getInt(ARG_PARAM2)
+            detalleId = if (it.getInt(ARG_PARAM3) == 0) auditoriaImp.getDetalleIdentity() else it.getInt(ARG_PARAM3)
+            estado = if (it.getInt(ARG_PARAM3) == 0) 1 else 0
+        }
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -140,44 +127,26 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.dialog_editar, container, false)
-        bindUI(view, auditoriaImp.getDetalleById(detalleId!!))
-        return view
+        return inflater.inflate(R.layout.dialog_editar, container, false)
     }
 
-    private fun bindUI(v: View, d: Detalle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        bindUI()
+    }
 
-        textViewTitulo = v.findViewById(R.id.textViewTitulo)
+    private fun bindUI() {
         textViewTitulo.text = title
-        editTextCategoria = v.findViewById(R.id.editTextCategoria)
-        editTextComponente = v.findViewById(R.id.editTextComponente)
-        editTextS1 = v.findViewById(R.id.editTextS1)
-        editTextS2 = v.findViewById(R.id.editTextS2)
-        editTextS3 = v.findViewById(R.id.editTextS3)
-        editTextS4 = v.findViewById(R.id.editTextS4)
-        editTextS5 = v.findViewById(R.id.editTextS5)
-
-        editTextReferencia = v.findViewById(R.id.editTextReferencia)
-        editTextAspecto = v.findViewById(R.id.editTextAspecto)
-        editTextObservacion = v.findViewById(R.id.editTextObservacion)
-
-        imageViewObservacion = v.findViewById(R.id.imageViewObservacion)
-        buttonCancelar = v.findViewById(R.id.buttonCancelar)
-        buttonAceptar = v.findViewById(R.id.buttonAceptar)
-
         editTextCategoria.setOnClickListener(this)
         editTextComponente.setOnClickListener(this)
-
         editTextS1.setOnClickListener(this)
         editTextS2.setOnClickListener(this)
         editTextS3.setOnClickListener(this)
         editTextS4.setOnClickListener(this)
         editTextS5.setOnClickListener(this)
-
         imageViewObservacion.setOnClickListener(this)
         buttonCancelar.setOnClickListener(this)
         buttonAceptar.setOnClickListener(this)
-
 
         val c = auditoriaImp.getAuditoriaByOne(auditoriaId!!)
 
@@ -186,6 +155,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         tipoDocumento.add(TipoDocumento(3, c.Configuracion?.ValorS3.toString(), "Oper."))
         tipoDocumento.add(TipoDocumento(4, c.Configuracion?.ValorS4.toString(), "No Oper."))
         tipoDocumento.add(TipoDocumento(5, c.Configuracion?.ValorS5.toString(), "Destacable"))
+
+        val d: Detalle? = auditoriaImp.getDetalleById(detalleId!!)
 
         if (d != null) {
             val ca: CategoriaByDetalle? = d.Categoria
@@ -207,7 +178,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             }
 
             editTextAspecto.setText(d.AspectoObservado)
-
             editTextReferencia.setText(d.Nombre)
 
             s1 = d.S1
@@ -223,23 +193,18 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
 
             editTextObservacion.setText(d.Detalle)
 
-            nameImg = d.Url
+            nameImg = d.Url!!
             val url = ConexionRetrofit.BaseUrl + d.Url
             Picasso.get()
                     .load(url)
                     .into(imageViewObservacion, object : Callback {
-                        override fun onSuccess() {
-
-                        }
-
+                        override fun onSuccess() {}
                         override fun onError(e: Exception) {
-                            val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + d.Url)
+                            val f = File(Util.getFolder(requireContext()), d.Url!!)
                             Picasso.get()
                                     .load(f)
                                     .into(imageViewObservacion, object : Callback {
-                                        override fun onSuccess() {
-
-                                        }
+                                        override fun onSuccess() {}
 
                                         override fun onError(e: Exception) {
                                             imageViewObservacion.setImageResource(R.drawable.photo_error)
@@ -251,13 +216,15 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun tipoS(type: Int) {
-
-        builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        val builder = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
-
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+        builder.setView(v)
+        val dialog = builder.create()
+        dialog.show()
+
         textViewTitulo.text = String.format("%s", "S$type")
         val tipoDocumentoAdapter = TipoDocumentoAdapter(tipoDocumento, R.layout.cardview_combo, object : TipoDocumentoAdapter.OnItemClickListener {
             override fun onItemClick(t: TipoDocumento, position: Int) {
@@ -336,23 +303,22 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = tipoDocumentoAdapter
-        builder.setView(v)
-        dialog = builder.create()
-        dialog.show()
     }
 
     private fun categoriaDialog() {
-        builderCategoria = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+        val builderCategoria = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
         @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
-
         val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
         val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
+        builderCategoria.setView(v)
+        val dialogCategoria = builderCategoria.create()
+        dialogCategoria.show()
+
         textViewTitulo.text = String.format("%s", "Categoria")
         val categoria: Auditoria = auditoriaImp.getAuditoriaByOne(auditoriaId!!)!!
         val categoriaAdapter = CategoriaAdapter(categoria.Categorias!!, R.layout.cardview_combo, object : CategoriaAdapter.OnItemClickListener {
             override fun onItemClick(c: Categoria, v: View, position: Int) {
-
                 category.CategoriaId = c.CategoriaId
                 category.Nombre = c.Nombre
 
@@ -374,21 +340,20 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = categoriaAdapter
-        builderCategoria.setView(v)
-        dialogCategoria = builderCategoria.create()
-        dialogCategoria.show()
     }
 
     private fun componenteDialog(view: View) {
         if (componentes != null) {
-            builderComponente = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
+            val builderComponente = AlertDialog.Builder(ContextThemeWrapper(context, R.style.AppTheme))
             @SuppressLint("InflateParams") val v = LayoutInflater.from(context).inflate(R.layout.dialog_combo, null)
-
             val textViewTitulo: TextView = v.findViewById(R.id.textViewTitulo)
             val recyclerView: RecyclerView = v.findViewById(R.id.recyclerView)
             val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(context)
-            textViewTitulo.text = String.format("%s", "Componentes")
+            builderComponente.setView(v)
+            val dialogComponente = builderComponente.create()
+            dialogComponente.show()
 
+            textViewTitulo.text = String.format("%s", "Componentes")
             val componenteAdapter = ComponenteAdapter(componentes!!, R.layout.cardview_combo, object : ComponenteAdapter.OnItemClickListener {
                 override fun onItemClick(c: Componente, position: Int) {
                     componente.ComponenteId = c.ComponenteId
@@ -402,9 +367,6 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
             recyclerView.addItemDecoration(DividerItemDecoration(recyclerView.context, DividerItemDecoration.VERTICAL))
             recyclerView.layoutManager = layoutManager
             recyclerView.adapter = componenteAdapter
-            builderComponente.setView(v)
-            dialogComponente = builderComponente.create()
-            dialogComponente.show()
         } else {
             Util.snackBarMensaje(view, "Eliga una Categoria")
         }
@@ -416,12 +378,8 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
         popupMenu.menu.add(1, Menu.FIRST + 1, 1, getText(R.string.elegirFoto))
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                1 -> {
-                    createImage()
-                }
-                2 -> {
-                    openImage()
-                }
+                1 -> createImage()
+                2 -> openImage()
             }
             false
         }
@@ -429,72 +387,64 @@ class EditDialogFragment : DialogFragment(), View.OnClickListener {
     }
 
     private fun openImage() {
-        val i = Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+        val i = Intent(Intent.ACTION_GET_CONTENT)
+        i.type = "image/*"
+        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false)
         startActivityForResult(i, Permission.GALERY_REQUEST)
     }
 
     private fun createImage() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        if (takePictureIntent.resolveActivity(context!!.packageManager) != null) {
-            folder = Util.getFolder()
-            nameImg = Util.getFechaActualForPhoto() + ".jpg"
-            image = File(folder, nameImg)
-            Direccion = "$folder/$nameImg"
-            val uriSavedImage = Uri.fromFile(image)
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage)
-
-            if (Build.VERSION.SDK_INT >= 24) {
-                try {
-                    val m = StrictMode::class.java.getMethod("disableDeathOnFileUriExposure")
-                    m.invoke(null)
-                } catch (e: Exception) {
-                    e.printStackTrace()
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+                nameImg = Util.getFechaActualForPhoto() + ".jpg"
+                image = Util.createImageFile(nameImg, requireContext())
+                image.also {
+                    direction = it.absolutePath
+//                        val uriSavedImage = Uri.fromFile(it)
+                    val uriSavedImage = FileProvider.getUriForFile(
+                            requireContext(), BuildConfig.APPLICATION_ID + ".fileprovider", it)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage)
+                    if (Build.VERSION.SDK_INT >= 24) {
+                        try {
+                            val m =
+                                    StrictMode::class.java.getMethod("disableDeathOnFileUriExposure")
+                            m.invoke(null)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                    startActivityForResult(takePictureIntent, Permission.CAMERA_REQUEST)
                 }
             }
-            startActivityForResult(takePictureIntent, Permission.CAMERA_REQUEST)
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Permission.CAMERA_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
-            if (!Util.comprimirImagen(Direccion!!)) {
-                Util.toastMensaje(context!!, "Volver a intentarlo")
-            } else {
-                Picasso.get().load(image).into(imageViewObservacion)
-            }
+        if (requestCode == Permission.CAMERA_REQUEST) {
+            Util.getAngleImage(requireContext(), direction)
+            Picasso.get().load(image).into(imageViewObservacion)
         } else if (requestCode == Permission.GALERY_REQUEST) {
             if (data != null) {
-                folder = Util.getFolder()
+                folder = Util.getFolder(requireContext())
                 nameImg = Util.getFechaActualForPhoto() + ".jpg"
-
                 image = File(folder, nameImg)
-                val imagepath = Util.getFolderAdjunto(nameImg!!, context!!, data)
+                val imagepath = Util.getFolderAdjunto(nameImg, requireContext(), data)
 
-                if (imagepath != null) {
-                    if (!Util.comprimirImagen(imagepath)) {
-                        Util.toastMensaje(context!!, "No se pudo reducir imagen. Favor de volver a intentarlo !")
-                    } else {
-                        Picasso.get().load(image).into(imageViewObservacion)
-                    }
-                } else {
-                    Util.toastMensaje(context!!, "Esta Foto no existe en tu galeria")
-                }
+                Util.getAngleImage(requireContext(), imagepath)
+                Picasso.get().load(image).into(imageViewObservacion)
             }
         }
     }
 
     private fun saveDetalle(v: View) {
-
         val referencia = editTextReferencia.text.toString()
         val aspecto = editTextAspecto.text.toString()
         val observacion = editTextObservacion.text.toString()
-
         if (category.CategoriaId != 0) {
             if (componente.ComponenteId != 0) {
-                if (!referencia.isEmpty()) {
-                    if (!aspecto.isEmpty()) {
+                if (referencia.isNotEmpty()) {
+                    if (aspecto.isNotEmpty()) {
                         val detalle = Detalle(detalleId, auditoriaId, category.CategoriaId, componente.ComponenteId, componente, category, aspecto, referencia, s1, s2, s3, s4, s5, observacion, estado, nameImg)
                         auditoriaImp.saveDetalle(detalle, auditoriaId!!)
                         Util.hideKeyboardFrom(context!!, v)

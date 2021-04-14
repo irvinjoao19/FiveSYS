@@ -17,7 +17,7 @@ open class Auditor : RealmObject {
     var Clave: String? = ""
     var ClaveAnterior: String? = ""
     var ClaveNueva: String? = ""
-    var modo: Boolean? = false
+    var modo: Boolean? = true // true -> online // false -> offline
     //70025043
     //123
 

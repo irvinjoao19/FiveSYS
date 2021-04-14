@@ -127,7 +127,7 @@ class ObservacionAdapter(private var detalles: RealmResults<Detalle>, private va
             textViewS5.text = d.S5.toString()
 
 
-            val f = File(Environment.getExternalStorageDirectory(), Util.FolderImg + "/" + d.Url)
+            val f = File(Util.getFolder(itemView.context), d.Url!!)
             Picasso.get()
                     .load(f)
                     .into(imageViewPhoto, object : Callback {

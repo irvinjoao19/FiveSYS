@@ -20,7 +20,11 @@
         <ProgressBar
                 android:id="@+id/progressBar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:indeterminate="true"
+                android:indeterminateTint="@color/colorPrimary"
+                android:indeterminateTintMode="src_atop" />
 
         <TextView
                 android:id="@+id/textViewTitle"
@@ -28,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:text="@string/iniciando_sesion"
+                android:text="@string/login"
                 android:textSize="15sp"
                 android:textStyle="bold" />
     </LinearLayout>

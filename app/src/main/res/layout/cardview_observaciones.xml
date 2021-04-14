@@ -1,283 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cardViewPrincipal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    card_view:cardElevation="5dp"
-    card_view:cardMaxElevation="5dp">
-
-    <LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cardViewPrincipal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_margin="10dp"
+        app:cardElevation="5dp"
+        app:cardMaxElevation="5dp">
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="horizontal">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:visibility="gone" />
-
-            <ImageView
-                android:id="@+id/imageViewPhoto"
-                android:layout_width="fill_parent"
-                android:layout_height="170dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/img"
-                android:scaleType="centerCrop"
-                android:src="@drawable/photo_error"
-                tools:ignore="NestedWeights" />
-        </LinearLayout>
+            android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="10dp"
-            android:paddingTop="10dp"
-            android:paddingRight="10dp"
-            android:paddingBottom="15dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables"
-                android:baselineAligned="false">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:orientation="horizontal"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <ImageView
-                        android:id="@+id/imageViewCategoria"
-                        android:layout_width="30dp"
-                        android:layout_height="match_parent"
-                        android:contentDescription="@string/img"
-                        android:src="@drawable/ic_person" />
-
-                    <TextView
-                        android:id="@+id/textViewCategoria"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:textColor="@color/primary_text" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.1"
-                    android:layout_gravity="center"
-                    tools:ignore="UseCompoundDrawables">
-
-                    <ImageView
-                        android:id="@+id/imageViewOption"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/img"
-                        android:src="@drawable/ic_menu" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:id="@+id/imageViewComponente"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/img"
-                    android:src="@drawable/ic_peoples" />
-
-                <TextView
-                    android:id="@+id/textViewComponente"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textColor="@color/primary_text" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                tools:ignore="UseCompoundDrawables">
-
-                <ImageView
-                    android:id="@+id/imageViewAspectoObservado"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/img"
-                    android:src="@drawable/ic_calendar1" />
-
-                <TextView
-                    android:id="@+id/textViewAspectoObservado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:textColor="@color/primary_text" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/textViewNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp" />
-
-            <TextView
-                android:id="@+id/textViewDetalle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:ellipsize="end"
-                android:maxLines="5"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp"
-                android:paddingBottom="5dp" />
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp"
-                android:baselineAligned="false"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingLeft="2dp"
-                android:paddingRight="2dp">
+                android:orientation="horizontal">
+
+            <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone" />
+
+            <ImageView
+                    android:id="@+id/imageViewPhoto"
+                    android:layout_width="fill_parent"
+                    android:layout_height="170dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="@string/img"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/photo_error"
+                    tools:ignore="NestedWeights" />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="10dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="15dp">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:baselineAligned="false"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.9"
+                        android:orientation="horizontal"
+                        tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                            android:id="@+id/imageViewCategoria"
+                            android:layout_width="30dp"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/img"
+                            android:src="@drawable/ic_person" />
+
+                    <TextView
+                            android:id="@+id/textViewCategoria"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textColor="@color/primary_text" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="0.1"
+                        tools:ignore="UseCompoundDrawables">
+
+                    <ImageView
+                            android:id="@+id/imageViewOption"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:contentDescription="@string/img"
+                            android:src="@drawable/ic_menu" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
 
-                    <TextView
-                        android:id="@+id/textViewTitleS1"
+                <ImageView
+                        android:id="@+id/imageViewComponente"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_peoples" />
+
+                <TextView
+                        android:id="@+id/textViewComponente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/s1"
-                        android:textColor="@color/primary_text"
-                        android:textStyle="bold" />
+                        android:layout_margin="5dp"
+                        android:textColor="@color/primary_text" />
+            </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/textViewS1"
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                        android:id="@+id/imageViewAspectoObservado"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/img"
+                        android:src="@drawable/ic_calendar1" />
+
+                <TextView
+                        android:id="@+id/textViewAspectoObservado"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="0dp"
-                        android:textColor="@color/secondary_text" />
+                        android:layout_margin="5dp"
+                        android:textColor="@color/primary_text" />
+            </LinearLayout>
+
+            <TextView
+                    android:id="@+id/textViewNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp" />
+
+            <TextView
+                    android:id="@+id/textViewDetalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:paddingBottom="5dp" />
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:baselineAligned="false"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp">
+
+                <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:orientation="horizontal">
+
+                    <TextView
+                            android:id="@+id/textViewTitleS1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/s1"
+                            android:textColor="@color/primary_text"
+                            android:textStyle="bold" />
+
+                    <TextView
+                            android:id="@+id/textViewS1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="0dp"
+                            android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:orientation="horizontal">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textViewTitleS2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/s2"
-                        android:textColor="@color/primary_text"
-                        android:textStyle="bold" />
+                            android:id="@+id/textViewTitleS2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/s2"
+                            android:textColor="@color/primary_text"
+                            android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textViewS2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="0dp"
-                        android:textColor="@color/secondary_text" />
+                            android:id="@+id/textViewS2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="0dp"
+                            android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:orientation="horizontal">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textViewTitleS3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/s3"
-                        android:textColor="@color/primary_text"
-                        android:textStyle="bold" />
+                            android:id="@+id/textViewTitleS3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/s3"
+                            android:textColor="@color/primary_text"
+                            android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textViewS3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="0dp"
-                        android:textColor="@color/secondary_text" />
+                            android:id="@+id/textViewS3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="0dp"
+                            android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:orientation="horizontal">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textViewTitleS4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/s4"
-                        android:textColor="@color/primary_text"
-                        android:textStyle="bold" />
+                            android:id="@+id/textViewTitleS4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/s4"
+                            android:textColor="@color/primary_text"
+                            android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textViewS4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="0dp"
-                        android:textColor="@color/secondary_text" />
+                            android:id="@+id/textViewS4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="0dp"
+                            android:textColor="@color/secondary_text" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.2"
-                    android:orientation="horizontal">
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.2"
+                        android:orientation="horizontal">
 
                     <TextView
-                        android:id="@+id/textViewTitleS5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/s5"
-                        android:textColor="@color/primary_text"
-                        android:textStyle="bold" />
+                            android:id="@+id/textViewTitleS5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/s5"
+                            android:textColor="@color/primary_text"
+                            android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/textViewS5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="0dp"
-                        android:textColor="@color/secondary_text" />
+                            android:id="@+id/textViewS5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="0dp"
+                            android:textColor="@color/secondary_text" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

@@ -1,6 +1,8 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces
 
+import android.content.Context
 import com.fivesys.alphamanufacturas.fivesys.entities.*
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.realm.RealmResults
@@ -9,7 +11,7 @@ interface AuditoriaImplementation {
 
     //TODO AUDITOR
 
-    fun saveAuditor(auditor: Auditor)
+    fun saveAuditor(auditor: Auditor) : Completable
 
     val getAuditor: Auditor?
 
@@ -37,7 +39,7 @@ interface AuditoriaImplementation {
 
     // TODO FOTO
 
-    fun savePhoto(AuditoriaPuntoFijoId: Int, url: String)
+    fun savePhoto(context:Context,path:String,AuditoriaPuntoFijoId: Int, url: String) : Completable
 
     // TODO CATEGORIA
 
@@ -49,13 +51,13 @@ interface AuditoriaImplementation {
 
     fun getDetalleById(AuditoriaDetalleId: Int): Detalle?
 
-    fun getDetalleByAuditoria(AuditoriaId: Int, Eliminado: Boolean): RealmResults<Detalle>
+    fun getDetalleByAuditoria(AuditoriaId: Int, Eliminado: Boolean): RealmResults<Detalle>?
 
     fun getDetalleIdentity(): Int
 
     fun saveDetalle(d: Detalle, AuditoriaId: Int)
 
-    fun deleteDetalle(d: Detalle): Boolean
+    fun deleteDetalle(context: Context, d: Detalle): Boolean
 
     // TODO UPDATE AUDITORIABYONE
 

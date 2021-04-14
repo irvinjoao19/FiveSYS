@@ -1,146 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite">
-
-    <FrameLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:background="@color/colorWhite">
 
-        <ScrollView
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorGrey"
-            tools:ignore="UselessParent">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
+        <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:orientation="vertical"
-                android:padding="20dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorGrey"
                 tools:ignore="UselessParent">
 
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    tools:ignore="UselessParent">
+
                 <TextView
-                    android:id="@+id/textViewTitulo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18sp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/codigo">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextCodigo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/estado">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextEstado"
+                        android:id="@+id/textViewTitulo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_down"
-                        android:focusable="false" />
-                </com.google.android.material.textfield.TextInputLayout>
-
+                        android:layout_margin="20dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/area">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextArea"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_down"
-                        android:focusable="false" />
+                        android:hint="@string/codigo">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextCodigo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/sector">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextSector"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_down"
-                        android:focusable="false" />
+                        android:hint="@string/estado">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextEstado"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/responsable">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextResponsable"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/ic_down"
-                        android:focusable="false" />
+                        android:hint="@string/area">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextArea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
                 </com.google.android.material.textfield.TextInputLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/nombre">
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/sector">
 
                     <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editTextNombre"
+                            android:id="@+id/editTextSector"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                         android:layout_width="match_parent"
-                        android:inputType="text"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:hint="@string/responsable">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextResponsable"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawableEnd="@drawable/ic_down"
+                            android:focusable="false" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/nombre">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/editTextNombre"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text" />
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonCancelar"
-                        style="@style/Widget.MaterialComponents.Button.TextButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="@string/cancel"
-                        android:textColor="@color/colorBlack" />
+                            android:id="@+id/buttonCancelar"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="@string/cancel"
+                            android:textColor="@color/colorBlack" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/buttonAceptar"
-                        style="@style/Widget.MaterialComponents.Button"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:text="@string/ok" />
+                            android:id="@+id/buttonAceptar"
+                            style="@style/Widget.MaterialComponents.Button"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.5"
+                            android:text="@string/ok" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

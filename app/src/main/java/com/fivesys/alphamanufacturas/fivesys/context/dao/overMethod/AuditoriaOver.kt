@@ -1,9 +1,11 @@
 package com.fivesys.alphamanufacturas.fivesys.context.dao.overMethod
 
+import android.content.Context
 import android.os.Environment
 import com.fivesys.alphamanufacturas.fivesys.context.dao.interfaces.AuditoriaImplementation
 import com.fivesys.alphamanufacturas.fivesys.entities.*
 import com.fivesys.alphamanufacturas.fivesys.helper.Util
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.realm.Realm
@@ -14,9 +16,13 @@ import java.io.File
 
 class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
 
-    override fun saveAuditor(auditor: Auditor) {
-        realm.executeTransaction { realm ->
-            realm.copyToRealmOrUpdate(auditor)
+    override fun saveAuditor(auditor: Auditor): Completable {
+        return Completable.fromAction {
+            Realm.getDefaultInstance().use { realm ->
+                realm.executeTransaction { r ->
+                    r.copyToRealmOrUpdate(auditor)
+                }
+            }
         }
     }
 
@@ -83,11 +89,16 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         return realm.where(Area::class.java).findAll()
     }
 
-    override fun savePhoto(AuditoriaPuntoFijoId: Int, url: String) {
-        realm.executeTransaction {
-            val p: PuntosFijosHeader? = realm.where(PuntosFijosHeader::class.java).equalTo("AuditoriaPuntoFijoId", AuditoriaPuntoFijoId).findFirst()
-            if (p != null) {
-                p.Url = url
+    override fun savePhoto(context: Context, path: String, AuditoriaPuntoFijoId: Int, url: String): Completable {
+        return Completable.fromAction {
+            Util.getAngleImage(context, path)
+            Realm.getDefaultInstance().use { realm ->
+                realm.executeTransaction {
+                    val p: PuntosFijosHeader? = it.where(PuntosFijosHeader::class.java).equalTo("AuditoriaPuntoFijoId", AuditoriaPuntoFijoId).findFirst()
+                    if (p != null) {
+                        p.Url = url
+                    }
+                }
             }
         }
     }
@@ -103,15 +114,13 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         return realm.where(Detalle::class.java).equalTo("Id", AuditoriaDetalleId).findFirst()
     }
 
-    override fun getDetalleByAuditoria(AuditoriaId: Int, Eliminado: Boolean): RealmResults<Detalle> {
+    override fun getDetalleByAuditoria(AuditoriaId: Int, Eliminado: Boolean): RealmResults<Detalle>? {
         return realm.where(Detalle::class.java).equalTo("AuditoriaId", AuditoriaId).equalTo("Eliminado", Eliminado).findAll().sort("Categoria.CategoriaId", Sort.ASCENDING)
     }
 
     override fun getDetalleIdentity(): Int {
         val detalle = realm.where(Detalle::class.java).max("Id")
-        val result: Int
-        result = if (detalle == null) 1 else detalle.toInt() + 1
-        return result
+        return if (detalle == null) 1 else detalle.toInt() + 1
     }
 
     override fun saveDetalle(d: Detalle, AuditoriaId: Int) {
@@ -142,11 +151,11 @@ class AuditoriaOver(private val realm: Realm) : AuditoriaImplementation {
         }
     }
 
-    override fun deleteDetalle(d: Detalle): Boolean {
+    override fun deleteDetalle(context: Context, d: Detalle): Boolean {
         var valor = true
         if (d.estado == 1) {
-            val imagepath = Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url
-            val f = File(imagepath)
+//            val imagepath = Environment.getExternalStorageDirectory().toString() + "/" + Util.FolderImg + "/" + d.Url
+            val f = File(Util.getFolder(context), d.Url!!)
             if (f.exists()) {
                 if (f.delete()) {
                     realm.executeTransaction {

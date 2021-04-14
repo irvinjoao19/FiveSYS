@@ -11,13 +11,14 @@ object Permission {
     val PERMISSION_ALL = 1
     val PERMISSIONS = arrayOf(
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA)
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION)
 
     val CAMERA_REQUEST = 1
     val GALERY_REQUEST = 2
     val SPEECH_REQUEST = 3
     val WRITE_REQUEST = 4
-
 
     fun hasPermissions(context: Context?, vararg permissions: String): Boolean {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null) {
@@ -29,6 +30,4 @@ object Permission {
         }
         return true
     }
-
-
 }
