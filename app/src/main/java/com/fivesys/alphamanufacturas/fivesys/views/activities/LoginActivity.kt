@@ -81,11 +81,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     } else {
                         this.editTextPassError.let { Util.toggleTextInputLayoutError(it, null) }
                         Util.hideKeyboard(this)
-
                         load()
                         Realm.getDefaultInstance().use { realm ->
                             goToMainActivity(realm, tipoDocumentoId, user, password)
-
                         }
                     }
                 }

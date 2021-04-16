@@ -150,11 +150,11 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         correo = editTextCorreo.text.toString()
         sectorNombre = editTextSector.text.toString()
 
-        if (!nombre.isEmpty()) {
-            if (!apellido.isEmpty()) {
-                if (!telefono.isEmpty()) {
-                    if (!numeroDocumento.isEmpty()) {
-                        if (Util.validarEmail(correo)) {
+        if (nombre.isNotEmpty()) {
+            if (apellido.isNotEmpty()) {
+                if (telefono.isNotEmpty()) {
+                    if (numeroDocumento.isNotEmpty()) {
+                        if (Util.validarEmail(correo.trim())) {
                             Util.hideKeyboard(this)
                             val alertDialog = AlertDialog.Builder(ContextThemeWrapper(this@RegisterActivity, R.style.AppTheme))
                             alertDialog.setTitle("Mensaje")
