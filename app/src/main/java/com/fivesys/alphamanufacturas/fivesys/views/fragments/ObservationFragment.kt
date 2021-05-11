@@ -35,10 +35,10 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         when (v.id) {
             R.id.fab -> {
                 if (!modo) {
-                    showCreateHeaderDialog("Nueva Observación", id!!, 0)
+                    showCreateHeaderDialog("Nueva Observación", auditoriaId, 0)
                 } else {
                     if (estado == 1) {
-                        showCreateHeaderDialog("Nueva Observación", id!!, 0)
+                        showCreateHeaderDialog("Nueva Observación", auditoriaId, 0)
                     } else {
                         Util.snackBarMensaje(v, "Inhabilitado para editar")
                     }
@@ -51,8 +51,8 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     lateinit var auditoriaImp: AuditoriaImplementation
     lateinit var observacionAdapter: ObservacionAdapter
 
-    private var id: Int? = 0
-    private var estado: Int? = 0
+    private var auditoriaId: Int = 0
+    private var estado: Int = 0
     private var modo: Boolean = false
 
     companion object {
@@ -78,7 +78,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         auditoriaImp = AuditoriaOver(realm)
 
         arguments?.let {
-            id = it.getInt(ARG_PARAM1)
+            auditoriaId = it.getInt(ARG_PARAM1)
             estado = it.getInt(ARG_PARAM2)
         }
     }
@@ -95,7 +95,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
     private fun bindUI() {
         fab.setOnClickListener(this)
         modo = auditoriaImp.getAuditor?.modo!!
-        val a: RealmResults<Detalle>? = auditoriaImp.getDetalleByAuditoria(id!!, false)
+        val a: RealmResults<Detalle>? = auditoriaImp.getDetalleByAuditoria(auditoriaId, false)
 
         if (a != null) {
             a.addChangeListener { _ ->
@@ -107,10 +107,10 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                         R.id.imageViewPhoto -> showPhoto(d.Url)
                         R.id.imageViewOption -> {
                             if (!modo) {
-                                showPopupMenu(d, v, context!!)
+                                showPopupMenu(d, v, requireContext())
                             } else {
                                 if (estado == 1) {
-                                    showPopupMenu(d, v, context!!)
+                                    showPopupMenu(d, v, requireContext())
                                 } else {
                                     Util.snackBarMensaje(v, "Inhabilitado para editar")
                                 }
@@ -161,7 +161,6 @@ class ObservationFragment : Fragment(), View.OnClickListener {
                                 })
                     }
                 })
-
     }
 
     private fun showCreateHeaderDialog(title: String, id: Int, detalleId: Int) {
@@ -180,7 +179,7 @@ class ObservationFragment : Fragment(), View.OnClickListener {
         popupMenu.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 1 -> {
-                    showCreateHeaderDialog("Editar Observación", id!!, d.Id!!)
+                    showCreateHeaderDialog("Editar Observación", auditoriaId, d.Id!!)
                 }
                 2 -> {
                     deletePhoto(d, v)
